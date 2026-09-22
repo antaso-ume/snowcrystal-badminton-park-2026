@@ -113,10 +113,23 @@ section.block{padding:60px 5%;}
 .org-card{border-radius:16px; padding:28px; color:var(--white); position:relative; overflow:hidden;}
 .org-card.sc{background:linear-gradient(135deg,#0A2F8F,#1263E0);}
 .org-card.hosei{background:linear-gradient(135deg,#C85D0F,#F47216);}
-.org-mark{
-  width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,0.15);
-  display:flex; align-items:center; justify-content:center; font-weight:900; font-size:20px;
-  margin-bottom:16px; border:2px solid rgba(255,255,255,0.5);
+.org-card.sc::after,
+.org-card.hosei::after{
+  content:"";
+  position:absolute;
+  top:0; right:0;
+  width:140px; height:140px;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  opacity:0.15;
+  pointer-events:none;
+}
+.org-card.sc::after{
+  background-image:url('image/snowcrystal_logo-removebg.png');
+}
+.org-card.hosei::after{
+  background-image:url('image/housei_logo-removebg.png');
 }
 .org-card h3{margin:0 0 10px; font-size:17px;}
 .org-card p{font-size:13px; margin:0 0 18px; opacity:0.95;}
@@ -279,18 +292,16 @@ section.block{padding:60px 5%;}
 
     <section class="block bg-pale">
       <div class="section-header">
-        <h2 class="ja">主催団体</h2>
+        <h2 class="ja">参加団体</h2>
         <div class="line"></div>
       </div>
       <div class="org-grid">
         <div class="org-card sc">
-          <div class="org-mark">SC</div>
           <h3>NPO法人 Snow Crystal</h3>
           <p>バドミントンを通じて地域とつながる活動を行うNPO法人。トップ選手との交流を通じて、競技の楽しさと奥深さを伝えます。</p>
           <a class="org-link" onclick="goPage('snowcrystal')">団体について詳しく見る</a>
         </div>
         <div class="org-card hosei">
-          <div class="org-mark">H</div>
           <h3>法政大学バドミントン部</h3>
           <p>大学トップレベルで戦う選手たちが、中学生のみなさんと一緒にバドミントンを楽しみながら本気の指導を行います。</p>
           <a class="org-link" onclick="goPage('hosei')">部について詳しく見る</a>
@@ -330,7 +341,7 @@ section.block{padding:60px 5%;}
       </div>
       <div class="faq-item">
         <p class="faq-q">Q. 中学生だけでも参加できますか？</p>
-        <p class="faq-a">はい、中学生のみなさんも参加できます。ぜひ、お友達やご兄妹と一緒にご参加ください。</p>
+        <p class="faq-a">はい、中学生だけも参加できます。ぜひ、お友達やご兄妹と一緒にご参加ください。</p>
       </div>
       <!--<div class="tbd-block">
         <span class="tbd-label">追加予定</span><br>
@@ -341,7 +352,7 @@ section.block{padding:60px 5%;}
 
     <section class="cta-section">
       <h2 class="cta-title">中学生のみなさん、お申し込みお待ちしています！</h2>
-      <p class="cta-desc">完全事前申込制です。会場でお会いできるのを楽しみにしています。</p>
+      <p class="cta-desc">会場でお会いできるのを楽しみにしています。</p>
       <button class="btn-apply" onclick="goPage('apply')" style="border:none; cursor:pointer;">お申し込みページへ</button>
     </section>
   </div>
