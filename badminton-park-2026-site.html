@@ -9,6 +9,35 @@
     <title>
       バドミントンパーク2026 | NPO法人Snow Crystal × 法政大学バドミントン部
     </title>
+    <!-- Google Search Console の所有者確認用（消さないこと） -->
+    <meta
+      name="google-site-verification"
+      content="dGqS-UjA9NsxAV0Qz2N1eMQta0Hox16yltXNkhUtC-M"
+    />
+    <!-- 検索結果やSNSでシェアしたときに表示される情報 -->
+    <meta
+      name="description"
+      content="11/23（月・祝）大田区・ヤマトフォーラムで開催。法政大学バドミントン部のトップ選手と一緒にプレーできる、小・中・高校生向けのバドミントンイベントです。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="バドミントンパーク2026" />
+    <meta
+      property="og:title"
+      content="バドミントンパーク2026 | NPO法人Snow Crystal × 法政大学バドミントン部"
+    />
+    <meta
+      property="og:description"
+      content="11/23（月・祝）大田区・ヤマトフォーラムで開催。法政大学バドミントン部のトップ選手と一緒にプレーできる、小・中・高校生向けのバドミントンイベントです。"
+    />
+    <meta
+      property="og:url"
+      content="https://antaso-ume.github.io/snowcrystal-badminton-park-2026/badminton-park-2026-site.html"
+    />
+    <meta
+      property="og:image"
+      content="https://antaso-ume.github.io/snowcrystal-badminton-park-2026/image/11.23/poster_ver1.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -27,6 +56,28 @@
         --white: #ffffff;
         --text-gray: #3b4a6b;
         --bg-base: #f4f7fc;
+      }
+
+      /* ---------- ページごとのメインカラー ---------- */
+      /* Snow Crystal：オレンジの変数に青を入れて、青一色にする */
+      #page-snowcrystal {
+        --orange: #1263e0;
+        --light-orange: #3f8cff;
+      }
+      /* 法政：青の変数にオレンジを入れて、オレンジ一色にする */
+      #page-housei {
+        --dark-navy: #8c3b00;
+        --navy: #c85d0f;
+        --blue: #f47216;
+        --light-blue: #ff8c33;
+        --pale: #fdeee2;
+        --bg-base: #fff8f2;
+      }
+      /* 背景とボタンが同じ色になって見えなくなるので、CTAボタンは白にする */
+      #page-snowcrystal .cta-section .btn-apply,
+      #page-housei .cta-section .btn-apply {
+        background: var(--white);
+        color: var(--navy);
       }
       * {
         box-sizing: border-box;
@@ -336,11 +387,11 @@
       .org-card.sc {
         background: linear-gradient(135deg, #0a2f8f, #1263e0);
       }
-      .org-card.hosei {
+      .org-card.housei {
         background: linear-gradient(135deg, #c85d0f, #f47216);
       }
       .org-card.sc::after,
-      .org-card.hosei::after {
+      .org-card.housei::after {
         content: "";
         position: absolute;
         top: 0;
@@ -356,7 +407,7 @@
       .org-card.sc::after {
         background-image: url("image/snowcrystal_logo-removebg.png");
       }
-      .org-card.hosei::after {
+      .org-card.housei::after {
         background-image: url("image/housei_logo-removebg.png");
       }
       .org-card h3 {
@@ -848,7 +899,7 @@
       .org-hero.sc-theme {
         background: linear-gradient(135deg, #062060, #1263e0);
       }
-      .org-hero.hosei-theme {
+      .org-hero.housei-theme {
         background: linear-gradient(135deg, #8c3b00, #f47216);
       }
       .org-hero-mark {
@@ -1062,6 +1113,10 @@
         height: 20px;
         fill: #fff;
       }
+      /* 線だけで描くアイコン（地球儀）は塗りつぶさない */
+      .link-icon svg[fill="none"] {
+        fill: none;
+      }
       .link-text {
         flex: 1;
         min-width: 0;
@@ -1086,12 +1141,12 @@
       }
 
       /* ---------- HOSEI: ABOUT / PLAYERS COMING SOON ---------- */
-      .hosei-about {
+      .housei-about {
         font-size: 14px;
         color: var(--text-gray);
         margin: 0 0 10px;
       }
-      .hosei-about:last-child {
+      .housei-about:last-child {
         margin-bottom: 0;
         color: var(--navy);
         font-weight: 700;
@@ -1130,6 +1185,154 @@
         margin: 0;
       }
 
+      /* ---------- SNOW CRYSTAL: 団体について（写真の代わりのロゴバナー） ---------- */
+      .sc-banner {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, #062060, #1263e0);
+        color: var(--white);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+      .sc-banner::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 10%;
+        width: 50px;
+        height: 150%;
+        background: rgba(63, 140, 255, 0.6);
+        transform: skewX(-18deg);
+      }
+      .sc-banner-logo {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        object-fit: contain;
+      }
+      .sc-banner-copy {
+        position: relative;
+        margin: 0;
+        font-size: 18px;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-align: center;
+      }
+
+      /* ---------- SNOW CRYSTAL: これまでの歩み ---------- */
+      .sc-sub-title {
+        margin-top: 28px !important;
+        padding-top: 22px;
+        border-top: 1px solid var(--pale);
+      }
+      .sc-history {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .sc-history li {
+        display: flex;
+        gap: 16px;
+        padding: 10px 0;
+        font-size: 14px;
+      }
+      .sc-history li + li {
+        border-top: 1px dashed var(--pale);
+      }
+      .sc-history-year {
+        flex: none;
+        width: 64px;
+        color: var(--orange);
+        font-weight: 900;
+      }
+      .sc-history p {
+        margin: 0;
+      }
+
+      /* ---------- SNOW CRYSTAL: キャプテン紹介 ---------- */
+      .captain-card {
+        background: var(--white);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+      .captain-profile {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 28px;
+        background: linear-gradient(135deg, var(--dark-navy), var(--navy));
+        color: var(--white);
+      }
+      .captain-avatar {
+        flex: none;
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        border: 3px solid var(--orange);
+        background: rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        font-weight: 900;
+      }
+      .captain-role {
+        display: inline-block;
+        background: var(--orange);
+        border-radius: 20px;
+        padding: 2px 12px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+      .captain-name {
+        margin: 6px 0 2px;
+        font-size: 22px;
+        font-weight: 900;
+      }
+      .captain-meta {
+        margin: 0;
+        font-size: 12px;
+        opacity: 0.85;
+      }
+      .captain-message {
+        padding: 24px 28px 28px;
+      }
+      .captain-message-title {
+        margin: 0 0 10px;
+        color: var(--orange);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+      .captain-message p:last-child {
+        margin: 0;
+        font-size: 14px;
+      }
+      .more-players {
+        margin: 18px 0 0;
+        padding: 12px;
+        border: 2px dashed var(--light-blue);
+        border-radius: 8px;
+        color: var(--blue);
+        font-size: 13px;
+        font-weight: 700;
+        text-align: center;
+      }
+      @media (max-width: 700px) {
+        .captain-profile {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+
       /* ---------- FOOTER ---------- */
       .site-footer {
         background: var(--dark-navy);
@@ -1153,7 +1356,7 @@
         <button data-page="home" class="active">ホーム</button>
         <button data-page="apply">詳細はこちら</button>
         <button data-page="snowcrystal">Snow Crystal</button>
-        <button data-page="hosei">法政大学バドミントン部</button>
+        <button data-page="housei">法政大学バドミントン部</button>
       </div>
     </nav>
 
@@ -1161,9 +1364,6 @@
     <section id="page-home" class="page active">
       <div class="hero">
         <div class="hero-inner">
-          <p>
-            今日だけの"遊び場"に、トッププレイヤーが待ってる。本気で強くなれる1日を。
-          </p>
           <button class="btn-cta" onclick="goPage('apply')">
             お申し込みはこちらから
           </button>
@@ -1188,7 +1388,7 @@
             <div class="info-card">
               <div class="label">開催日時</div>
               <div class="value">11.23(月)</div>
-              <div class="sub">9:00〜15:00</div>
+              <div class="sub">9:30〜14:30</div>
             </div>
             <div class="info-card">
               <div class="label">会場</div>
@@ -1197,13 +1397,13 @@
             </div>
             <div class="info-card">
               <div class="label">対象</div>
-              <div class="value">中学生</div>
-              <div class="sub">保護者の同伴・お友達との参加も歓迎</div>
+              <div class="value">小・中・高校生</div>
+              <div class="sub">中学生 9/23〜、小・高校生 10/23〜受付</div>
             </div>
             <div class="info-card">
               <div class="label">参加費</div>
               <div class="value">¥4,000</div>
-              <div class="sub">法政大学グッズ付き</div>
+              <div class="sub">法政大学バドミントン部オリジナルTシャツ付き</div>
             </div>
           </div>
         </section>
@@ -1223,12 +1423,12 @@
                 >団体について詳しく見る</a
               >
             </div>
-            <div class="org-card hosei">
+            <div class="org-card housei">
               <h3>法政大学バドミントン部</h3>
               <p>
                 大学トップレベルで戦う選手たちが、中学生のみなさんと一緒にバドミントンを楽しみながら本気の指導を行います。
               </p>
-              <a class="org-link" onclick="goPage('hosei')"
+              <a class="org-link" onclick="goPage('housei')"
                 >部について詳しく見る</a
               >
             </div>
@@ -1292,6 +1492,12 @@
               はい、中学生だけも参加できます。ぜひ、お友達やご兄妹と一緒にご参加ください。
             </p>
           </div>
+          <div class="faq-item">
+            <p class="faq-q">Q. 中学生以外も参加できますか？</p>
+            <p class="faq-a">
+              はい。中学生は9月23日（水）から、小学生・高校生は10月23日（金）から受付を開始します。枠に空きがある場合は、大人の方のお申し込みも受け付ける予定です。
+            </p>
+          </div>
           <!--<div class="tbd-block">
         <span class="tbd-label">追加予定</span><br>
         持ち物・途中参加や退出の可否・保護者の同伴人数など、他の質問への回答は確定次第こちらに追加してください。
@@ -1325,7 +1531,7 @@
           <h1 class="header-title font-bold">バドミントンパーク</h1>
           <div class="header-year font-bold">2026</div>
           <div class="header-date font-bold">11.23 <span>(月)</span></div>
-          <div class="badge-fee">参加費 4,000円 ＋ 特典付き！</div>
+          <div class="badge-fee">参加費 4,000円 ＋<br />法政大学バドミントン部オリジナルTシャツ付き！</div>
           <br />
           <div class="badge-reservation">本イベントは完全事前申込制です</div>
         </div>
@@ -1525,6 +1731,9 @@
         <p class="cta-desc">
           本イベントは完全事前申込制です。<br />お申し込みの際に、ご希望の1時間枠もあわせてお選びください。
         </p>
+        <p class="cta-desc">
+          受付開始：中学生 9/23（水）〜／小学生・高校生 10/23（金）〜<br />※枠に空きがある場合は、大人の方のお申し込みも受け付ける予定です。
+        </p>
         <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="btn-apply"
           >申込フォームへ進む</a
         >
@@ -1550,33 +1759,220 @@
       <div class="page-container">
         <section class="block">
           <div class="detail-grid">
-            <div class="detail-card">
+            <div class="detail-card full">
               <h3>団体について</h3>
-              <div class="tbd-block">
-                <span class="tbd-label">Coming soon</span>
+              <div class="sc-banner">
+                <img
+                  src="image/snowcrystal_logo-removebg.png"
+                  alt=""
+                  class="sc-banner-logo"
+                />
+                <p class="sc-banner-copy">運動をもっと身近に、もっと楽しく。</p>
               </div>
-            </div>
-            <div class="detail-card">
-              <h3>これまでの歩み</h3>
-              <div class="tbd-block">
-                <span class="tbd-label">Coming soon</span>
-              </div>
-            </div>
-            <div class="detail-card">
-              <h3>活動実績・所属選手</h3>
-              <div class="tbd-block">
-                <span class="tbd-label">Coming soon</span>
-              </div>
-            </div>
-            <div class="detail-card">
-              <h3>中学生のみなさんへ</h3>
-              <div class="tbd-block">
-                <span class="tbd-label">Coming soon</span>
-              </div>
+              <p class="housei-about">
+                Snow Crystal（スノークリスタル／愛称 SC）は、東京都大田区を中心に活動するNPO法人・社会教育団体です。高校のバドミントン部の仲間で結成した小さなチームから始まり、今では小学生から大人まで、年齢や所属を問わず一緒にバドミントンを楽しむコミュニティに成長しました。
+              </p>
+              <p class="housei-about">
+                理学療法士をはじめとする専門家と連携しながら、バドミントンスクールや個人レッスン、交流会などを開催しています。「楽しく運動すること」が上達への一番の近道。そんな想いで、一人ひとりの成長を大切にしています。
+              </p>
+
+              <h3 class="sc-sub-title">これまでの歩み</h3>
+              <ol class="sc-history">
+                <li>
+                  <span class="sc-history-year">2008</span>
+                  <p>東京都立雪谷高校バドミントン部の仲間で Snow Crystal を結成</p>
+                </li>
+                <li>
+                  <span class="sc-history-year">2011</span>
+                  <p>さまざまな学校から、小学生から大人まで集まるチームに</p>
+                </li>
+                <li>
+                  <span class="sc-history-year">2015</span>
+                  <p>理学療法士などの専門家と、運動神経や運動不足の問題に取り組み始める</p>
+                </li>
+                <li>
+                  <span class="sc-history-year">2020</span>
+                  <p>NPO法人として認証。「運動をもっと身近に、もっと楽しく」を掲げて活動開始</p>
+                </li>
+                <li>
+                  <span class="sc-history-year">2025</span>
+                  <p>実業団チームが発足。小中学生向けの交流会もスタート</p>
+                </li>
+                <li>
+                  <span class="sc-history-year">2026</span>
+                  <p>法政大学バドミントン部と「バドミントンパーク2026」を開催</p>
+                </li>
+              </ol>
             </div>
           </div>
         </section>
-        
+
+        <section class="block bg-pale">
+          <div class="section-header">
+            <h2 class="ja">実業団チームの成績</h2>
+            <div class="line"></div>
+          </div>
+          <ol class="ach-timeline">
+            <li class="ach-item">
+              <div class="ach-marker"><span class="ach-year">'26</span></div>
+              <div class="ach-card">
+                <ul class="ach-list">
+                  <li class="highlight">春季東京都実業団リーグ 5部 優勝</li>
+                  <li>4部へ昇格し、秋季リーグ（10月）に挑戦</li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="ach-item">
+              <div class="ach-marker"><span class="ach-year">'25</span></div>
+              <div class="ach-card">
+                <ul class="ach-list">
+                  <li>実業団チーム発足</li>
+                  <li>春季東京都実業団リーグ 7部 → 6部へ昇格</li>
+                  <li class="highlight">秋季東京都実業団リーグ 6部 優勝（全試合ストレート勝ち）</li>
+                </ul>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- 選手紹介：このページはキャプテンのみ。ほかの選手は別ページで紹介予定 -->
+        <!-- 非表示中（公開時は下の hidden を消す） -->
+        <section class="block" hidden>
+          <div class="section-header">
+            <h2 class="ja">キャプテン紹介</h2>
+            <div class="line"></div>
+          </div>
+          <div class="captain-card">
+            <div class="captain-profile">
+              <!-- 写真が用意できたら、この div を <img> に差し替え -->
+              <div class="captain-avatar" aria-hidden="true">宍</div>
+              <div>
+                <span class="captain-role">実業団キャプテン</span>
+                <p class="captain-name">宍戸 優太</p>
+                <p class="captain-meta">
+                  Snow Crystal 理事・競技部長<br />中学校バドミントン部 外部指導員
+                </p>
+              </div>
+            </div>
+            <div class="captain-message">
+              <p class="captain-message-title">中学生のみなさんへ</p>
+              <!-- ★下書きです。公開前に宍戸さん本人に確認・書き直してもらってください -->
+              <p>
+                Snow Crystal のモットーは「楽しく勝つ」。当日は、実業団で戦う選手たちのスピードや駆け引きを、同じコートで体感してください。上手な人も、始めたばかりの人も大歓迎です。一緒に思いきり楽しんで、ひとつでも「できた！」を持ち帰りましょう！
+              </p>
+            </div>
+          </div>
+          <p class="more-players">ほかの選手の紹介は、別ページで近日公開予定です</p>
+        </section>
+
+        <!-- ============ SNS / HP リンク集 ============ -->
+        <section class="links-section">
+          <div class="section-header">
+            <h2 class="ja">SNS / HP</h2>
+            <div class="line"></div>
+          </div>
+
+          <ul class="link-list">
+            <li>
+              <a
+                class="link-card"
+                href="https://www.instagram.com/snowcrystal.since2008/"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="link-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2.2c3.2 0 3.6 0 4.85.07 1.25.06 2.1.25 2.85.55.77.3 1.42.7 2.07 1.35.65.65 1.05 1.3 1.35 2.07.3.75.49 1.6.55 2.85.06 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.06 1.25-.25 2.1-.55 2.85a5.7 5.7 0 0 1-1.35 2.07 5.7 5.7 0 0 1-2.07 1.35c-.75.3-1.6.49-2.85.55-1.25.06-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.25-.06-2.1-.25-2.85-.55a5.7 5.7 0 0 1-2.07-1.35 5.7 5.7 0 0 1-1.35-2.07c-.3-.75-.49-1.6-.55-2.85C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.06-1.25.25-2.1.55-2.85.3-.77.7-1.42 1.35-2.07A5.7 5.7 0 0 1 6.24 .88c.75-.3 1.6-.49 2.85-.55C10.34 .27 10.74.26 12 .26zm0 1.98c-3.15 0-3.52 0-4.76.07-1.02.05-1.57.22-1.94.36-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.31.92-.36 1.94-.06 1.24-.07 1.6-.07 4.76s0 3.52.07 4.76c.05 1.02.22 1.57.36 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.31 1.94.36 1.24.06 1.6.07 4.76.07s3.52 0 4.76-.07c1.02-.05 1.57-.22 1.94-.36.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.31-.92.36-1.94.06-1.24.07-1.6.07-4.76s0-3.52-.07-4.76c-.05-1.02-.22-1.57-.36-1.94a3.2 3.2 0 0 0-.79-1.2 3.2 3.2 0 0 0-1.2-.79c-.37-.14-.92-.31-1.94-.36-1.24-.06-1.6-.07-4.76-.07zM12 6.35A5.65 5.65 0 1 1 12 17.65 5.65 5.65 0 0 1 12 6.35zm0 1.98a3.67 3.67 0 1 0 0 7.34 3.67 3.67 0 0 0 0-7.34zm5.87-2.15a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0z"
+                    />
+                  </svg>
+                </span>
+                <span class="link-text">
+                  <div class="link-title">Instagram 教室アカウント</div>
+                  <div class="link-sub">@snowcrystal.since2008</div>
+                </span>
+                <svg
+                  class="link-arrow"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
+              </a>
+            </li>
+
+            <li>
+              <a
+                class="link-card"
+                href="https://www.instagram.com/sc.badmintonteam/"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="link-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2.2c3.2 0 3.6 0 4.85.07 1.25.06 2.1.25 2.85.55.77.3 1.42.7 2.07 1.35.65.65 1.05 1.3 1.35 2.07.3.75.49 1.6.55 2.85.06 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.06 1.25-.25 2.1-.55 2.85a5.7 5.7 0 0 1-1.35 2.07 5.7 5.7 0 0 1-2.07 1.35c-.75.3-1.6.49-2.85.55-1.25.06-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.25-.06-2.1-.25-2.85-.55a5.7 5.7 0 0 1-2.07-1.35 5.7 5.7 0 0 1-1.35-2.07c-.3-.75-.49-1.6-.55-2.85C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.06-1.25.25-2.1.55-2.85.3-.77.7-1.42 1.35-2.07A5.7 5.7 0 0 1 6.24 .88c.75-.3 1.6-.49 2.85-.55C10.34 .27 10.74.26 12 .26zm0 1.98c-3.15 0-3.52 0-4.76.07-1.02.05-1.57.22-1.94.36-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.31.92-.36 1.94-.06 1.24-.07 1.6-.07 4.76s0 3.52.07 4.76c.05 1.02.22 1.57.36 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.31 1.94.36 1.24.06 1.6.07 4.76.07s3.52 0 4.76-.07c1.02-.05 1.57-.22 1.94-.36.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.31-.92.36-1.94.06-1.24.07-1.6.07-4.76s0-3.52-.07-4.76c-.05-1.02-.22-1.57-.36-1.94a3.2 3.2 0 0 0-.79-1.2 3.2 3.2 0 0 0-1.2-.79c-.37-.14-.92-.31-1.94-.36-1.24-.06-1.6-.07-4.76-.07zM12 6.35A5.65 5.65 0 1 1 12 17.65 5.65 5.65 0 0 1 12 6.35zm0 1.98a3.67 3.67 0 1 0 0 7.34 3.67 3.67 0 0 0 0-7.34zm5.87-2.15a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64 0z"
+                    />
+                  </svg>
+                </span>
+                <span class="link-text">
+                  <div class="link-title">Instagram 実業団チームアカウント</div>
+                  <div class="link-sub">@sc.badmintonteam</div>
+                </span>
+                <svg
+                  class="link-arrow"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
+              </a>
+            </li>
+
+            <li>
+              <a
+                class="link-card"
+                href="https://www.sc-snowcrystal.com/"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="link-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#fff"
+                    stroke-width="1.6"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path
+                      d="M3 12h18M12 3c2.4 2.6 3.6 5.6 3.6 9s-1.2 6.4-3.6 9c-2.4-2.6-3.6-5.6-3.6-9s1.2-6.4 3.6-9z"
+                    />
+                  </svg>
+                </span>
+                <span class="link-text">
+                  <div class="link-title">公式ホームページ</div>
+                  <div class="link-sub">スクール・個人レッスンなどの詳細はこちら</div>
+                </span>
+                <svg
+                  class="link-arrow"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+
         <section class="cta-section" style="padding: 44px 20px">
           <h2 class="cta-title" style="font-size: 19px">
             一緒に楽しんで強くなろう！
@@ -1593,11 +1989,11 @@
     </section>
 
     <!-- ============ HOSEI ============ -->
-    <section id="page-hosei" class="page">
+    <section id="page-housei" class="page">
       <div class="back-home-bar">
         <button onclick="goPage('home')">&larr; ホームに戻る</button>
       </div>
-      <div class="org-hero hosei-theme">
+      <div class="org-hero housei-theme">
         <div class="org-hero-mark">
           <img
             src="image/housei_logo-removebg.png"
@@ -1615,15 +2011,15 @@
               <img
                 src="image/2026年全体写真.jpg"
                 alt="法政大学バドミントン部"
-                class="hosei-image"
+                class="housei-image"
               />
-              <p class="hosei-about">
+              <p class="housei-about">
                 私たち法政大学バドミントン部は1948年の創部以来、学生日本一、そして世界で活躍する選手を目指し、日々研鑽を重ねています。
               </p>
-              <p class="hosei-about">
+              <p class="housei-about">
                 関東大学バドミントンリーグ1部に所属し、リーグ優勝27回、インカレ団体優勝12回、日本有数の実績を誇る大学チームです。
               </p>
-              <p class="hosei-about">
+              <p class="housei-about">
                 見る者の心を震わせる私たちのプレーを、当日は一緒のコートに立ち、体感してください！
               </p>
             </div>
@@ -1652,11 +2048,11 @@
             <li class="ach-item">
               <div class="ach-marker"><span class="ach-year">'25</span></div>
               <div class="ach-card">
-                <!-- 写真差し替え: images/2025-doubles.jpg を配置してsrcを書き換えてください -->
                 <div class="ach-photo">
-                  <span class="ach-photo-label"
-                    >写真手配中<br />（2025年ダブルス優勝）</span
-                  >
+                  <img
+                    src="image/housei_hyousyou.jpg"
+                    alt="賞状とメダルを手にした法政大学バドミントン部の選手たち"
+                  />
                 </div>
                 <ul class="ach-list">
                   <li>秋季関東1部リーグ戦 準優勝</li>
@@ -1680,6 +2076,12 @@
             <li class="ach-item">
               <div class="ach-marker"><span class="ach-year">'23</span></div>
               <div class="ach-card">
+                <div class="ach-photo">
+                  <img
+                    src="image/2023年インカレ団体優勝.jpg"
+                    alt="2023年 全日本学生選手権で団体優勝した法政大学バドミントン部の集合写真"
+                  />
+                </div>
                 <ul class="ach-list">
                   <li>春季関東1部リーグ戦 準優勝</li>
                   <li class="highlight">インカレ団体 優勝</li>
@@ -1716,7 +2118,7 @@
             <li>
               <a
                 class="link-card"
-                href="https://www.instagram.com/hosei_univ.badminton/"
+                href="https://www.instagram.com/housei_univ.badminton/"
                 target="_blank"
                 rel="noopener"
               >
@@ -1729,7 +2131,7 @@
                 </span>
                 <span class="link-text">
                   <div class="link-title">Instagram</div>
-                  <div class="link-sub">@hosei_univ.badminton</div>
+                  <div class="link-sub">@housei_univ.badminton</div>
                 </span>
                 <svg
                   class="link-arrow"
@@ -1746,7 +2148,7 @@
             <li>
               <a
                 class="link-card"
-                href="https://x.com/hosei_badminton"
+                href="https://x.com/housei_badminton"
                 target="_blank"
                 rel="noopener"
               >
@@ -1759,7 +2161,7 @@
                 </span>
                 <span class="link-text">
                   <div class="link-title">X（旧Twitter）</div>
-                  <div class="link-sub">@hosei_badminton</div>
+                  <div class="link-sub">@housei_badminton</div>
                 </span>
                 <svg
                   class="link-arrow"
@@ -1856,7 +2258,7 @@
         });
       window.addEventListener("DOMContentLoaded", function () {
         var initial = (location.hash || "").replace("#", "");
-        var valid = ["home", "apply", "snowcrystal", "hosei"];
+        var valid = ["home", "apply", "snowcrystal", "housei"];
         goPage(valid.includes(initial) ? initial : "home");
       });
     </script>
