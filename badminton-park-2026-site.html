@@ -1254,6 +1254,27 @@
       .sc-history p {
         margin: 0;
       }
+      .sc-history-body {
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* ---------- 写真を小さく並べる（交流会・成績で共通） ---------- */
+      .photo-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .photo-row img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      .ach-card .photo-row {
+        margin: -4px 0 14px;
+      }
 
       /* ---------- SNOW CRYSTAL: キャプテン紹介 ---------- */
       .captain-card {
@@ -1388,7 +1409,7 @@
             <div class="info-card">
               <div class="label">開催日時</div>
               <div class="value">11.23(月)</div>
-              <div class="sub">9:30〜14:30</div>
+              <div class="sub">受付・体験 9:30〜14:30</div>
             </div>
             <div class="info-card">
               <div class="label">会場</div>
@@ -1796,7 +1817,25 @@
                 </li>
                 <li>
                   <span class="sc-history-year">2025</span>
-                  <p>実業団チームが発足。小中学生向けの交流会もスタート</p>
+                  <div class="sc-history-body">
+                    <p>
+                      実業団チームが発足。実業団選手と小中学生が一緒にバドミントンを楽しむ「Snow Crystal バドミントン交流会」も開催し、エキシビションマッチやノック、ミニゲームで交流しています。
+                    </p>
+                    <div class="photo-row">
+                      <img
+                        src="image/snowcrystal_R7kouryuukai3.JPG"
+                        alt="交流会で、整列した実業団選手の話を聞く子どもたち"
+                      />
+                      <img
+                        src="image/snowcrystal_R7kouryuukai2.JPG"
+                        alt="コートで子どもたちに話しかける実業団選手たち"
+                      />
+                      <img
+                        src="image/snowcrystal_R7kouryuukai3-2.JPG"
+                        alt="子どもたちにアドバイスをする実業団選手"
+                      />
+                    </div>
+                  </div>
                 </li>
                 <li>
                   <span class="sc-history-year">2026</span>
@@ -1816,8 +1855,25 @@
             <li class="ach-item">
               <div class="ach-marker"><span class="ach-year">'26</span></div>
               <div class="ach-card">
+                <div class="ach-photo">
+                  <img
+                    src="image/snowcrystal_R8zenkoku.JPG"
+                    alt="全日本実業団バドミントン選手権大会の会場で、チーム旗を掲げるSnow Crystalの選手たち"
+                  />
+                </div>
+                <div class="photo-row">
+                  <img
+                    src="image/snowcrystal_R8vleage_web.jpg"
+                    alt="春季リーグ5部優勝のトロフィーを手にしたSnow Crystalの選手たち"
+                  />
+                  <img
+                    src="image/snowcrystal_R8zenkoku_offshot.JPG"
+                    alt="全日本実業団選手権の会場でガッツポーズをする選手たち"
+                  />
+                </div>
                 <ul class="ach-list">
                   <li class="highlight">春季東京都実業団リーグ 5部 優勝</li>
+                  <li class="highlight">第76回 全日本実業団バドミントン選手権大会 出場</li>
                   <li>4部へ昇格し、秋季リーグ（10月）に挑戦</li>
                 </ul>
               </div>
@@ -1826,10 +1882,28 @@
             <li class="ach-item">
               <div class="ach-marker"><span class="ach-year">'25</span></div>
               <div class="ach-card">
+                <div class="ach-photo">
+                  <img
+                    src="image/snowcrystal_R7vileage.JPG"
+                    alt="秋季リーグ6部で優勝したSnow Crystalの選手たち"
+                  />
+                </div>
+                <div class="photo-row">
+                  <img
+                    src="image/snowcrystal_R7kojinD_web.jpg"
+                    alt="個人戦ダブルス2部で優勝し、メダルを手にした宍戸選手・小野寺選手とチームメイト"
+                  />
+                  <img
+                    src="image/snowcrystal_R7zenkokuyosen.JPG"
+                    alt="賞状を手に喜ぶSnow Crystalの選手たち"
+                  />
+                </div>
                 <ul class="ach-list">
                   <li>実業団チーム発足</li>
                   <li>春季東京都実業団リーグ 7部 → 6部へ昇格</li>
                   <li class="highlight">秋季東京都実業団リーグ 6部 優勝（全試合ストレート勝ち）</li>
+                  <li class="highlight">個人戦 ダブルス2部 優勝（宍戸・小野寺ペア）</li>
+                  <li>全日本実業団バドミントン選手権大会 予選通過</li>
                 </ul>
               </div>
             </li>
