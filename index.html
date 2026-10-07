@@ -479,6 +479,35 @@
         }
       }
 
+      /* ---------- HOME: 新着ニュース ---------- */
+      .news-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto;
+        max-width: 720px;
+      }
+      .news-list li {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--pale);
+      }
+      .news-list time {
+        color: var(--text-gray);
+        font-weight: bold;
+      }
+      .news-tag {
+        background: var(--orange);
+        color: var(--white);
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+      .news-list a {
+        color: var(--navy);
+      }
+
       /* ---------- HOME: FAQ ---------- */
       .faq-item {
         background: var(--white);
@@ -1072,7 +1101,6 @@
         color: var(--navy);
       }
 
-      /* ---------- HOSEI: SNS / HP LINKS ---------- */
       /* ============ SNS / HP リンク集 ============ */
       .links-section {
         padding: 0 5% 60px;
@@ -1133,7 +1161,7 @@
       }
       .link-sub {
         font-size: 0.78rem;
-        color: #7A8DB0;
+        color: #7a8db0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1142,7 +1170,7 @@
         flex: none;
         width: 18px;
         height: 18px;
-        color: #7A8DB0;
+        color: #7a8db0;
       }
 
       /* ---------- HOSEI: ABOUT / PLAYERS COMING SOON ---------- */
@@ -1434,6 +1462,29 @@
           </div>
         </section>
 
+        <section class="block" id="news">
+          <div class="section-header">
+            <h2 class="ja">新着ニュース</h2>
+            <div class="line"></div>
+          </div>
+          <ul class="news-list">
+            <!-- 10/23 になったら：タグを NEW に、文末を「開始しました」に書き換える -->
+            <li>
+              <time datetime="2026-10-23">2026.10.23</time>
+              <span class="news-tag">予定</span>
+              <a href="#apply" onclick="goPage('apply'); return false"
+                >小学生・高校生の申し込み受付を開始します</a
+              >
+            </li>
+            <li>
+              <time datetime="2026-09-23">2026.09.23</time>
+              <a href="#apply" onclick="goPage('apply'); return false"
+                >特設サイトを公開しました</a
+              >
+            </li>
+          </ul>
+        </section>
+
         <section class="block bg-pale">
           <div class="section-header">
             <h2 class="ja">参加団体</h2>
@@ -1524,6 +1575,30 @@
               はい。中学生は9月23日（水）から、小学生・高校生は10月23日（金）から受付を開始します。枠に空きがある場合は、大人の方のお申し込みも受け付ける予定です。
             </p>
           </div>
+          <div class="faq-item">
+            <p class="faq-q">Q. 会場までの行き方を教えてください。</p>
+            <p class="faq-a">
+              会場はヤマトフォーラム（東京都大田区羽田旭町11-1）です。京急空港線「穴守稲荷駅」から徒歩約5分です。<br />
+              <a
+                href="https://www.google.com/maps/dir/?api=1&amp;origin=%E7%A9%B4%E5%AE%88%E7%A8%B2%E8%8D%B7%E9%A7%85&amp;destination=%E3%83%A4%E3%83%9E%E3%83%88%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A9%E3%83%A0&amp;travelmode=walking"
+                target="_blank"
+                rel="noopener"
+                >穴守稲荷駅からの道順を Google マップで見る</a
+              >
+            </p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q">Q. 車で行ってもいいですか？</p>
+            <p class="faq-a">
+              参加者の方はご利用いただけません。お車でのご来場はお控えいただき、電車などの公共交通機関をご利用ください。
+            </p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q">Q. 自転車で行ってもいいですか？</p>
+            <p class="faq-a">
+              会場の駐輪場はご利用いただけません。自転車でのご来場はお控えください。
+            </p>
+          </div>
           <!--<div class="tbd-block">
         <span class="tbd-label">追加予定</span><br>
         持ち物・途中参加や退出の可否・保護者の同伴人数など、他の質問への回答は確定次第こちらに追加してください。
@@ -1532,7 +1607,7 @@
 
         <section class="cta-section">
           <h2 class="cta-title">
-            中学生のみなさん、お申し込みお待ちしています！
+            小学生・中学生・高校生のみなさん、お申し込みお待ちしています！
           </h2>
           <p class="cta-desc">会場でお会いできるのを楽しみにしています。</p>
           <button
@@ -1557,7 +1632,9 @@
           <h1 class="header-title font-bold">バドミントンパーク</h1>
           <div class="header-year font-bold">2026</div>
           <div class="header-date font-bold">11.23 <span>(月)</span></div>
-          <div class="badge-fee">参加費 4,000円 ＋<br />法政大学バドミントン部オリジナルTシャツ付き！</div>
+          <div class="badge-fee">
+            参加費 4,000円 ＋<br />法政大学バドミントン部オリジナルTシャツ付き！
+          </div>
           <br />
           <div class="badge-reservation">本イベントは完全事前申込制です</div>
         </div>
@@ -1796,7 +1873,8 @@
                 <p class="sc-banner-copy">運動をもっと身近に、もっと楽しく。</p>
               </div>
               <p class="housei-about">
-                Snow Crystal（スノークリスタル／愛称 SC）は、東京都大田区を中心に活動するNPO法人・社会教育団体です。高校のバドミントン部の仲間で結成した小さなチームから始まり、今では小学生から大人まで、年齢や所属を問わず一緒にバドミントンを楽しむコミュニティに成長しました。
+                Snow Crystal（スノークリスタル／愛称
+                SC）は、東京都大田区を中心に活動するNPO法人・社会教育団体です。高校のバドミントン部の仲間で結成した小さなチームから始まり、今では小学生から大人まで、年齢や所属を問わず一緒にバドミントンを楽しむコミュニティに成長しました。
               </p>
               <p class="housei-about">
                 理学療法士をはじめとする専門家と連携しながら、バドミントンスクールや個人レッスン、交流会などを開催しています。「楽しく運動すること」が上達への一番の近道。そんな想いで、一人ひとりの成長を大切にしています。
@@ -1806,7 +1884,9 @@
               <ol class="sc-history">
                 <li>
                   <span class="sc-history-year">2008</span>
-                  <p>東京都立雪谷高校バドミントン部の仲間で Snow Crystal を結成</p>
+                  <p>
+                    東京都立雪谷高校バドミントン部の仲間で Snow Crystal を結成
+                  </p>
                 </li>
                 <li>
                   <span class="sc-history-year">2011</span>
@@ -1814,17 +1894,23 @@
                 </li>
                 <li>
                   <span class="sc-history-year">2015</span>
-                  <p>理学療法士などの専門家と、運動神経や運動不足の問題に取り組み始める</p>
+                  <p>
+                    理学療法士などの専門家と、運動神経や運動不足の問題に取り組み始める
+                  </p>
                 </li>
                 <li>
                   <span class="sc-history-year">2020</span>
-                  <p>NPO法人として認証。「運動をもっと身近に、もっと楽しく」を掲げて活動開始</p>
+                  <p>
+                    NPO法人として認証。「運動をもっと身近に、もっと楽しく」を掲げて活動開始
+                  </p>
                 </li>
                 <li>
                   <span class="sc-history-year">2025</span>
                   <div class="sc-history-body">
                     <p>
-                      実業団チームが発足。実業団選手と小中学生が一緒にバドミントンを楽しむ「Snow Crystal バドミントン交流会」も開催し、エキシビションマッチやノック、ミニゲームで交流しています。
+                      実業団チームが発足。実業団選手と小中学生が一緒にバドミントンを楽しむ「Snow
+                      Crystal
+                      バドミントン交流会」も開催し、エキシビションマッチやノック、ミニゲームで交流しています。
                     </p>
                     <div class="photo-row">
                       <img
@@ -1844,7 +1930,9 @@
                 </li>
                 <li>
                   <span class="sc-history-year">2026</span>
-                  <p>法政大学バドミントン部と「バドミントンパーク2026」を開催</p>
+                  <p>
+                    法政大学バドミントン部と「バドミントンパーク2026」を開催
+                  </p>
                 </li>
               </ol>
             </div>
@@ -1878,7 +1966,9 @@
                 </div>
                 <ul class="ach-list">
                   <li class="highlight">春季東京都実業団リーグ 5部 優勝</li>
-                  <li class="highlight">第76回 全日本実業団バドミントン選手権大会 出場</li>
+                  <li class="highlight">
+                    第76回 全日本実業団バドミントン選手権大会 出場
+                  </li>
                   <li>4部へ昇格し、秋季リーグ（10月）に挑戦</li>
                 </ul>
               </div>
@@ -1906,8 +1996,12 @@
                 <ul class="ach-list">
                   <li>実業団チーム発足</li>
                   <li>春季東京都実業団リーグ 7部 → 6部へ昇格</li>
-                  <li class="highlight">秋季東京都実業団リーグ 6部 優勝（全試合ストレート勝ち）</li>
-                  <li class="highlight">個人戦 ダブルス2部 優勝（宍戸・小野寺ペア）</li>
+                  <li class="highlight">
+                    秋季東京都実業団リーグ 6部 優勝（全試合ストレート勝ち）
+                  </li>
+                  <li class="highlight">
+                    個人戦 ダブルス2部 優勝（宍戸・小野寺ペア）
+                  </li>
                   <li>全日本実業団バドミントン選手権大会 予選通過</li>
                 </ul>
               </div>
@@ -1930,7 +2024,8 @@
                 <span class="captain-role">実業団キャプテン</span>
                 <p class="captain-name">宍戸 優太</p>
                 <p class="captain-meta">
-                  Snow Crystal 理事・競技部長<br />中学校バドミントン部 外部指導員
+                  Snow Crystal 理事・競技部長<br />中学校バドミントン部
+                  外部指導員
                 </p>
               </div>
             </div>
@@ -1938,11 +2033,14 @@
               <p class="captain-message-title">中学生のみなさんへ</p>
               <!-- ★下書きです。公開前に宍戸さん本人に確認・書き直してもらってください -->
               <p>
-                Snow Crystal のモットーは「楽しく勝つ」。当日は、実業団で戦う選手たちのスピードや駆け引きを、同じコートで体感してください。上手な人も、始めたばかりの人も大歓迎です。一緒に思いきり楽しんで、ひとつでも「できた！」を持ち帰りましょう！
+                Snow Crystal
+                のモットーは「楽しく勝つ」。当日は、実業団で戦う選手たちのスピードや駆け引きを、同じコートで体感してください。上手な人も、始めたばかりの人も大歓迎です。一緒に思いきり楽しんで、ひとつでも「できた！」を持ち帰りましょう！
               </p>
             </div>
           </div>
-          <p class="more-players">ほかの選手の紹介は、別ページで近日公開予定です</p>
+          <p class="more-players">
+            ほかの選手の紹介は、別ページで近日公開予定です
+          </p>
         </section>
 
         <!-- ============ SNS / HP リンク集 ============ -->
@@ -2035,7 +2133,9 @@
                 </span>
                 <span class="link-text">
                   <div class="link-title">公式ホームページ</div>
-                  <div class="link-sub">スクール・個人レッスンなどの詳細はこちら</div>
+                  <div class="link-sub">
+                    スクール・個人レッスンなどの詳細はこちら
+                  </div>
                 </span>
                 <svg
                   class="link-arrow"
@@ -2050,7 +2150,6 @@
             </li>
           </ul>
         </section>
-
 
         <section class="cta-section" style="padding: 44px 20px">
           <h2 class="cta-title" style="font-size: 19px">
