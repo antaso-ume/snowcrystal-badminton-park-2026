@@ -924,6 +924,152 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       }
 
+      /* ---------- APPLY: 会場マップ（ボタンで切り替え） ---------- */
+      .map-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .map-tab {
+        border: 2px solid var(--navy);
+        background: var(--white);
+        color: var(--navy);
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 8px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .map-tab:hover {
+        background: var(--pale);
+      }
+      .map-tab.active {
+        background: var(--navy);
+        color: var(--white);
+      }
+      .map-panel {
+        display: none;
+      }
+      .map-panel.active {
+        display: block;
+        animation: fadein 0.25s ease;
+      }
+      .map-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin-bottom: 18px;
+      }
+      .map-floor {
+        fill: var(--bg-base);
+        stroke: var(--navy);
+        stroke-width: 3;
+      }
+      .map-zone {
+        cursor: pointer;
+      }
+      .map-zone .zone-bg {
+        fill: var(--pale);
+        stroke: var(--navy);
+        stroke-width: 2;
+        transition: fill 0.15s;
+      }
+      .map-zone .zone-line {
+        fill: none;
+        stroke: var(--navy);
+        stroke-width: 1;
+        opacity: 0.45;
+      }
+      /* ネット：コートのラインより太く、左右に少しはみ出す */
+      .map-zone .zone-net {
+        fill: none;
+        stroke: var(--navy);
+        stroke-width: 2.5;
+        stroke-linecap: round;
+      }
+      .map-zone .zone-num-bg {
+        fill: var(--navy);
+      }
+      .map-zone .zone-num {
+        fill: var(--white);
+        font-size: 15px;
+        font-weight: 700;
+        text-anchor: middle;
+        dominant-baseline: central;
+      }
+      .map-zone:hover .zone-bg {
+        fill: #cfe0fb;
+      }
+      /* 選ばれている場所はオレンジにする */
+      .map-zone.active .zone-bg {
+        fill: var(--orange);
+      }
+      .map-zone.active .zone-line {
+        stroke: var(--white);
+        opacity: 0.8;
+      }
+      .map-zone.active .zone-net {
+        stroke: var(--white);
+      }
+      .map-zone.active .zone-num-bg {
+        fill: var(--white);
+      }
+      .map-zone.active .zone-num {
+        fill: var(--orange);
+      }
+      /* プラスワンパーク（詳細は Coming Soon）：点線の枠で「準備中」を表す */
+      .map-soon .soon-bg {
+        fill: var(--white);
+        stroke: #9fb6de;
+        stroke-width: 1.5;
+        stroke-dasharray: 5 4;
+        transition: fill 0.15s;
+      }
+      .map-soon text {
+        text-anchor: middle;
+        dominant-baseline: central;
+        font-weight: 700;
+      }
+      .map-soon .soon-name {
+        fill: var(--navy);
+        font-size: 13px;
+      }
+      .map-soon .soon-note {
+        fill: #7a8db0;
+        font-size: 10px;
+      }
+      .map-soon:hover .soon-bg {
+        fill: #cfe0fb;
+      }
+      .map-soon.active .soon-bg {
+        fill: var(--orange);
+        stroke: var(--white);
+      }
+      .map-soon.active text {
+        fill: var(--white);
+      }
+      .map-panel h3 {
+        color: var(--navy);
+        font-size: 17px;
+        margin: 0 0 6px;
+      }
+      .map-panel p {
+        font-size: 14px;
+        margin: 0;
+      }
+      .map-place {
+        color: var(--orange);
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 8px !important;
+      }
+
       /* ---------- ORG DETAIL PAGES (Snow Crystal / Hosei) ---------- */
       .org-hero {
         padding: 56px 5% 44px;
@@ -1477,8 +1623,16 @@
               >
             </li>
             <li>
-              <time datetime="2026-10-07">2026.10.07</time>
+              <time datetime="2026-10-08">2026.10.08</time>
               <span class="news-tag">NEW</span>
+              <a
+                href="#apply"
+                onclick="goPage('apply'); document.getElementById('map').scrollIntoView({ behavior: 'instant' }); return false"
+                >会場マップを公開しました</a
+              >
+            </li>
+            <li>
+              <time datetime="2026-10-07">2026.10.07</time>
               <a href="#orgs">参加団体の紹介ページを更新しました</a>
             </li>
             <li>
@@ -1542,6 +1696,9 @@
           </div>
           <p class="text-center" style="font-size: 13px; margin-top: 20px">
             要予約の2パークは、お申し込み時にご希望の1時間枠をお選びいただきます。<br />予約不要のパークは出入り自由、どなたでもご参加いただけます。
+          </p>
+          <p class="timetable-note" style="margin-top: 10px">
+            ※プログラムは、告知なく変更する可能性があります。
           </p>
           <div class="text-center" style="margin-top: 20px">
             <button class="btn-cta" onclick="goPage('apply')">
@@ -1832,6 +1989,131 @@
             <div class="park-tag-outline">Coming Soon</div>
           </div>
         </div>
+      </section>
+
+      <!-- ============ 会場マップ ============ -->
+      <section class="block bg-pale" id="map">
+        <div class="section-header">
+          <h2 class="ja">会場マップ</h2>
+          <div class="line"></div>
+        </div>
+        <p class="text-center" style="font-size: 13px; margin: 0 0 20px">
+          ボタンかマップを押すと、それぞれのパークの場所が表示されます。
+        </p>
+
+        <div class="map-tabs">
+          <button class="map-tab active" data-map="0">全体</button>
+          <button class="map-tab" data-map="1">① お悩み相談</button>
+          <button class="map-tab" data-map="2">② 理学療法講習</button>
+          <button class="map-tab" data-map="3">③ 選手と交流</button>
+          <button class="map-tab" data-map="4">＋ プラスワン</button>
+        </div>
+
+        <div class="white-card">
+          <!-- 会場マップ（SVG）。色は CSS の .map-zone などで指定 -->
+          <svg
+            class="map-svg"
+            viewBox="0 0 640 420"
+            role="img"
+            aria-label="会場マップ。左にステージ、中央に3面のコートが並ぶ。①お悩み相談はステージ、②理学療法講習は左のコート、③選手との交流は中央と右のコート。上下の3か所はプラスワンパーク（内容は準備中）。"
+          >
+            <ellipse class="map-floor" cx="320" cy="210" rx="300" ry="195" />
+
+            <g class="map-zone map-soon" data-map="4">
+              <title>プラスワンパーク（Coming Soon）</title>
+              <rect class="soon-bg" x="220" y="45" width="200" height="50" rx="6" />
+              <text class="soon-name" x="320" y="64">プラスワンパーク</text>
+              <text class="soon-note" x="320" y="81">Coming Soon</text>
+              <rect class="soon-bg" x="170" y="325" width="140" height="50" rx="6" />
+              <text class="soon-name" x="240" y="344">プラスワンパーク</text>
+              <text class="soon-note" x="240" y="361">Coming Soon</text>
+              <rect class="soon-bg" x="330" y="325" width="140" height="50" rx="6" />
+              <text class="soon-name" x="400" y="344">プラスワンパーク</text>
+              <text class="soon-note" x="400" y="361">Coming Soon</text>
+            </g>
+
+            <g class="map-zone" data-map="1">
+              <title>① お悩み相談パーク（ステージ）</title>
+              <rect class="zone-bg" x="92" y="120" width="40" height="180" rx="4" />
+              <circle class="zone-num-bg" cx="112" cy="210" r="14" />
+              <text class="zone-num" x="112" y="210">1</text>
+            </g>
+
+            <g class="map-zone" data-map="2">
+              <title>② 理学療法講習パーク（左のコート）</title>
+              <rect class="zone-bg" x="164" y="120" width="82" height="180" rx="2" />
+                <path
+                  class="zone-line"
+                  d="M170.2 120v180 M239.8 120v180 M164 130.2h82 M164 289.8h82 M164 183.4h82 M164 236.6h82 M205 120v63.4 M205 236.6v63.4"
+                />
+                <path class="zone-net" d="M159 210h92" />
+              <circle class="zone-num-bg" cx="205" cy="210" r="14" />
+              <text class="zone-num" x="205" y="210">2</text>
+            </g>
+
+            <g class="map-zone" data-map="3">
+              <title>③ トップ選手との交流パーク（中央と右のコート）</title>
+              <rect class="zone-bg" x="294" y="120" width="82" height="180" rx="2" />
+                <path
+                  class="zone-line"
+                  d="M300.2 120v180 M369.8 120v180 M294 130.2h82 M294 289.8h82 M294 183.4h82 M294 236.6h82 M335 120v63.4 M335 236.6v63.4"
+                />
+                <path class="zone-net" d="M289 210h92" />
+              <rect class="zone-bg" x="424" y="120" width="82" height="180" rx="2" />
+                <path
+                  class="zone-line"
+                  d="M430.2 120v180 M499.8 120v180 M424 130.2h82 M424 289.8h82 M424 183.4h82 M424 236.6h82 M465 120v63.4 M465 236.6v63.4"
+                />
+                <path class="zone-net" d="M419 210h92" />
+              <circle class="zone-num-bg" cx="400" cy="210" r="14" />
+              <text class="zone-num" x="400" y="210">3</text>
+            </g>
+          </svg>
+
+          <div class="map-panel active" data-map="0">
+            <h3>会場全体</h3>
+            <p>
+              左側のステージと、3面のコートを使って開催します。点線で囲んだ3か所は「プラスワンパーク」です。内容は決まり次第お知らせします。
+            </p>
+          </div>
+
+          <div class="map-panel" data-map="1">
+            <div class="park-badge badge-free">時間指定なし</div>
+            <h3>① お悩み相談パーク</h3>
+            <p class="map-place">場所：ステージ（会場の左側）</p>
+            <p>
+              日ごろの悩みを、選手やスタッフに直接相談できます。当日、会場で自由にご参加ください。
+            </p>
+          </div>
+
+          <div class="map-panel" data-map="2">
+            <div class="park-badge badge-req">要予約／30分</div>
+            <h3>② 理学療法講習パーク</h3>
+            <p class="map-place">場所：左のコート</p>
+            <p>
+              理学療法士の指導のもと、選手と一緒に体を動かし、前後の変化を実感できます。
+            </p>
+          </div>
+
+          <div class="map-panel" data-map="3">
+            <div class="park-badge badge-req">要予約／30分</div>
+            <h3>③ トップ選手との交流パーク</h3>
+            <p class="map-place">場所：中央と右のコート（2面）</p>
+            <p>
+              選手と一緒にバドミントンを楽しみながら、その技術と迫力を間近で体感できます。
+            </p>
+          </div>
+
+          <div class="map-panel" data-map="4">
+            <div class="park-badge badge-free">時間指定なし</div>
+            <h3>プラスワンパーク</h3>
+            <p class="map-place">場所：コートのまわり（3か所）</p>
+            <p>随時情報解禁いたします！お楽しみに！</p>
+          </div>
+        </div>
+        <p class="timetable-note" style="margin: 16px 0 0">
+          ※プログラムや会場の配置は、告知なく変更する可能性があります。
+        </p>
       </section>
 
       <section class="cta-section" style="padding: 50px 20px">
@@ -2439,6 +2721,17 @@
         .addEventListener("click", function () {
           document.getElementById("navLinks").classList.toggle("open");
         });
+      // 会場マップ：押したボタン（またはマップ上の場所）と同じ番号（data-map）のものだけを active にする
+      document.querySelectorAll(".map-tab, .map-zone").forEach(function (trigger) {
+        trigger.addEventListener("click", function () {
+          var target = trigger.getAttribute("data-map");
+          document
+            .querySelectorAll(".map-tab, .map-panel, .map-zone")
+            .forEach(function (el) {
+              el.classList.toggle("active", el.getAttribute("data-map") === target);
+            });
+        });
+      });
       window.addEventListener("DOMContentLoaded", function () {
         var initial = (location.hash || "").replace("#", "");
         var valid = ["home", "apply", "snowcrystal", "housei"];
