@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>アイテムカード リール</title>
+<!-- サイトと同じフォント（ネットにつながっていないときは端末のフォントで表示される） -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@800;900&display=block">
+<style>
+  html, body { margin: 0; background: #111; }
+  body.preview { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px 0; }
+  #stage { width: 1080px; height: 1920px; transform-origin: top center; }
+  svg { display: block; }
+  text {
+    font-family: "M PLUS 1p", "Hiragino Sans", "Noto Sans CJK JP", "Noto Sans JP", sans-serif;
+    font-weight: 900; text-anchor: middle; dominant-baseline: central;
+    paint-order: stroke; stroke-linejoin: round;
+  }
+  .notext .txt { visibility: hidden; }
+  #controls { display: none; gap: 12px; align-items: center; color: #fff; font: 14px sans-serif; }
+  body.preview #controls { display: flex; }
+  #controls input[type=range] { width: 320px; }
+</style>
+</head>
+<body>
+<div id="controls">
+  <button id="play">⏸ 一時停止</button>
+  <input id="seek" type="range" min="0" max="10" step="0.01" value="0">
+  <span id="time">0.00s</span>
+</div>
+<div id="stage"><svg id="root" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920"></svg></div>
+
+<script src="silhouettes.js"></script>
+<script>
+// =====================================================================
+//  CONFIG ― ここを書き換えれば、だいたいの調整ができます
+// =====================================================================
+const CONFIG = {
+  duration: 10,          // 動画の長さ（秒）
+  fps: 30,
+
+  // 流れるカードの順番。key は silhouettes.js の名前
+  //   name   : 名前（showNames を true にしたときに表示）
+  //   scale  : カードの中でのシルエットの大きさ（1 = 枠いっぱい）
+  //   secret : true にすると「最高難易度」用の特別なカードになる
+  cards: [
+    { key: 'shamoji',    name: 'しゃもじ' },
+    { key: 'houki',      name: 'ほうき' },
+    { key: 'otama',      name: 'おたま' },
+    { key: 'bowl',       name: '片手ボウル' },
+    { key: 'slipper',    name: 'スリッパ', scale: 0.92 },
+    { key: 'colander',   name: 'ざる' },
+    { key: 'steel_bowl', name: 'ボウル', scale: 0.9 },
+    { key: 'spoon',      name: 'スプーン', secret: true },
+  ],
+  showNames: false,      // false: ラベルは「???」 / true: 名前を表示
+
+  // カードの見た目と動き
+  card: { w: 400, h: 580 },
+  gap: 70,               // カード同士のすき間（px）
+  speed: 380,            // 流れる速さ（px/秒）
+  rowY: 1010,            // カードの列の中心の高さ
+  startX: 170,           // 0秒のときの先頭カード（No.01）の位置。最初から画面がカードで埋まるように左寄り
+  tilt: 4,               // ゆらゆら傾く角度（度）
+  bob: 12,               // 上下にゆれる幅（px）
+
+  // 奥の列（小さく・うすく・ゆっくり流れる飾り）
+  backRow: { show: true, y: 1590, scale: 0.55, opacity: 0.28, speedRatio: 0.6 },
+
+  // 見出し
+  title1: '何で打つかは、',
+  title2: '運しだい',
+  secretLabel: '最高難易度?!',
+
+  // 色（特設サイトの配色）
+  color: {
+    ink: '#06205f', navy: '#0a2f8f', blue: '#1263e0', lightBlue: '#3f8cff',
+    orange: '#f47216', lightOrange: '#ff8c33', pale: '#e9f0fb',
+  },
+};
+// =====================================================================
+
+const C = CONFIG.color;
+const params = new URLSearchParams(location.search);
+const RENDER = params.has('render');
+if (params.has('notext')) document.documentElement.classList.add('notext');
+const $ = id => document.getElementById(id);
+const clamp01 = x => Math.max(0, Math.min(1, x));
+const easeBack = x => { x = clamp01(x); const c = 2.2; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+
+// ---------- 部品 ----------
+function dotPattern(id, color, opacity, gap = 54, r = 5) {
+  return `<pattern id="${id}" width="${gap}" height="${gap}" patternUnits="userSpaceOnUse">
+    <circle cx="${gap / 2}" cy="${gap / 2}" r="${r}" fill="${color}" opacity="${opacity}"/></pattern>`;
+}
+function sparkle(x, y, r, color) {
+  const k = r * 0.26;
+  return `<path d="M0,${-r} L${k},${-k} L${r},0 L${k},${k} L0,${r} L${-k},${k} L${-r},0 L${-k},${-k} Z" fill="${color}" transform="translate(${x},${y})"/>`;
+}
+// 縁取り＋影つきの見出し文字
+function title(id, x, y, str, size, fill, stroke, sw) {
+  return `<g id="${id}" class="txt" data-x="${x}" data-y="${y}">
+    <text font-size="${size}" fill="${C.ink}" stroke="${C.ink}" stroke-width="${sw}" transform="translate(0,${Math.round(size * 0.085)})">${str}</text>
+    <text font-size="${size}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}">${str}</text></g>`;
+}
+
+// シルエットを (cx, cy) を中心に、boxW × boxH に収まるように置く
+function silhouette(key, cx, cy, boxW, boxH, fill) {
+  const s = SILHOUETTES[key];
+  const k = Math.min(boxW / s.w, boxH / s.h);
+  return `<path d="${s.d}" fill="${fill}" fill-rule="evenodd"
+    transform="translate(${cx - s.w * k / 2},${cy - s.h * k / 2}) scale(${k})"/>`;
+}
+
+// カード1枚（中心が原点）
+function card(item, index) {
+  const { w, h } = CONFIG.card;
+  const x = -w / 2, y = -h / 2;
+  const secret = !!item.secret;
+  const label = secret ? CONFIG.secretLabel : (CONFIG.showNames ? item.name : '???');
+  const panelFill = secret ? 'url(#panelSecret)' : 'url(#panel)';
+  const silFill = secret ? C.lightOrange : C.ink;
+  const scale = item.scale ?? 1;
+  const no = String(index + 1).padStart(2, '0');
+  const labelW = Math.max(170, label.length * 46 + 70);
+  return `
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="40" fill="${secret ? C.ink : '#fff'}" stroke="${C.ink}" stroke-width="10" filter="url(#shadow)"/>
+    <rect x="${x + 22}" y="${y + 22}" width="${w - 44}" height="${h - 44}" rx="26" fill="${panelFill}"/>
+    <rect x="${x + 22}" y="${y + 22}" width="${w - 44}" height="${h - 44}" rx="26" fill="url(#${secret ? 'dotsOrange' : 'dotsBlue'})"/>
+    <circle cx="0" cy="-40" r="150" fill="url(#${secret ? 'glowSecret' : 'glow'})"/>
+    ${silhouette(item.key, 0, -40, 290 * scale, 360 * scale, silFill)}
+    ${secret ? `<rect x="${x + 22}" y="${y + 22}" width="${w - 44}" height="${h - 44}" rx="26" fill="none" stroke="${C.lightOrange}" stroke-width="5" stroke-dasharray="16 12"/>` : ''}
+    <circle cx="${x + 62}" cy="${y + 62}" r="34" fill="${secret ? '#e23d2e' : C.orange}" stroke="${C.ink}" stroke-width="7"/>
+    <text x="${x + 62}" y="${y + 60}" font-size="44" fill="#fff">?</text>
+    <text x="${-x - 70}" y="${y + 62}" font-size="34" fill="${secret ? C.lightOrange : C.ink}">No.${no}</text>
+    <g class="txt">
+      <rect x="${-labelW / 2}" y="${h / 2 - 98}" width="${labelW}" height="66" rx="33" fill="${secret ? C.orange : C.ink}"/>
+      <text x="0" y="${h / 2 - 67}" font-size="${secret ? 36 : 40}" fill="#fff">${label}</text>
+    </g>`;
+}
+
+// ---------- 画面を組み立てる ----------
+const N = CONFIG.cards.length;
+const STEP = CONFIG.card.w + CONFIG.gap;   // カード1枚ぶんの間隔
+const LOOP = N * STEP;                      // 1周の長さ
+
+let defs = `
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a78ee"/><stop offset="1" stop-color="#0f55cf"/></linearGradient>
+  <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d6e4fb"/></linearGradient>
+  <linearGradient id="panelSecret" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#143a9e"/><stop offset="1" stop-color="#031340"/></linearGradient>
+  <radialGradient id="glow"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  <radialGradient id="glowSecret"><stop offset="0" stop-color="${C.orange}" stop-opacity=".45"/><stop offset="1" stop-color="${C.orange}" stop-opacity="0"/></radialGradient>
+  ${dotPattern('dotsBg', '#fff', 0.09)}
+  ${dotPattern('dotsBlue', C.blue, 0.08, 34, 3.5)}
+  ${dotPattern('dotsOrange', C.lightOrange, 0.12, 34, 3.5)}
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="18" stdDeviation="14" flood-color="#031a52" flood-opacity=".45"/></filter>`;
+CONFIG.cards.forEach((item, i) => { defs += `<g id="card${i}">${card(item, i)}</g>`; });
+
+let streaks = '';
+for (let i = 0; i < 9; i++) {
+  streaks += `<rect class="streak" data-i="${i}" y="${640 + (i * 137) % 900}" width="${120 + (i * 53) % 160}" height="10" rx="5" fill="#fff" opacity=".22"/>`;
+}
+
+let back = '', front = '';
+for (let i = 0; i < N; i++) {
+  // 奥の列：secret のカードは出さない（ネタバレ防止）
+  let j = (i + 3) % N;
+  while (CONFIG.cards[j].secret) j = (j + 1) % N;
+  back += `<use id="b${i}" href="#card${j}"/>`;
+  front += `<use id="f${i}" href="#card${i}"/>`;
+}
+
+$('root').innerHTML = `<defs>${defs}</defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <g id="dots"><rect x="-60" width="1200" height="1920" fill="url(#dotsBg)"/></g>
+  <circle cx="900" cy="760" r="420" fill="#fff" opacity=".05"/><circle cx="120" cy="1400" r="360" fill="#fff" opacity=".05"/>
+  ${streaks}
+  <g id="backRow" opacity="${CONFIG.backRow.opacity}" display="${CONFIG.backRow.show ? 'inline' : 'none'}">${back}</g>
+  <g id="frontRow">${front}</g>
+  <g id="sparkles">${sparkle(110, 640, 34, '#fff')}${sparkle(980, 600, 24, C.lightOrange)}${sparkle(960, 1400, 22, '#fff')}${sparkle(90, 1380, 18, C.lightOrange)}</g>
+  ${title('t1', 540, 310, CONFIG.title1, 90, '#fff', C.ink, 16)}
+  ${title('t2', 540, 460, CONFIG.title2, 150, C.lightOrange, C.ink, 18)}`;
+
+// ---------- 時刻 t（秒）の画面を描く ----------
+// 書き出し(render.py)はこの関数を1コマずつ呼んで撮影しています
+function wrapX(x) {           // 画面の左に抜けたカードを右の後ろへ回す
+  const lo = -STEP;
+  return ((x - lo) % LOOP + LOOP) % LOOP + lo;
+}
+function pop(id, t, t0, d = 0.3) {
+  const g = $(id), p = (t - t0) / d, s = p <= 0 ? 0.001 : Math.max(easeBack(p), 0.001);
+  g.setAttribute('transform', `translate(${g.dataset.x},${g.dataset.y}) scale(${s})`);
+  g.setAttribute('opacity', p <= 0 ? 0 : clamp01(p * 4));
+}
+function render(t) {
+  $('dots').setAttribute('transform', `translate(${-(t * 40) % 54},0)`);
+  document.querySelectorAll('.streak').forEach(s => {
+    const i = +s.dataset.i, v = 900 + i * 60;
+    s.setAttribute('x', 1200 - ((t * v + i * 400) % 1600));
+  });
+  for (let i = 0; i < N; i++) {
+    const x = wrapX(CONFIG.startX + i * STEP - CONFIG.speed * t);
+    const bob = CONFIG.bob * Math.sin(t * 3 + i * 1.7);
+    const rot = CONFIG.tilt * Math.sin(t * 2.2 + i * 1.3);
+    $('f' + i).setAttribute('transform', `translate(${x},${CONFIG.rowY + bob}) rotate(${rot})`);
+
+    const br = CONFIG.backRow;
+    const bx = wrapX(CONFIG.startX + 200 + i * STEP - CONFIG.speed * br.speedRatio * t);
+    $('b' + i).setAttribute('transform', `translate(${540 + (bx - 540) * br.scale},${br.y}) scale(${br.scale}) rotate(${-rot})`);
+  }
+  $('sparkles').setAttribute('opacity', 0.55 + 0.45 * Math.sin(t * 7));
+  pop('t1', t, 0.15);
+  pop('t2', t, 0.3, 0.32);
+}
+
+// ---------- プレビュー（ブラウザで開いたとき） ----------
+if (RENDER) {
+  render(0);
+} else {
+  document.body.classList.add('preview');
+  const stage = $('stage'), seek = $('seek'), btn = $('play');
+  seek.max = CONFIG.duration;
+  const fit = () => { const k = Math.min(1, (innerHeight - 70) / 1920); stage.style.transform = `scale(${k})`; stage.style.height = 1920 * k + 'px'; };
+  addEventListener('resize', fit); fit();
+  let playing = true, t0 = performance.now(), t = 0;
+  btn.onclick = () => { playing = !playing; btn.textContent = playing ? '⏸ 一時停止' : '▶ 再生'; t0 = performance.now() - t * 1000; };
+  seek.oninput = () => { t = +seek.value; t0 = performance.now() - t * 1000; render(t); };
+  (function loop(now) {
+    if (playing) { t = ((now - t0) / 1000) % CONFIG.duration; seek.value = t; render(t); }
+    $('time').textContent = t.toFixed(2) + 's';
+    requestAnimationFrame(loop);
+  })(performance.now());
+}
+</script>
+</body>
+</html>

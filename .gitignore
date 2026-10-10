@@ -3,3 +3,6 @@
 
 # Instagram 用の画像など（サイトには不要）
 sns/
+
+# リール動画の書き出し結果（render.py でいつでも作り直せるので管理しない）
+instagram/item-cards-reel/out/
