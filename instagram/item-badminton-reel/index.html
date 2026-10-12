@@ -1,0 +1,143 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>アイテムバドミントン リール</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@800;900&display=block">
+</head><body><svg id="root" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<script src="lib.js"></script><script src="silhouettes.js"></script><script>
+let tape='';for(let i=-8;i<10;i++)tape+=`<polygon points="${i*70},160 ${i*70+35},160 ${i*70+5},230 ${i*70-30},230" fill="${INK}"/>`;
+let stars='';[[150,330,5],[930,420,4],[210,720,3],[900,900,5],[120,1180,4],[960,1250,3],[320,180,3],[760,160,4]].forEach(([x,y,r])=>stars+=`<circle class="star" cx="${x}" cy="${y}" r="${r}" fill="#fff"/>`);
+const FR=rr(-250,-170,500,400,30);
+const defs=`<linearGradient id="boxf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8c33"/><stop offset="1" stop-color="#e2600a"/></linearGradient>
+<clipPath id="armclip"><rect x="-700" y="-2400" width="1400" height="2168"/><ellipse cx="0" cy="-232" rx="122" ry="38"/></clipPath><clipPath id="frontclip"><path d="${FR}"/></clipPath>`;
+let h=`<g id="s0"><rect width="1080" height="1920" fill="${OR}"/><g id="rays1" transform="translate(540,880)">${rays(14,LOR,.75)}</g>
+<rect width="1080" height="1920" fill="url(#dA)"/><rect width="1080" height="1920" fill="url(#v1)"/>
+<g id="swoosh" fill="none" stroke="#fff" stroke-linecap="round"><path d="M900,760 A640,640 0 0,0 470,470" stroke-width="20" opacity=".55"/><path d="M960,900 A720,720 0 0,0 600,430" stroke-width="10" opacity=".4"/></g>
+<ellipse cx="540" cy="1612" rx="180" ry="30" fill="#8c3b00" opacity=".28"/>
+<g id="paddle"><use href="#shamoji"/></g>
+<g id="burst"><polygon points="${star(12,120,270)}" fill="#fff" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/><polygon points="${star(12,70,160)}" fill="#ffd9b0"/></g>
+<g id="st1"><g id="trail" stroke="#fff" stroke-width="12" stroke-linecap="round"><line x1="-50" y1="-170" x2="-50" y2="-330"/><line x1="0" y1="-185" x2="0" y2="-420"/><line x1="50" y1="-170" x2="50" y2="-330"/></g><use href="#shuttle" transform="scale(1.7)"/></g>
+${T('t1a',540,330,'ラケット、',112,'#fff',INK,16)}${T('t1b',540,495,'使いません。',136,'#fff',INK,18)}
+<g id="ul1" class="txt"><rect x="150" y="588" width="780" height="20" rx="10" fill="${INK}"/></g></g>`;
+
+// =====================================================================
+//  CONFIG ― 動画全体の長さと、カードの場面（2〜7秒）の調整
+// =====================================================================
+const CONFIG = {
+  duration: 10, fps: 30,
+  cards: [                                   // 流れる順番（key は silhouettes.js の名前）
+    { key: 'shamoji',    name: 'しゃもじ' },
+    { key: 'houki',      name: 'ほうき' },
+    { key: 'otama',      name: 'おたま' },
+    { key: 'bowl',       name: '片手ボウル' },
+    { key: 'slipper',    name: 'スリッパ', scale: 0.92 },
+    { key: 'colander',   name: 'ざる' },
+    { key: 'steel_bowl', name: 'ボウル', scale: 0.9 },
+    { key: 'spoon',      name: 'スプーン', secret: true },
+  ],
+  showNames: false,
+  card: { w: 400, h: 580 }, gap: 70,
+  speed: 380,          // 流れる速さ（px/秒）
+  startX: -630,        // 場面の始まりでの No.01 の位置。最後（7秒直前）に「最高難易度」カードが来るように調整
+  rowY: 1010, tilt: 4, bob: 12,
+  backRow: { show: true, y: 1590, scale: 0.55, opacity: 0.28, speedRatio: 0.6 },
+  secretLabel: '最高難易度?!',
+  scenes: { hit: 0, cards: 2, box: 7, end: 8.6 },   // 各場面の開始秒
+};
+// =====================================================================
+
+function silhouette(key, cx, cy, boxW, boxH, fill) {
+  const s = SILHOUETTES[key], k = Math.min(boxW / s.w, boxH / s.h);
+  return `<path d="${s.d}" fill="${fill}" fill-rule="evenodd" transform="translate(${cx - s.w * k / 2},${cy - s.h * k / 2}) scale(${k})"/>`;
+}
+function card(item, index) {
+  const { w, h } = CONFIG.card, x = -w / 2, y = -h / 2, secret = !!item.secret;
+  const label = secret ? CONFIG.secretLabel : (CONFIG.showNames ? item.name : '???');
+  const sc = item.scale ?? 1, no = String(index + 1).padStart(2, '0'), lw = Math.max(170, label.length * 46 + 70);
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="40" fill="${secret ? INK : '#fff'}" stroke="${INK}" stroke-width="10" filter="url(#cshadow)"/>
+    <rect x="${x + 22}" y="${y + 22}" width="${w - 44}" height="${h - 44}" rx="26" fill="url(#${secret ? 'panelSecret' : 'panel'})"/>
+    <rect x="${x + 22}" y="${y + 22}" width="${w - 44}" height="${h - 44}" rx="26" fill="url(#${secret ? 'dotsOrange' : 'dotsBlue'})"/>
+    <circle cx="0" cy="-40" r="150" fill="url(#${secret ? 'glowSecret' : 'glow'})"/>
+    ${silhouette(item.key, 0, -40, 290 * sc, 360 * sc, secret ? LOR : INK)}
+    ${secret ? `<rect x="${x + 22}" y="${y + 22}" width="${w - 44}" height="${h - 44}" rx="26" fill="none" stroke="${LOR}" stroke-width="5" stroke-dasharray="16 12"/>` : ''}
+    <circle cx="${x + 62}" cy="${y + 62}" r="34" fill="${secret ? '#e23d2e' : OR}" stroke="${INK}" stroke-width="7"/><text x="${x + 62}" y="${y + 60}" font-size="44" fill="#fff">?</text>
+    <text x="${-x - 70}" y="${y + 62}" font-size="34" fill="${secret ? LOR : INK}">No.${no}</text>
+    <g class="txt"><rect x="${-lw / 2}" y="${h / 2 - 98}" width="${lw}" height="66" rx="33" fill="${secret ? OR : INK}"/><text x="0" y="${h / 2 - 67}" font-size="${secret ? 36 : 40}" fill="#fff">${label}</text></g>`;
+}
+const NC = CONFIG.cards.length, STEP = CONFIG.card.w + CONFIG.gap, LOOP = NC * STEP;
+const cardDefs = `<linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d6e4fb"/></linearGradient>
+  <linearGradient id="panelSecret" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#143a9e"/><stop offset="1" stop-color="#031340"/></linearGradient>
+  <radialGradient id="glow"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  <radialGradient id="glowSecret"><stop offset="0" stop-color="${OR}" stop-opacity=".45"/><stop offset="1" stop-color="${OR}" stop-opacity="0"/></radialGradient>
+  ${dotsPat('dotsBlue', BLUE, .08, 34, 3.5)}${dotsPat('dotsOrange', LOR, .12, 34, 3.5)}
+  <filter id="cshadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="18" stdDeviation="14" flood-color="#031a52" flood-opacity=".45"/></filter>
+  ${CONFIG.cards.map((c, i) => `<g id="card${i}">${card(c, i)}</g>`).join('')}`;
+let streaks = '', backRow = '', frontRow = '';
+for (let i = 0; i < 9; i++) streaks += `<rect class="streak" data-i="${i}" y="${640 + (i * 137) % 900}" width="${120 + (i * 53) % 160}" height="10" rx="5" fill="#fff" opacity=".22"/>`;
+for (let i = 0; i < NC; i++) {
+  let j = (i + 3) % NC; while (CONFIG.cards[j].secret) j = (j + 1) % NC;   // 奥の列に「最高難易度」は出さない
+  backRow += `<use id="cb${i}" href="#card${j}"/>`; frontRow += `<use id="cf${i}" href="#card${i}"/>`;
+}
+h+=`<g id="s1"><rect width="1080" height="1920" fill="url(#g2)"/><g id="pat2"><rect x="-200" width="1500" height="1920" fill="url(#dB)"/></g>
+<g id="giantg" opacity=".35"><use href="#giant"/></g>${streaks}
+<g id="backRow" opacity="${CONFIG.backRow.opacity}" display="${CONFIG.backRow.show ? 'inline' : 'none'}">${backRow}</g><g id="frontRow">${frontRow}</g>
+<g id="sp2">${spark(110,640,34)}${spark(980,600,24,LOR)}${spark(960,1400,22)}${spark(90,1380,18,LOR)}</g>
+${T('t2a',540,310,'何で打つかは、',90,'#fff',INK,16)}${T('t2b',540,460,'運しだい',150,LOR,INK,18)}</g>`;
+const wrapX = x => ((x + STEP) % LOOP + LOOP) % LOOP - STEP;
+function s1(u){
+  A('pat2','transform',`translate(${-(u*40)%54},0)`);
+  A('giantg','transform',`translate(${2500-600*u},900) rotate(14)`);
+  document.querySelectorAll('.streak').forEach(s=>{const i=+s.dataset.i;s.setAttribute('x',1200-((u*(900+i*60)+i*400)%1600));});
+  const br=CONFIG.backRow;
+  for(let i=0;i<NC;i++){
+    const x=wrapX(CONFIG.startX+i*STEP-CONFIG.speed*u), rot=CONFIG.tilt*Math.sin(u*2.2+i*1.3);
+    A('cf'+i,'transform',`translate(${x},${CONFIG.rowY+CONFIG.bob*Math.sin(u*3+i*1.7)}) rotate(${rot})`);
+    const bx=wrapX(CONFIG.startX+200+i*STEP-CONFIG.speed*br.speedRatio*u);
+    A('cb'+i,'transform',`translate(${540+(bx-540)*br.scale},${br.y}) scale(${br.scale}) rotate(${-rot})`);
+  }
+  A('sp2','opacity',.55+.45*Math.sin(u*7));pop('t2a',u,.12);pop('t2b',u,.26,.32);
+}
+
+h+=`<g id="s2"><rect width="1080" height="1920" fill="url(#v3)"/><rect width="1080" height="1920" fill="url(#dB)" opacity=".5"/>${stars}
+<polygon points="380,0 700,0 1010,1420 70,1420" fill="url(#spot)"/><ellipse cx="540" cy="1420" rx="470" ry="78" fill="#fff" opacity=".12"/>
+<g id="qs"><text class="q" x="170" y="900" font-size="120" fill="${LOR}">?</text><text class="q" x="915" y="840" font-size="150" fill="#fff">?</text><text class="q" x="880" y="1560" font-size="100" fill="${LBLUE}">?</text><text class="q" x="170" y="1540" font-size="130" fill="${LBLUE}">?</text></g>
+<ellipse cx="540" cy="1425" rx="300" ry="34" fill="#020b2c" opacity=".55"/>
+<g id="box">${sh("M-250,-170 L-205,-292 L205,-292 L250,-170 Z",'#ffb070','#ff8c33','',-8,-6,10)}
+ <ellipse cx="0" cy="-232" rx="122" ry="38" fill="#3a1500" stroke="${INK}" stroke-width="8"/>
+ <g clip-path="url(#armclip)"><g id="arm">
+  <path d="${rr(-62,-1500,124,1180,30)}" fill="#fff" stroke="${INK}" stroke-width="7"/><rect x="-62" y="-400" width="124" height="34" fill="${BLUE}"/><rect x="-62" y="-354" width="124" height="14" fill="${OR}"/>
+  ${sh(rr(-44,-330,88,340,44),'#FAD3B0','#E3A97C','',-8,-5,7)}<rect x="-48" y="-150" width="96" height="38" rx="10" fill="${LBLUE}" stroke="${INK}" stroke-width="6"/></g></g>
+ <path d="M-122,-232 A122,38 0 0,0 122,-232" fill="none" stroke="${INK}" stroke-width="8"/>
+ <path d="${FR}" fill="url(#boxf)"/><g clip-path="url(#frontclip)"><rect x="-250" y="-170" width="500" height="26" fill="#fff" opacity=".25"/><rect x="170" y="-170" width="80" height="400" fill="#8c3b00" opacity=".18"/><rect x="-250" y="160" width="500" height="70" fill="#fff"/>${tape}</g>
+ <path d="${FR}" fill="none" stroke="${INK}" stroke-width="10"/>
+ <text x="0" y="-10" font-size="270" fill="${INK}" stroke="${INK}" stroke-width="20" transform="translate(0,18)">?</text><text x="0" y="-10" font-size="270" fill="#fff" stroke="${INK}" stroke-width="20">?</text></g>
+<g id="shake3" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"><path d="M215,1010 q-40,60 0,120"/><path d="M165,1040 q-26,34 0,68"/><path d="M865,1010 q40,60 0,120"/><path d="M915,1040 q26,34 0,68"/></g>
+${T('t3a',540,330,'選手は',88,'#fff','#031340',16,'#031340')}${T('t3b',540,480,'“最高難易度”から…?',96,LOR,'#031340',18,'#031340')}</g>`;
+h+=endCard(3,`<use href="#shamoji" transform="translate(300,1575) rotate(-18) scale(.36)"/><use href="#broom" transform="translate(445,1500) rotate(-6) scale(.46)"/><use href="#ladle" transform="translate(620,1555) rotate(8) scale(.4)"/><use href="#pingpong" transform="translate(775,1580) rotate(20) scale(.38)"/>`);
+function s0(u){const hit=.72;
+ A('rays1','transform',`translate(540,880) rotate(${u*14})`);
+ const ang=u<hit?38-38*Math.pow(u/hit,2.2):-22*eo((u-hit)/.4)+3*Math.sin(Math.max(0,u-hit-.4)*3);
+ A('paddle','transform',`translate(540,1600) rotate(${ang}) translate(0,-464) scale(1.45)`);
+ A('swoosh','opacity',cl((u-.45)/.25)*(1-cl((u-.8)/.35)));
+ const pos=v=>{if(v<hit){const p=v/hit;return [300+240*p,-200+1100*p*p];}const p=(v-hit)/.5;return [540-800*p,900-1500*p+260*p*p];};
+ const [x,y]=pos(u),[x2,y2]=pos(u+.01);A('st1','transform',`translate(${x},${y}) rotate(${Math.atan2(y2-y,x2-x)*180/Math.PI-90})`);A('trail','opacity',u>hit?.9:.3);
+ const b=(u-hit)/.3;A('burst','transform',`translate(540,925) rotate(${b*25}) scale(${b<0?0.001:0.5+0.9*eo(b*1.6)})`);A('burst','opacity',b<0?0:1-cl((b-.55)/.45));
+ pop('t1a',u,.95);pop('t1b',u,1.1,.32);const ul=eo((u-1.35)/.25);A('ul1','transform',`translate(540,0) scale(${Math.max(ul,.001)},1) translate(-540,0)`);A('ul1','opacity',ul>0?1:0);}
+function s2(u){const arm=u<.2?-520:u<.6?-520+570*eo((u-.2)/.4):50+14*Math.sin((u-.6)*30);
+ const k=cl((u-.6)/.15),sx=k*13*Math.sin(u*46),rot=k*2.2*Math.sin(u*46+1);
+ A('box','transform',`translate(${540+sx},1190) rotate(${rot})`);A('arm','transform',`translate(${k*10*Math.sin(u*30)},${arm}) scale(1.35)`);
+ A('shake3','opacity',k*(.5+.5*Math.sin(u*46)));
+ document.querySelectorAll('.q').forEach((q,i)=>{q.setAttribute('opacity',.35+.5*Math.abs(Math.sin(u*3+i*1.3)));q.setAttribute('transform',`translate(0,${-26*u+10*Math.sin(u*4+i)})`);});
+ document.querySelectorAll('.star').forEach((s,i)=>s.setAttribute('opacity',.3+.6*Math.abs(Math.sin(u*5+i))));pop('t3a',u,.1);pop('t3b',u,.24,.32);}
+{const S=CONFIG.scenes;build(defs+cardDefs,h,[[S.hit,s0],[S.cards,s1],[S.box,s2],[S.end,renderEnd]]);}
+
+// ---------- プレビュー（ブラウザで開いたとき）。書き出し時（?render）は使わない ----------
+if (!new URLSearchParams(location.search).has('render')) {
+  document.body.insertAdjacentHTML('afterbegin','<div id="ctl" style="display:flex;gap:12px;align-items:center;color:#fff;font:14px sans-serif;padding:10px;justify-content:center"><button id="play">⏸ 一時停止</button><input id="seek" type="range" min="0" step="0.01" style="width:320px"><span id="tm">0.00s</span></div>');
+  const svg=document.getElementById('root'), seek=document.getElementById('seek'), btn=document.getElementById('play');
+  seek.max=CONFIG.duration;
+  const fit=()=>{const k=Math.min(1,(innerHeight-60)/1920);svg.style.width=1080*k+'px';svg.style.height=1920*k+'px';svg.style.margin='0 auto';};
+  addEventListener('resize',fit);fit();
+  let playing=true,t0=performance.now(),t=0;
+  btn.onclick=()=>{playing=!playing;btn.textContent=playing?'⏸ 一時停止':'▶ 再生';t0=performance.now()-t*1000;};
+  seek.oninput=()=>{t=+seek.value;t0=performance.now()-t*1000;render(t);};
+  (function loop(now){if(playing){t=((now-t0)/1000)%CONFIG.duration;seek.value=t;render(t);}document.getElementById('tm').textContent=t.toFixed(2)+'s';requestAnimationFrame(loop);})(performance.now());
+}
+</script></body></html>
