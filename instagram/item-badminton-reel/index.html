@@ -14,7 +14,7 @@ let h=`<g id="s0"><rect width="1080" height="1920" fill="${OR}"/><g id="rays1" t
 <g id="paddle"><use href="#shamoji"/></g>
 <g id="burst"><polygon points="${star(12,120,270)}" fill="#fff" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/><polygon points="${star(12,70,160)}" fill="#ffd9b0"/></g>
 <g id="st1"><g id="trail" stroke="#fff" stroke-width="12" stroke-linecap="round"><line x1="-50" y1="-170" x2="-50" y2="-330"/><line x1="0" y1="-185" x2="0" y2="-420"/><line x1="50" y1="-170" x2="50" y2="-330"/></g><use href="#shuttle" transform="scale(1.7)"/></g>
-${T('t1a',540,330,'ラケット、',112,'#fff',INK,16)}${T('t1b',540,495,'使いません。',136,'#fff',INK,18)}
+${T('t1a',540,330,'選手は、',112,'#fff',INK,16)}${T('t1b',540,495,'ラケット禁止!',136,'#fff',INK,18)}
 <g id="ul1" class="txt"><rect x="150" y="588" width="780" height="20" rx="10" fill="${INK}"/></g></g>`;
 
 // =====================================================================
@@ -79,7 +79,7 @@ h+=`<g id="s1"><rect width="1080" height="1920" fill="url(#g2)"/><g id="pat2"><r
 <g id="giantg" opacity=".35"><use href="#giant"/></g>${streaks}
 <g id="backRow" opacity="${CONFIG.backRow.opacity}" display="${CONFIG.backRow.show ? 'inline' : 'none'}">${backRow}</g><g id="frontRow">${frontRow}</g>
 <g id="sp2">${spark(110,640,34)}${spark(980,600,24,LOR)}${spark(960,1400,22)}${spark(90,1380,18,LOR)}</g>
-${T('t2a',540,310,'何で打つかは、',90,'#fff',INK,16)}${T('t2b',540,460,'運しだい',150,LOR,INK,18)}</g>`;
+${T('t2a',540,310,'選手が何で打つかは、',86,'#fff',INK,16)}${T('t2b',540,460,'運しだい',150,LOR,INK,18)}</g>`;
 const wrapX = x => ((x + STEP) % LOOP + LOOP) % LOOP - STEP;
 function s1(u){
   A('pat2','transform',`translate(${-(u*40)%54},0)`);
@@ -111,6 +111,7 @@ h+=`<g id="s2"><rect width="1080" height="1920" fill="url(#v3)"/><rect width="10
 <g id="shake3" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"><path d="M215,1010 q-40,60 0,120"/><path d="M165,1040 q-26,34 0,68"/><path d="M865,1010 q40,60 0,120"/><path d="M915,1040 q26,34 0,68"/></g>
 ${T('t3a',540,330,'選手は',88,'#fff','#031340',16,'#031340')}${T('t3b',540,480,'“最高難易度”から…?',96,LOR,'#031340',18,'#031340')}</g>`;
 h+=endCard(3,`<use href="#shamoji" transform="translate(300,1575) rotate(-18) scale(.36)"/><use href="#broom" transform="translate(445,1500) rotate(-6) scale(.46)"/><use href="#ladle" transform="translate(620,1555) rotate(8) scale(.4)"/><use href="#pingpong" transform="translate(775,1580) rotate(20) scale(.38)"/>`);
+h=h.replace(/<\/g>$/, `${T('t4x',540,450,'選手に勝てるか!?',96,OR,'#fff',20,INK)}</g>`);  // 終わりの画面の呼びかけ
 function s0(u){const hit=.72;
  A('rays1','transform',`translate(540,880) rotate(${u*14})`);
  const ang=u<hit?38-38*Math.pow(u/hit,2.2):-22*eo((u-hit)/.4)+3*Math.sin(Math.max(0,u-hit-.4)*3);
@@ -126,7 +127,7 @@ function s2(u){const arm=u<.2?-520:u<.6?-520+570*eo((u-.2)/.4):50+14*Math.sin((u
  A('shake3','opacity',k*(.5+.5*Math.sin(u*46)));
  document.querySelectorAll('.q').forEach((q,i)=>{q.setAttribute('opacity',.35+.5*Math.abs(Math.sin(u*3+i*1.3)));q.setAttribute('transform',`translate(0,${-26*u+10*Math.sin(u*4+i)})`);});
  document.querySelectorAll('.star').forEach((s,i)=>s.setAttribute('opacity',.3+.6*Math.abs(Math.sin(u*5+i))));pop('t3a',u,.1);pop('t3b',u,.24,.32);}
-{const S=CONFIG.scenes;build(defs+cardDefs,h,[[S.hit,s0],[S.cards,s1],[S.box,s2],[S.end,renderEnd]]);}
+{const S=CONFIG.scenes;build(defs+cardDefs,h,[[S.hit,s0],[S.cards,s1],[S.box,s2],[S.end,u=>{renderEnd(u);A('st4','display','none');pop('t4x',u,.05,.32);}]]);}
 
 // ---------- プレビュー（ブラウザで開いたとき）。書き出し時（?render）は使わない ----------
 if (!new URLSearchParams(location.search).has('render')) {
