@@ -116,6 +116,11 @@ ${dotsPat('dA','#fff',.16)}${dotsPat('dB','#fff',.09,54,5)}${dotsPat('dC',BLUE,.
 <radialGradient id="v3" cx=".5" cy=".6" r=".8"><stop offset="0" stop-color="#143a9e"/><stop offset=".6" stop-color="#06205f"/><stop offset="1" stop-color="#031340"/></radialGradient>
 <linearGradient id="spot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity=".03"/></linearGradient>
 <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfeafc"/></linearGradient>`;
+// おもちゃのバドミントンラケット（太いプラスチックの枠・目の粗いガット）: 原点 = 持ち手の下端
+function toyRacket(){const id='cp'+(uid++);let g='';for(let k=-3;k<=3;k++)g+=`<line x1="${k*26}" y1="-420" x2="${k*26}" y2="-160"/>`;for(let k=0;k<=9;k++)g+=`<line x1="-100" y1="${-405+k*26}" x2="100" y2="${-405+k*26}"/>`;
+ return `<clipPath id="${id}"><ellipse cx="0" cy="-290" rx="88" ry="112"/></clipPath><ellipse cx="0" cy="-290" rx="88" ry="112" fill="#fff" opacity=".5"/><g clip-path="url(#${id})" stroke="${LBLUE}" stroke-width="6">${g}</g>
+ <ellipse cx="0" cy="-290" rx="88" ry="112" fill="none" stroke="${INK}" stroke-width="40"/><ellipse cx="0" cy="-290" rx="88" ry="112" fill="none" stroke="#FFD654" stroke-width="24"/>${ln("M-62,-360 A80,100 0 0,1 -10,-392","#fff",8,.8)}
+ ${sh(rr(-14,-185,28,110,10),'#FFD654','#E8A21A','',-5,-3,8)}${sh(rr(-24,-88,48,92,18),'#FF6FA8','#E0457F',ln("M-24,-60 h48 M-24,-34 h48",'#fff',5,.5),-6,-4,8)}`;}
 // shared end card
 function endCard(n,decor){
  const fc=[OR,BLUE,LBLUE,LOR,NAVY];let flags='';for(let i=0;i<11;i++){const x=i*108,y=150+Math.sin(i/10*Math.PI)*70;flags+=`<polygon points="${x-40},${y} ${x+40},${y+6} ${x+2},${y+92}" fill="${fc[i%5]}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;}
@@ -123,7 +128,7 @@ function endCard(n,decor){
  const tree=(x,y,s)=>`<g transform="translate(${x},${y}) scale(${s})"><rect x="-13" y="0" width="26" height="110" fill="#8c3b00" stroke="${INK}" stroke-width="6"/><circle cy="-40" r="78" fill="#fff" stroke="${INK}" stroke-width="7"/><circle cx="-20" cy="-58" r="30" fill="${PALE}"/></g>`;
  return `<g id="s${n}"><rect width="1080" height="1920" fill="url(#g4)"/><g id="rays4" transform="translate(540,960)">${rays(14,'#cfe0fb',.45)}</g><rect width="1080" height="1920" fill="url(#dC)"/>${conf}
  <path d="M-20,150 Q540,300 1100,150" fill="none" stroke="${INK}" stroke-width="6"/>${flags}
- <ellipse cx="820" cy="1900" rx="700" ry="330" fill="${LBLUE}"/><ellipse cx="200" cy="1960" rx="760" ry="360" fill="${BLUE}"/>${tree(85,1560,1)}${tree(1005,1510,.82)}
+ <ellipse cx="820" cy="1900" rx="700" ry="330" fill="${LBLUE}"/><ellipse cx="200" cy="1960" rx="760" ry="360" fill="${BLUE}"/><g transform="translate(165,1650) rotate(-14) scale(.72)">${toyRacket()}</g><g transform="translate(925,1630) rotate(14) scale(.58)">${racket()}</g>
  <g id="mini">${decor}</g><g id="st4"><use href="#shuttle" transform="scale(1.25)"/></g>
  ${T('t4a',540,680,'バドミントンパーク',106,BLUE,'#fff',22,INK)}${T('t4b',540,880,'2026',250,OR,'#fff',26,INK)}
  <g id="t4c" class="txt" data-x="540" data-y="1105"><rect x="-330" y="-66" width="660" height="132" rx="66" fill="${INK}"/><text font-size="84" fill="#fff" y="-4">11.23<tspan font-size="54" dx="16" dy="6">月・祝</tspan></text></g>
