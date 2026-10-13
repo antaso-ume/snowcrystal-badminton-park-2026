@@ -10,12 +10,17 @@ const spark=(x,y,r,c='#fff')=>`<path d="M0,${-r} L${r*.26},${-r*.26} L${r},0 L${
 function rays(n,c,o){let s='';for(let i=0;i<n;i++){const a0=i*2*Math.PI/n,a1=a0+Math.PI/n,R=2600;s+=`<polygon points="0,0 ${R*Math.cos(a0)},${R*Math.sin(a0)} ${R*Math.cos(a1)},${R*Math.sin(a1)}" fill="${c}" opacity="${o}"/>`;}return s;}
 function dotsPat(id,c,o,sp=46,r=6){return `<pattern id="${id}" width="${sp}" height="${sp}" patternUnits="userSpaceOnUse"><circle cx="${sp/2}" cy="${sp/2}" r="${r}" fill="${c}" opacity="${o}"/></pattern>`;}
 // ---- items (origin = centre unless noted)
-function shamoji(){
+function shamoji(){   // 白いプラスチックのしゃもじ（表面にお米がつきにくい粒々）
  const head="M0,-320 C95,-320 135,-235 130,-140 C125,-50 70,45 30,72 L-30,72 C-70,45 -125,-50 -130,-140 C-135,-235 -95,-320 0,-320 Z";
- const handle="M-30,60 L30,60 L26,290 C26,326 -26,326 -26,290 Z";
- let dots='';for(let r=0;r<8;r++)for(let c=-4;c<=4;c++){const x=c*30+(r%2?15:0),y=-270+r*34;dots+=`<circle cx="${x}" cy="${y}" r="5.5" fill="#E2C388"/>`;}
- const grain=ln("M-8,95 Q-14,180 -6,270","#A8733D",4,.7)+ln("M10,110 Q4,190 12,250","#A8733D",4,.6);
- return sh(handle,'#D9A766','#B27C42',grain)+sh(head,'#F6E2B3','#DDBB7C',dots+ln("M-88,-170 C-86,-235 -58,-280 -18,-292","#fff",13,.8))+`<circle cx="0" cy="285" r="7" fill="${INK}"/>`;}
+ const inner="M0,-292 C78,-292 108,-222 104,-142 C100,-64 58,6 0,6 C-58,6 -100,-64 -104,-142 C-108,-222 -78,-292 0,-292 Z";
+ const handle="M-28,60 L28,60 C30,150 32,230 40,290 L-40,290 C-32,230 -30,150 -28,60 Z";
+ let dots='';for(let r=0;r<9;r++)for(let c=-4;c<=4;c++){const x=c*24+(r%2?12:0),y=-262+r*30;dots+=`<circle cx="${x}" cy="${y}" r="4.2" fill="#D3DCE8"/>`;}
+ let rim='';for(let i=0;i<40;i++){const t=i/40*Math.PI*2;rim+=`<circle cx="${(118*Math.sin(t)).toFixed(1)}" cy="${(-150-160*Math.cos(t)*(Math.cos(t)>0?1:.95)).toFixed(1)}" r="5" fill="#E2E8F0"/>`;}
+ return sh(handle,'#FFFFFF','#D8E0EA',`<path d="M14,80 C16,160 18,230 26,290 L40,290 C32,230 30,150 28,80 Z" fill="#C9D3E0" opacity=".6"/>`)
+  +sh(rr(-46,282,92,40,14),'#FFFFFF','#D8E0EA','',-5,-4,8)
+  +sh(head,'#FFFFFF','#DCE3EC',`<clipPath id="shi"><path d="${inner}"/></clipPath><g clip-path="url(#shi)">${dots}</g>${rim}<path d="${inner}" fill="none" stroke="#C9D3E0" stroke-width="4"/>`
+   +ln("M-86,-180 C-84,-240 -58,-276 -20,-286","#fff",13,.95))
+  +ln("M-6,90 Q-10,180 -4,270","#fff",8,.9);}
 function broom(){
  const stick=rr(-15,-440,30,610,15);
  let nodes='';[-330,-200,-70,60].forEach(y=>nodes+=ln(`M-15,${y} h30`,'#8E6B2E',5));
