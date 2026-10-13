@@ -129,7 +129,7 @@ function s1(u){
 
 // ---------- 場面3：エンディング ----------
 h+=endCard(2,`<use href="#shamoji" transform="translate(300,1575) rotate(-18) scale(.36)"/><use href="#broom" transform="translate(445,1500) rotate(-6) scale(.46)"/><use href="#ladle" transform="translate(620,1555) rotate(8) scale(.4)"/><use href="#pingpong" transform="translate(775,1580) rotate(20) scale(.38)"/>`);
-h=h.replace(/<\/g>$/, `${T('t4x',540,395,'法政大学・Snow Crystal の選手に',52,INK,'#fff',12,'')}${T('t4y',540,500,'勝てるか!?',120,OR,'#fff',20,INK)}</g>`);
+h=h.replace(/<\/g>$/, `${T('t4x',540,395,'法政大学・Snow Crystal の選手に',52,INK,'#fff',12,'')}${T('t4y',540,500,'君は勝てるか!?',120,OR,'#fff',20,INK)}</g>`);
 function s2(u){renderEnd(u);A('st4','display','none');pop('t4x',u,.02);pop('t4y',u,.12,.32);}
 {const S=CONFIG.scenes;build(defs+cardDefs,h,[[S.box,s0],[S.cards,s1],[S.end,s2]]);}
 
