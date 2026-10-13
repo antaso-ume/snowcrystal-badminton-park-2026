@@ -1054,6 +1054,25 @@
       .map-soon.active text {
         fill: var(--white);
       }
+      /* 公開済みのプラスワンパーク（アイテムバドミントンなど）の名前 */
+      .map-zone .zone-label {
+        fill: var(--navy);
+        font-size: 13px;
+        font-weight: 700;
+        text-anchor: middle;
+        dominant-baseline: central;
+      }
+      .map-zone .zone-sub {
+        fill: #7a8db0;
+        font-size: 10px;
+        font-weight: 700;
+        text-anchor: middle;
+        dominant-baseline: central;
+      }
+      .map-zone.active .zone-label,
+      .map-zone.active .zone-sub {
+        fill: var(--white);
+      }
       .map-panel h3 {
         color: var(--navy);
         font-size: 17px;
@@ -1623,8 +1642,16 @@
               >
             </li>
             <li>
-              <time datetime="2026-10-08">2026.10.08</time>
+              <time datetime="2026-10-14">2026.10.14</time>
               <span class="news-tag">NEW</span>
+              <a
+                href="#apply"
+                onclick="goPage('apply'); document.getElementById('map').scrollIntoView({ behavior: 'instant' }); return false"
+                >プラスワンパーク第1弾「アイテムバドミントン」を公開しました</a
+              >
+            </li>
+            <li>
+              <time datetime="2026-10-08">2026.10.08</time>
               <a
                 href="#apply"
                 onclick="goPage('apply'); document.getElementById('map').scrollIntoView({ behavior: 'instant' }); return false"
@@ -1690,7 +1717,7 @@
               <h4>お悩み相談パーク</h4>
             </div>
             <div class="prog-card free">
-              <div class="tag">Coming Soon</div>
+              <div class="tag">予約不要</div>
               <h4>プラスワンパーク</h4>
             </div>
           </div>
@@ -1981,12 +2008,18 @@
             </p>
             <div class="park-tag">出入り自由</div>
           </div>
-          <div class="park-card theme-pale">
+          <div class="park-card">
             <div class="park-card-top-line bg-free2"></div>
             <div class="park-badge badge-free">時間指定なし</div>
             <h4>プラスワンパーク</h4>
-            <p>随時情報解禁いたします！お楽しみに！</p>
-            <div class="park-tag-outline">Coming Soon</div>
+            <p>
+              <strong>第1弾：アイテムバドミントン</strong><br />
+              選手はラケット禁止！くじ引きで出たアイテムで戦います。何が出るかは当日のお楽しみ。法政大学・Snow Crystalの選手に勝てるかな？
+            </p>
+            <p style="font-size: 12px; margin-top: 8px">
+              ほかの内容も随時公開します！<br />※場所は予告なく変更する場合があります。
+            </p>
+            <div class="park-tag">出入り自由</div>
           </div>
         </div>
       </section>
@@ -2015,15 +2048,19 @@
             class="map-svg"
             viewBox="0 0 640 420"
             role="img"
-            aria-label="会場マップ。左にステージ、中央に3面のコートが並ぶ。①お悩み相談はステージ、②理学療法講習は左のコート、③選手との交流は中央と右のコート。上下の3か所はプラスワンパーク（内容は準備中）。"
+            aria-label="会場マップ。左にステージ、中央に3面のコートが並ぶ。①お悩み相談はステージ、②理学療法講習は左のコート、③選手との交流は中央と右のコート。コートの奥はプラスワンパークのアイテムバドミントン、手前の2か所はプラスワンパーク（内容は準備中）。"
           >
             <ellipse class="map-floor" cx="320" cy="210" rx="300" ry="195" />
 
+            <g class="map-zone" data-map="4">
+              <title>プラスワンパーク：アイテムバドミントン（コートの奥）</title>
+              <rect class="zone-bg" x="220" y="45" width="200" height="50" rx="6" />
+              <text class="zone-label" x="320" y="64">アイテムバドミントン</text>
+              <text class="zone-sub" x="320" y="81">プラスワンパーク</text>
+            </g>
+
             <g class="map-zone map-soon" data-map="4">
               <title>プラスワンパーク（Coming Soon）</title>
-              <rect class="soon-bg" x="220" y="45" width="200" height="50" rx="6" />
-              <text class="soon-name" x="320" y="64">プラスワンパーク</text>
-              <text class="soon-note" x="320" y="81">Coming Soon</text>
               <rect class="soon-bg" x="170" y="325" width="140" height="50" rx="6" />
               <text class="soon-name" x="240" y="344">プラスワンパーク</text>
               <text class="soon-note" x="240" y="361">Coming Soon</text>
@@ -2073,7 +2110,7 @@
           <div class="map-panel active" data-map="0">
             <h3>会場全体</h3>
             <p>
-              左側のステージと、3面のコートを使って開催します。点線で囲んだ3か所は「プラスワンパーク」です。内容は決まり次第お知らせします。
+              左側のステージと、3面のコートを使って開催します。コートの奥はプラスワンパークの「アイテムバドミントン」です。点線で囲んだ2か所もプラスワンパークで、内容は決まり次第お知らせします。
             </p>
           </div>
 
@@ -2107,8 +2144,13 @@
           <div class="map-panel" data-map="4">
             <div class="park-badge badge-free">時間指定なし</div>
             <h3>プラスワンパーク</h3>
-            <p class="map-place">場所：コートのまわり（3か所）</p>
-            <p>随時情報解禁いたします！お楽しみに！</p>
+            <p class="map-place">アイテムバドミントン：コートの奥</p>
+            <p>
+              選手はラケット禁止！くじ引きで出たアイテムで戦います。何が出るかは当日のお楽しみ。法政大学・Snow Crystalの選手に勝てるかな？
+            </p>
+            <p style="font-size: 12px; margin-top: 6px">
+              手前の点線の2か所も、内容が決まり次第お知らせします。<br />※場所は予告なく変更する場合があります。
+            </p>
           </div>
         </div>
         <p class="timetable-note" style="margin: 16px 0 0">
