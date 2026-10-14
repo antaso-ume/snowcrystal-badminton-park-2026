@@ -1642,8 +1642,16 @@
               >
             </li>
             <li>
-              <time datetime="2026-10-14">2026.10.14</time>
+              <time datetime="2026-10-16">2026.10.16</time>
               <span class="news-tag">NEW</span>
+              <a
+                href="#apply"
+                onclick="goPage('apply'); document.getElementById('map').scrollIntoView({ behavior: 'instant' }); return false"
+                >プラスワンパーク第2弾「ごちゃまぜバドミントン」を公開しました</a
+              >
+            </li>
+            <li>
+              <time datetime="2026-10-14">2026.10.14</time>
               <a
                 href="#apply"
                 onclick="goPage('apply'); document.getElementById('map').scrollIntoView({ behavior: 'instant' }); return false"
@@ -2016,6 +2024,10 @@
               <strong>第1弾：アイテムバドミントン</strong><br />
               選手はラケット禁止！くじ引きで出たアイテムで戦います。何が出るかは当日のお楽しみ。法政大学・Snow Crystalの選手に勝てるかな？
             </p>
+            <p style="margin-top: 8px">
+              <strong>第2弾：ごちゃまぜバドミントン</strong><br />
+              法政大学・Snow Crystalの選手と参加者を全員まぜて、2チームで対戦！1球打ったら即交代のルールで、みんなでシャトルをつなごう！
+            </p>
             <p style="font-size: 12px; margin-top: 8px">
               ほかの内容も随時公開します！<br />※場所は予告なく変更する場合があります。
             </p>
@@ -2048,7 +2060,7 @@
             class="map-svg"
             viewBox="0 0 640 420"
             role="img"
-            aria-label="会場マップ。左にステージ、中央に3面のコートが並ぶ。①お悩み相談はステージ、②理学療法講習は左のコート、③選手との交流は中央と右のコート。コートの奥はプラスワンパークのアイテムバドミントン、手前の2か所はプラスワンパーク（内容は準備中）。"
+            aria-label="会場マップ。左にステージ、中央に3面のコートが並ぶ。①お悩み相談はステージ、②理学療法講習は左のコート、③選手との交流は中央と右のコート。コートの奥はプラスワンパークのアイテムバドミントン、手前の左はごちゃまぜバドミントン、手前の右はプラスワンパーク（内容は準備中）。"
           >
             <ellipse class="map-floor" cx="320" cy="210" rx="300" ry="195" />
 
@@ -2059,11 +2071,15 @@
               <text class="zone-sub" x="320" y="81">プラスワンパーク</text>
             </g>
 
+            <g class="map-zone" data-map="4">
+              <title>プラスワンパーク：ごちゃまぜバドミントン（手前の左）</title>
+              <rect class="zone-bg" x="170" y="325" width="140" height="50" rx="6" />
+              <text class="zone-label" x="240" y="343">ごちゃまぜ</text>
+              <text class="zone-label" x="240" y="360">バドミントン</text>
+            </g>
+
             <g class="map-zone map-soon" data-map="4">
               <title>プラスワンパーク（Coming Soon）</title>
-              <rect class="soon-bg" x="170" y="325" width="140" height="50" rx="6" />
-              <text class="soon-name" x="240" y="344">プラスワンパーク</text>
-              <text class="soon-note" x="240" y="361">Coming Soon</text>
               <rect class="soon-bg" x="330" y="325" width="140" height="50" rx="6" />
               <text class="soon-name" x="400" y="344">プラスワンパーク</text>
               <text class="soon-note" x="400" y="361">Coming Soon</text>
@@ -2110,7 +2126,7 @@
           <div class="map-panel active" data-map="0">
             <h3>会場全体</h3>
             <p>
-              左側のステージと、3面のコートを使って開催します。コートの奥はプラスワンパークの「アイテムバドミントン」です。点線で囲んだ2か所もプラスワンパークで、内容は決まり次第お知らせします。
+              左側のステージと、3面のコートを使って開催します。コートの奥はプラスワンパークの「アイテムバドミントン」、手前の左は「ごちゃまぜバドミントン」です。点線で囲んだ1か所もプラスワンパークで、内容は決まり次第お知らせします。
             </p>
           </div>
 
@@ -2147,6 +2163,10 @@
             <p class="map-place">アイテムバドミントン：コートの奥</p>
             <p>
               選手はラケット禁止！くじ引きで出たアイテムで戦います。何が出るかは当日のお楽しみ。法政大学・Snow Crystalの選手に勝てるかな？
+            </p>
+            <p class="map-place" style="margin-top: 12px">ごちゃまぜバドミントン：手前の左</p>
+            <p>
+              法政大学・Snow Crystalの選手と参加者を全員まぜて、2チームで対戦！1球打ったら即交代のルールで、みんなでシャトルをつなごう！
             </p>
             <p style="font-size: 12px; margin-top: 6px">※場所は予告なく変更する場合があります。</p>
           </div>
