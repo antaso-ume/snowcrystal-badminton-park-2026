@@ -1,0 +1,144 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>ごちゃまぜバドミントン リール</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@800;900&display=block">
+</head><body><svg id="root" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<script src="lib.js"></script><script>
+// =====================================================================
+//  CONFIG
+// =====================================================================
+const CONFIG = {
+  duration: 10, fps: 30,
+  scenes: { gather: 0, shuffle: 2.2, match: 5.0, end: 8.3 },   // 各場面の開始秒
+  teamA: 'ブルーチーム',      // チーム名（仮）
+  teamB: 'オレンジチーム',
+};
+// =====================================================================
+
+// ---------- 登場人物 ----------
+// 0〜3: 法政大学の選手 / 4〜7: Snow Crystal の選手 / 8〜11: 参加者（少し小さめ）
+const N = 12;
+const GROUP = i => i < 4 ? 'hosei' : i < 8 ? 'sc' : 'kid';
+const SCALE = i => GROUP(i) === 'kid' ? .78 : .9;
+const TEAM = i => i % 2;                       // 0 = ブルー / 1 = オレンジ（各チームに法政2・SC2・参加者2）
+const SHIRT_LABEL = { hosei: 'HOSEI', sc: 'SC', kid: '' };
+const GATHER = i => {                          // 場面1の立ち位置（グループごと）
+  const k = i % 4, g = GROUP(i);
+  if (g === 'hosei') return [180 + (k % 2) * 165, 830 + Math.floor(k / 2) * 180];
+  if (g === 'sc') return [735 + (k % 2) * 165, 830 + Math.floor(k / 2) * 180];
+  return [300 + k * 160, 1400];
+};
+const TEAMPOS = i => {                         // 場面2で分かれたあとの位置
+  const k = Math.floor(i / 2), side = TEAM(i), col = k % 2, row = Math.floor(k / 2);
+  return [side ? 750 + col * 200 : 130 + col * 200, 790 + row * 225 + (col ? 40 : 0)];
+};
+
+let av = '';
+for (let i = 0; i < N; i++) {
+  const lab = SHIRT_LABEL[GROUP(i)];
+  av += `<g id="av${i}"><ellipse cx="0" cy="200" rx="92" ry="16" fill="#031a52" opacity=".28"/>${avatar(i, 'shirt' + i)}
+    ${lab ? `<text y="146" font-size="${lab.length > 2 ? 26 : 34}" fill="${INK}" opacity=".8">${lab}</text>` : `<polygon points="${star(5, 10, 22)}" transform="translate(0,146)" fill="#FFD654" stroke="${INK}" stroke-width="4"/>`}</g>`;
+}
+const bg = `<rect width="1080" height="1920" fill="url(#g2)"/><rect width="1080" height="1920" fill="url(#dB)"/>`;
+
+// ---------- 場面1：法政大学・Snow Crystal・参加者が集まる ----------
+let h = `<g id="s0">${bg}<g id="rA" transform="translate(540,1100)" opacity=".5">${rays(12, '#3f8cff', .35)}</g>
+  ${spark(120, 700, 30)}${spark(960, 640, 24, LOR)}${spark(930, 1580, 22)}
+  <g id="avA"></g>
+  ${pill('grpH', 262, 705, '法政大学', 46, INK, '#fff', '#fff', 300)}${pill('grpS', 818, 705, 'Snow Crystal', 46, INK, '#fff', '#fff', 360)}${pill('grpK', 540, 1245, 'キミ（参加者）', 46, '#FFD654', INK, INK, 380)}
+  ${T('a1', 540, 300, '法政大学・Snow Crystal・参加者', 58, '#fff', INK, 14)}${T('a2', 540, 450, '全員、ごちゃまぜ!', 112, LOR, INK, 18)}</g>`;
+
+// ---------- 場面2：シャッフルして2チームに分かれる ----------
+h += `<g id="s1">${bg}
+  <g id="half"><polygon points="640,0 2400,0 2400,1920 440,1920" fill="${DOR}"/><polygon points="640,0 2400,0 2400,1920 440,1920" fill="url(#dA)" opacity=".6"/><polygon points="640,0 668,0 468,1920 440,1920" fill="#fff"/></g>
+  <g id="halfL"><polygon points="0,0 640,0 440,1920 0,1920" fill="${NAVY}"/><polygon points="0,0 640,0 440,1920 0,1920" fill="url(#dB)"/></g>
+  <g id="swirl" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round"><path d="M0,-400 A400,400 0 0,1 380,-120"/><path d="M0,400 A400,400 0 0,1 -380,120"/><polygon points="380,-120 330,-190 420,-200" fill="#fff" stroke-width="10" stroke-linejoin="round"/><polygon points="-380,120 -330,190 -420,200" fill="#fff" stroke-width="10" stroke-linejoin="round"/></g>
+  <g id="avB"></g>
+  ${T('b1', 540, 400, 'シャッフル!', 140, '#fff', INK, 18)}
+  ${pill('tl', 262, 520, CONFIG.teamA, 52, '#fff', BLUE, INK, 420)}${pill('tr', 818, 520, CONFIG.teamB, 52, '#fff', OR, INK, 440)}
+  <g id="vs" data-x="540" data-y="1090"><polygon points="${star(14, 105, 155)}" fill="#fff" stroke="${INK}" stroke-width="10" stroke-linejoin="round"/><text class="txt" font-size="108" fill="${OR}" stroke="${INK}" stroke-width="12" y="-5">VS</text></g></g>`;
+
+// ---------- 場面3：1球打ったら即交代 ----------
+let pl = '';
+for (const s of ['L', 'R']) for (let j = 0; j < 4; j++) pl += `<g id="p${s}${j}">${figure(s === 'L' ? j * 2 + 1 : j * 2 + 4, s === 'L' ? LBLUE : LOR, { armId: 'arm' + s + j })}</g>`;
+let net = ''; for (let k = 0; k < 9; k++) net += `<line x1="522" y1="${930 + k * 42}" x2="558" y2="${930 + k * 42}" stroke="#9fb6de" stroke-width="5"/>`;
+h += `<g id="s2"><rect width="1080" height="1920" fill="url(#g4)"/><rect width="1080" height="1920" fill="url(#dC)"/>
+  <rect y="1290" width="1080" height="630" fill="${BLUE}"/><rect y="1290" width="1080" height="630" fill="url(#dB)"/><rect y="1290" width="1080" height="16" fill="#fff"/><rect y="1470" width="1080" height="12" fill="#fff" opacity=".6"/>
+  <rect x="522" y="910" width="36" height="390" fill="#fff" stroke="${INK}" stroke-width="7"/>${net}<rect x="514" y="896" width="52" height="34" rx="8" fill="${OR}" stroke="${INK}" stroke-width="7"/>
+  <g id="sideL">${[0, 1, 2, 3].map(j => `<use href="#pL${j}"/>`).join('')}</g><g id="sideR" transform="translate(1080,0) scale(-1,1)">${[0, 1, 2, 3].map(j => `<use href="#pR${j}"/>`).join('')}</g>
+  <g id="hitfx"><polygon points="${star(10, 34, 84)}" fill="#fff" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/></g>
+  <g id="stC"><use href="#shuttle" transform="scale(.8)"/></g>
+  ${pill('kL', 170, 640, '交代!', 64, OR, '#fff')}${pill('kR', 910, 640, '交代!', 64, OR, '#fff')}
+  ${T('c1', 540, 300, '1球打ったら、', 92, INK, '#fff', 18, '#9fb6de')}${T('c2', 540, 450, '即交代!', 150, OR, '#fff', 22, INK)}</g>`;
+
+// ---------- 場面4：エンディング ----------
+h += endCard(3, `<use href="#shuttle" transform="translate(560,1585) rotate(-105) scale(1.1)"/>`);
+h = h.replace(/<\/g>$/, `${T('t4x', 540, 395, '法政大学・Snow Crystal の選手と', 52, INK, '#fff', 12, '')}${T('t4y', 540, 500, 'チームを組もう!', 120, OR, '#fff', 20, INK)}</g>`);
+
+// ---------- 動き ----------
+function place(parent) { const p = $(parent); for (let i = 0; i < N; i++) p.appendChild($('av' + i)); }
+function s0(u) {
+  place('avA'); A('rA', 'transform', `translate(540,1100) rotate(${u * 10})`);
+  for (let i = 0; i < N; i++) {
+    const [x, y] = GATHER(i), d = (GROUP(i) === 'hosei' ? 0 : GROUP(i) === 'sc' ? .25 : .5) + (i % 4) * .05;
+    const s = back((u - d) / .3) * SCALE(i);
+    A('av' + i, 'transform', `translate(${x},${y + 8 * Math.sin(u * 5 + i)}) scale(${Math.max(s, .001)}) rotate(${4 * Math.sin(u * 4 + i * 2)})`);
+    A('shirt' + i, 'fill', '#fff');
+  }
+  pop('grpH', u, .05); pop('grpS', u, .3); pop('grpK', u, .55); pop('a1', u, .75); pop('a2', u, .9, .32);
+}
+function s1(u) {
+  place('avB'); const T1 = 1.2, T2 = 1.65;
+  const orb = (i, v) => { const a = (i * 30 + 760 * eio(v / T1)) * Math.PI / 180, R = 300 + 70 * Math.sin(i * 2.1 + v * 5); return [540 + R * Math.cos(a), 1100 + R * .85 * Math.sin(a)]; };
+  const sp = cl((u - T1 + .05) / .35);
+  A('half', 'transform', `translate(${900 * (1 - eo(sp))},0)`); A('halfL', 'opacity', eo(sp));
+  A('swirl', 'transform', `translate(540,1100) rotate(${u * 420})`); A('swirl', 'opacity', cl(u / .2) * (1 - cl((u - T1 + .15) / .15)) * .7);
+  for (let i = 0; i < N; i++) {
+    let x, y; const c = GATHER(i), t = TEAMPOS(i);
+    if (u < .3) { const o = orb(i, u), p = eo(u / .3); x = lerp(c[0], o[0], p); y = lerp(c[1], o[1], p); }
+    else if (u < T1) { [x, y] = orb(i, u); }
+    else { const o = orb(i, T1), p = eo((u - T1) / (T2 - T1)); x = lerp(o[0], t[0], p); y = lerp(o[1], t[1], p) + (p >= 1 ? 9 * Math.sin(u * 6 + i) : 0); }
+    A('av' + i, 'transform', `translate(${x},${y}) scale(${SCALE(i)}) rotate(${u < T1 ? 8 * Math.sin(u * 14 + i) : 3 * Math.sin(u * 4 + i)})`);
+    A('shirt' + i, 'fill', u < T1 + .15 ? '#fff' : (TEAM(i) ? LOR : LBLUE));
+  }
+  pop('b1', u, .08, .28, T1 - .1); pop('tl', u, T2 - .05); pop('tr', u, T2 + .1); pop('vs', u, T2 + .3, .3);
+  if (u > T2 + .6) A('vs', 'transform', `translate(540,1090) scale(${1 + .05 * Math.sin(u * 10)}) rotate(${4 * Math.sin(u * 5)})`);
+}
+const HITS = [[-.2, 'R'], [.5, 'L'], [1.2, 'R'], [1.9, 'L'], [2.6, 'R']], HP = { L: [423, 730], R: [657, 730] }, DT = .7;
+function side(S, u) {
+  const hs = HITS.filter(h => h[1] === S && h[0] >= 0).map(h => h[0]); let n = 0, q = 1;
+  hs.forEach(h => { if (u > h + .14) { n++; q = (u - h - .14) / .42; } });
+  for (let j = 0; j < 4; j++) {
+    let x = -400, y = 1296, s = 1, o = 1, th = -32;
+    const kid = j % 2 ? .86 : 1;                       // 参加者は少し小さく
+    if (j === n) { const p = n === 0 ? 1 : eo(q); x = lerp(0, 230, p); s = lerp(.8, 1, p);
+      const nh = hs[n]; if (nh !== undefined) { const d = u - nh; if (d > -.2 && d <= 0) th = -32 + 50 * Math.pow(1 + d / .2, 2); else if (d > 0) th = 18 + 45 * eo(d / .14); } }
+    else if (j === n - 1) { const p = cl(q); x = lerp(230, -330, eio(p)); y = 1296 - 150 * Math.sin(Math.PI * p); th = 63; o = 1 - cl((p - .75) / .25); }
+    else if (j === n + 1) { x = n === 0 ? 0 : lerp(-330, 0, eo(q)); s = .8; }
+    A('p' + S + j, 'transform', `translate(${x},${y}) scale(${s * kid})`); A('p' + S + j, 'opacity', o); A('arm' + S + j, 'transform', `translate(40,-272) rotate(${th})`);
+  }
+  let kp = -9; hs.forEach(h => { if (u > h + .14) kp = h + .14; }); pop('k' + S, u, kp, .22, kp + .5);
+}
+function s2(u) {
+  side('L', u); side('R', u);
+  const pos = v => { let k = 0; HITS.forEach((h, i) => { if (v >= h[0]) k = i; }); const [h0, S] = HITS[k], a = HP[S], b = HP[S === 'L' ? 'R' : 'L'], p = (v - h0) / DT; return [lerp(a[0], b[0], p), a[1] - 4 * 190 * p * (1 - p)]; };
+  const [x, y] = pos(u), [x2, y2] = pos(u + .01); let jump = false; HITS.forEach(h => { if (u < h[0] && u + .01 >= h[0]) jump = true; });
+  A('stC', 'transform', `translate(${x},${y}) rotate(${jump ? 0 : Math.atan2(y2 - y, x2 - x) * 180 / Math.PI - 90})`);
+  let fx = 0, fp = HP.L; HITS.forEach(h => { const d = u - h[0]; if (h[0] >= 0 && d >= 0 && d < .22) { fx = 1 - d / .22; fp = HP[h[1]]; } });
+  A('hitfx', 'transform', `translate(${fp[0]},${fp[1]}) scale(${1.6 - fx * .6})`); A('hitfx', 'opacity', fx);
+  pop('c1', u, .1); pop('c2', u, .24, .32);
+}
+function s3(u) { renderEnd(u); A('st4', 'display', 'none'); pop('t4x', u, .02); pop('t4y', u, .12, .32); }
+{ const S = CONFIG.scenes; build(`<g id="avdefs">${av}</g>${pl}`, h, [[S.gather, s0], [S.shuffle, s1], [S.match, s2], [S.end, s3]]); }
+
+// ---------- プレビュー（ブラウザで開いたとき）。書き出し時（?render）は使わない ----------
+if (!new URLSearchParams(location.search).has('render')) {
+  document.body.insertAdjacentHTML('afterbegin', '<div id="ctl" style="display:flex;gap:12px;align-items:center;color:#fff;font:14px sans-serif;padding:10px;justify-content:center"><button id="play">⏸ 一時停止</button><input id="seek" type="range" min="0" step="0.01" style="width:320px"><span id="tm">0.00s</span></div>');
+  const svg = document.getElementById('root'), seek = document.getElementById('seek'), btn = document.getElementById('play');
+  seek.max = CONFIG.duration;
+  const fit = () => { const k = Math.min(1, (innerHeight - 60) / 1920); svg.style.width = 1080 * k + 'px'; svg.style.height = 1920 * k + 'px'; svg.style.margin = '0 auto'; };
+  addEventListener('resize', fit); fit();
+  let playing = true, t0 = performance.now(), t = 0;
+  btn.onclick = () => { playing = !playing; btn.textContent = playing ? '⏸ 一時停止' : '▶ 再生'; t0 = performance.now() - t * 1000; };
+  seek.oninput = () => { t = +seek.value; t0 = performance.now() - t * 1000; render(t); };
+  (function loop(now) { if (playing) { t = ((now - t0) / 1000) % CONFIG.duration; seek.value = t; render(t); } document.getElementById('tm').textContent = t.toFixed(2) + 's'; requestAnimationFrame(loop); })(performance.now());
+}
+</script></body></html>
