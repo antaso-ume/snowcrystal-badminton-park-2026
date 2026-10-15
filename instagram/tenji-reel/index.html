@@ -1,0 +1,92 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>展示ブース リール</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@800;900&display=block">
+</head><body><svg id="root" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<script src="lib.js"></script><script>
+// =====================================================================
+//  CONFIG
+// =====================================================================
+const CONFIG = { duration: 10, fps: 30, scenes: { trophy: 0, gallery: 2, challenge: 6, end: 8.3 } };
+// =====================================================================
+
+function visitor(hc,top,st){
+ const extra=st==1?`<path d="${rr(-112,-180,224,230,90)}" fill="${hc}" stroke="${INK}" stroke-width="9"/>`:'';
+ const tail=st==2?`<ellipse cx="0" cy="40" rx="36" ry="100" fill="${hc}" stroke="${INK}" stroke-width="9"/><rect x="-30" y="-52" width="60" height="22" rx="8" fill="${OR}" stroke="${INK}" stroke-width="6"/>`:'';
+ return sh("M-200,420 C-200,110 -130,50 0,50 C130,50 200,110 200,420 Z",top,top,`<path d="M90,50 h140 v400 h-140 Z" fill="${INK}" opacity=".16"/>`,0,0,9)
+  +`<rect x="-36" y="-10" width="72" height="80" fill="#F3C19A" stroke="${INK}" stroke-width="9"/><circle cx="-104" cy="-80" r="17" fill="#F3C19A" stroke="${INK}" stroke-width="8"/><circle cx="104" cy="-80" r="17" fill="#F3C19A" stroke="${INK}" stroke-width="8"/>`
+  +extra+sh(circ(0,-92,104),hc,hc,ln("M-70,-130 A80,80 0 0,1 -10,-176","#fff",12,.25),0,0,9)+tail;}
+const plate=(x,y)=>`<g transform="translate(${x},${y})"><rect x="-90" y="-28" width="180" height="56" rx="8" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="-62" y="-12" width="124" height="7" rx="3.5" fill="#9fb6de"/><rect x="-44" y="4" width="88" height="6" rx="3" fill="#cfe0fb"/></g>`;
+const cone=(x,w)=>`<polygon points="${x-30},190 ${x+30},190 ${x+w},1280 ${x-w},1280" fill="#fff3e2" opacity=".75"/><g transform="translate(${x},190)"><rect x="-8" y="-40" width="16" height="40" fill="${INK}"/><path d="M-34,0 h68 l14,46 h-96 Z" fill="${NAVY}" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><ellipse cx="0" cy="46" rx="44" ry="9" fill="#FFD654"/></g>`;
+const defs=`<linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#cfe0fb" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>
+<linearGradient id="spotA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity=".06"/></linearGradient>`;
+let stars='';[[150,330,5],[930,420,4],[210,720,3],[900,900,5],[120,1180,4],[960,1250,3],[320,180,3],[760,160,4]].forEach(([x,y,r])=>stars+=`<circle class="star" cx="${x}" cy="${y}" r="${r}" fill="#fff"/>`);
+let h=`<g id="s0"><rect width="1080" height="1920" fill="url(#v3)"/><rect width="1080" height="1920" fill="url(#dB)" opacity=".5"/>${stars}
+<g id="coneA"><polygon points="430,0 650,0 960,1500 120,1500" fill="url(#spotA)"/><ellipse cx="540" cy="1500" rx="420" ry="70" fill="#fff" opacity=".16"/></g>
+<ellipse cx="540" cy="1500" rx="250" ry="30" fill="#020b2c" opacity=".6"/>
+<g id="trA"><use href="#trophy" transform="scale(1.75)"/></g><g id="trD" style="filter:brightness(.12) saturate(.4)"><use href="#trophy" transform="scale(1.75)"/></g>
+<g id="spA">${spark(250,860,44)}${spark(840,780,36,'#FFD654')}${spark(800,1240,26)}${spark(280,1300,30,'#FFD654')}</g>
+${T('a1',540,300,'法政大学・Snow Crystal が勝ち取った',54,'#fff','#031340',14,'#031340')}${T('a2',540,440,'本物を、目の前で。',112,'#FFD654','#031340',18,'#031340')}</g>`;
+// gallery
+h+=`<g id="s1"><rect width="1080" height="1920" fill="#f4f7fc"/><g id="gal">
+ <rect x="-200" width="3200" height="1290" fill="url(#dC)"/><rect x="-200" y="0" width="3200" height="190" fill="${NAVY}"/><rect x="-200" y="150" width="3200" height="14" fill="${INK}"/>
+ <rect x="-200" y="1236" width="3200" height="54" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="-200" y="1290" width="3200" height="700" fill="${BLUE}"/><rect x="-200" y="1290" width="3200" height="700" fill="url(#dB)"/>
+ ${cone(620,300)}${cone(1330,360)}${cone(2020,300)}
+ <g transform="translate(620,0)">${sh(rr(-215,1010,430,270,10),'#fff','#dfe7f3')}<rect x="-240" y="990" width="480" height="36" rx="8" fill="${NAVY}" stroke="${INK}" stroke-width="7"/>${plate(0,1130)}
+  <g transform="translate(0,990)"><use href="#trophy" transform="scale(.98)"/></g>
+  <rect x="-222" y="490" width="444" height="500" fill="url(#glass)" stroke="${INK}" stroke-width="7"/>${ln("M-180,620 L-100,520","#fff",12,.8)}${ln("M-185,700 L-150,656","#fff",9,.7)}</g>
+ <g transform="translate(1330,0)"><rect x="-290" y="470" width="580" height="580" rx="14" fill="#020b2c" opacity=".14" transform="translate(16,18)"/>
+  <rect x="-290" y="470" width="580" height="580" rx="14" fill="${NAVY}" stroke="${INK}" stroke-width="9"/><rect x="-250" y="510" width="500" height="500" rx="6" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="-250" y="510" width="500" height="500" fill="url(#dC)"/>
+  <use href="#msilver" transform="translate(-155,830) scale(.78)"/><use href="#mbronze" transform="translate(155,830) scale(.78)"/><use href="#mgold" transform="translate(0,790) scale(.95)"/>${plate(0,1130)}</g>
+ <g transform="translate(2020,0)"><circle cx="0" cy="770" r="280" fill="#fff" stroke="${INK}" stroke-width="9"/><circle cx="0" cy="770" r="280" fill="url(#dC)"/><circle cx="0" cy="770" r="246" fill="none" stroke="#FFD654" stroke-width="10" stroke-dasharray="4 26" stroke-linecap="round"/>
+  <use href="#mgold" transform="translate(0,850) scale(1.75)"/>${spark(-190,640,40,'#FFD654')}${spark(180,960,30,'#FFD654')}${spark(200,600,22,LOR)}${plate(0,1130)}</g>
+</g>
+<g id="vis1" ><g transform="scale(1.25)">${visitor('#2b2b3d',LBLUE,1)}</g></g><g id="vis2"><g transform="scale(1.35)">${visitor('#5a3a22',LOR,2)}</g></g>
+${bubble('bb1',300,1085,'これ本物…!?',-60)}${bubble('bb2',720,1050,'デザイン細かい!',90)}${bubble('bb3',330,1085,'近くで見たい!',-80)}
+${pill('hd',540,300,'展示ブース',70,INK,'#fff','#fff')}${T('hd2',540,395,'法政大学・Snow Crystal の実物を展示',40,INK,'#fff',10,'')}</g>`;
+// challenge（種目は未定なので、何にでも使える「パワーメーター」で表現）
+const SEG=12, MX=600, MY=540, MW=190, MH=740;
+const segCol=k=>k<4?LBLUE:k<8?'#FFD654':OR;   // 下から 青→黄→オレンジ
+let segs='';for(let k=0;k<SEG;k++){const y=MY+MH-(k+1)*(MH/SEG)+5;segs+=`<rect class="seg" data-k="${k}" x="${MX+22}" y="${y}" width="${MW-44}" height="${MH/SEG-10}" rx="8" fill="${segCol(k)}"/>`;}
+const MARK=MY+MH*(1-.93);
+h+=`<g id="s2"><rect width="1080" height="1920" fill="${OR}"/><g id="raysC" transform="translate(540,900)">${rays(14,LOR,.75)}</g><rect width="1080" height="1920" fill="url(#dA)"/><rect width="1080" height="1920" fill="url(#v1)"/>
+<rect y="1300" width="1080" height="620" fill="${DOR}"/><rect y="1300" width="1080" height="620" fill="url(#dA)" opacity=".5"/><rect y="1300" width="1080" height="14" fill="#fff" opacity=".8"/>
+${sh(rr(MX,MY-20,MW,MH+40,26),'#fff','#dfe7f3',`<rect x="${MX+14}" y="${MY-6}" width="${MW-28}" height="${MH+12}" rx="16" fill="#e9f0fb"/>${segs}`)}
+<text x="${MX+MW/2}" y="${MY+MH*.45}" font-size="70" fill="#fff" stroke="${INK}" stroke-width="10">???</text>
+<g id="mk"><rect x="${MX-150}" y="${MARK-8}" width="${MW+170}" height="16" rx="8" fill="${INK}"/><polygon points="${star(5,24,56)}" fill="#FFD654" stroke="${INK}" stroke-width="8" stroke-linejoin="round" transform="translate(${MX-150},${MARK})"/></g>
+${pill('mkl',925,MARK,'現役選手',46,INK,'#fff','#fff',240)}
+<ellipse id="jsh" cx="330" cy="1310" rx="110" ry="20" fill="#8c3b00" opacity=".45"/>
+<g id="jf">${figure(4,LBLUE,{armUp:true})}</g>
+<g id="jl" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"><path d="M230,1250 v60"/><path d="M330,1270 v60"/><path d="M430,1250 v60"/></g>
+${bubble('jb',230,640,'あと少し!',40,54)}
+${pill('note',540,1420,'種目は当日のお楽しみ!',46,'#fff',INK,INK,560)}
+${T('c1',540,280,'現役選手の身体能力に、',76,'#fff',INK,16)}${T('c2',540,405,'挑戦!',124,'#fff',INK,18)}</g>`;
+h+=endCard(3,`<use href="#trophy" transform="translate(545,1690) scale(.5)"/>`);
+h=h.replace(/<\/g>$/, `${T('t4x',540,395,'トロフィーも、メダルも、選手も',52,INK,'#fff',12,'')}${T('t4y',540,500,'ホンモノに会おう!',104,OR,'#fff',20,INK)}</g>`);
+function s3(u){renderEnd(u);A('st4','display','none');pop('t4x',u,.02);pop('t4y',u,.12,.32);}
+function s0(u){const on=u<.5?0:(u<.58?1:(u<.66?.25:1));A('coneA','opacity',on);A('trA','transform','translate(540,1500)');A('trD','transform','translate(540,1500)');A('trD','opacity',1-on*.97);
+ A('spA','opacity',u<.7?0:.5+.5*Math.sin(u*9));document.querySelectorAll('#s0 .star').forEach((s,i)=>s.setAttribute('opacity',.3+.6*Math.abs(Math.sin(u*5+i))));
+ pop('a1',u,.85);pop('a2',u,1.0,.32);}
+function s1(u){const sc=80+eio(u/4.2)*1470;A('gal','transform',`translate(${-sc},0)`);
+ A('vis1','transform',`translate(210,${1560+6*Math.sin(u*3)}) rotate(${2*Math.sin(u*2)})`);A('vis2','transform',`translate(860,${1590+6*Math.sin(u*3+1)}) rotate(${-2*Math.sin(u*2+1)})`);
+ pop('bb1',u,.35,.25,1.5);pop('bb2',u,1.7,.25,2.95);pop('bb3',u,3.05,.25,4.1);pop('hd',u,.1);pop('hd2',u,.25);}
+function s2(u){A('raysC','transform',`translate(540,900) rotate(${u*14})`);
+ const lvl=u<.3?0:Math.min(.86,eo((u-.3)/1.1)*.86+.03*Math.sin(u*18)*cl((u-1.2)/.2));   // メーターが「あと少し」まで上がる
+ document.querySelectorAll('.seg').forEach(s=>{const k=+s.dataset.k;s.setAttribute('opacity',(k+1)/SEG<=lvl+.04?1:.12);});
+ const ph=((u-.2)%.6+.6)%.6/.6,j=u<.2?0:60*Math.pow(Math.sin(Math.PI*ph),.8);           // キミは応援しながらぴょんぴょん
+ A('jf','transform',`translate(330,${1300-j})`);A('jsh','rx',110-j*.4);A('jl','opacity',ph<.2&&u>.2?1-ph/.2:0);
+ pop('jb',u,1.25,.2);A('mk','opacity',.75+.25*Math.sin(u*10));pop('mkl',u,.3);pop('note',u,.6);pop('c1',u,.1);pop('c2',u,.24,.32);}
+
+{ const S = CONFIG.scenes; build(defs, h, [[S.trophy, s0], [S.gallery, s1], [S.challenge, s2], [S.end, s3]]); }
+
+// ---------- プレビュー（ブラウザで開いたとき）。書き出し時（?render）は使わない ----------
+if (!new URLSearchParams(location.search).has('render')) {
+  document.body.insertAdjacentHTML('afterbegin', '<div id="ctl" style="display:flex;gap:12px;align-items:center;color:#fff;font:14px sans-serif;padding:10px;justify-content:center"><button id="play">⏸ 一時停止</button><input id="seek" type="range" min="0" step="0.01" style="width:320px"><span id="tm">0.00s</span></div>');
+  const svg = document.getElementById('root'), seek = document.getElementById('seek'), btn = document.getElementById('play');
+  seek.max = CONFIG.duration;
+  const fit = () => { const k = Math.min(1, (innerHeight - 60) / 1920); svg.style.width = 1080 * k + 'px'; svg.style.height = 1920 * k + 'px'; svg.style.margin = '0 auto'; };
+  addEventListener('resize', fit); fit();
+  let playing = true, t0 = performance.now(), t = 0;
+  btn.onclick = () => { playing = !playing; btn.textContent = playing ? '⏸ 一時停止' : '▶ 再生'; t0 = performance.now() - t * 1000; };
+  seek.oninput = () => { t = +seek.value; t0 = performance.now() - t * 1000; render(t); };
+  (function loop(now) { if (playing) { t = ((now - t0) / 1000) % CONFIG.duration; seek.value = t; render(t); } document.getElementById('tm').textContent = t.toFixed(2) + 's'; requestAnimationFrame(loop); })(performance.now());
+}
+</script></body></html>
