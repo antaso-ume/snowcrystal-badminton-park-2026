@@ -42,23 +42,28 @@ h+=`<g id="s1"><rect width="1080" height="1920" fill="#f4f7fc"/><g id="gal">
 <g id="vis1" ><g transform="scale(1.25)">${visitor('#2b2b3d',LBLUE,1)}</g></g><g id="vis2"><g transform="scale(1.35)">${visitor('#5a3a22',LOR,2)}</g></g>
 ${bubble('bb1',300,1085,'これ本物…!?',-60)}${bubble('bb2',720,1050,'デザイン細かい!',90)}${bubble('bb3',330,1085,'近くで見たい!',-80)}
 ${pill('hd',540,300,'展示ブース',70,INK,'#fff','#fff')}${T('hd2',540,395,'法政大学・Snow Crystal の実物を展示',40,INK,'#fff',10,'')}</g>`;
-// challenge（種目は未定なので、何にでも使える「パワーメーター」で表現）
-const SEG=12, MX=600, MY=540, MW=190, MH=740;
-const segCol=k=>k<4?LBLUE:k<8?'#FFD654':OR;   // 下から 青→黄→オレンジ
-let segs='';for(let k=0;k<SEG;k++){const y=MY+MH-(k+1)*(MH/SEG)+5;segs+=`<rect class="seg" data-k="${k}" x="${MX+22}" y="${y}" width="${MW-44}" height="${MH/SEG-10}" rx="8" fill="${segCol(k)}"/>`;}
-const MARK=MY+MH*(1-.93);
+// challenge：体力測定の4種目（握力・立ち幅跳び・反復横跳び・垂直跳び）で選手の記録に挑戦
+const ICON={
+ grip:`<rect x="-48" y="-70" width="96" height="104" rx="22" fill="#fff" stroke="${INK}" stroke-width="7"/><circle cx="0" cy="-22" r="30" fill="${PALE}" stroke="${INK}" stroke-width="6"/><path d="M0,-22 L16,-38" stroke="${OR}" stroke-width="7" stroke-linecap="round"/>
+   <rect x="-40" y="34" width="80" height="22" rx="8" fill="${LBLUE}" stroke="${INK}" stroke-width="6"/><path d="M-36,56 Q0,96 36,56" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`,
+ long:`<path d="M-80,40 h160" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>${[-60,-30,0,30,60].map(x=>`<path d="M${x},40 v-12" stroke="${INK}" stroke-width="5"/>`).join('')}
+   <path d="M-70,10 Q0,-90 64,4" fill="none" stroke="${OR}" stroke-width="10" stroke-linecap="round" stroke-dasharray="4 16"/><polygon points="72,10 50,-6 62,-24" fill="${OR}"/>
+   <ellipse cx="-76" cy="24" rx="12" ry="7" fill="${LBLUE}" stroke="${INK}" stroke-width="4"/><ellipse cx="70" cy="24" rx="12" ry="7" fill="${LBLUE}" stroke="${INK}" stroke-width="4"/>`,
+ side:`${[-60,0,60].map(x=>`<path d="M${x},-60 v120" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`).join('')}
+   <path d="M-86,0 h172" stroke="${OR}" stroke-width="9" stroke-linecap="round"/><polygon points="-96,0 -74,-14 -74,14" fill="${OR}"/><polygon points="96,0 74,-14 74,14" fill="${OR}"/>`,
+ vert:`<rect x="-28" y="-80" width="56" height="150" rx="10" fill="#fff" stroke="${INK}" stroke-width="7"/>${[-55,-30,-5,20,45].map(y=>`<path d="M-28,${y} h22" stroke="${INK}" stroke-width="5"/>`).join('')}
+   <path d="M60,60 V-60" stroke="${OR}" stroke-width="10" stroke-linecap="round"/><polygon points="60,-82 44,-56 76,-56" fill="${OR}"/>`
+};
+const EVENTS=[['grip','握力',300,770],['long','立ち幅跳び',780,770],['side','反復横跳び',300,1130],['vert','垂直跳び',780,1130]];
+let evc='';EVENTS.forEach(([k,name,x,y],i)=>{evc+=`<g id="ev${i}" data-x="${x}" data-y="${y}">
+  <rect x="-205" y="-160" width="410" height="320" rx="34" fill="#fff" stroke="${INK}" stroke-width="9"/><rect x="-205" y="-160" width="410" height="320" rx="34" fill="url(#dC)"/>
+  <g transform="translate(0,-55)">${ICON[k]}</g>
+  <text class="txt" y="68" font-size="54" fill="${INK}">${name}</text>
+  <g class="txt"><rect x="-150" y="102" width="300" height="44" rx="22" fill="${INK}"/><text y="123" font-size="28" fill="#fff">選手の記録：???</text></g></g>`;});
 h+=`<g id="s2"><rect width="1080" height="1920" fill="${OR}"/><g id="raysC" transform="translate(540,900)">${rays(14,LOR,.75)}</g><rect width="1080" height="1920" fill="url(#dA)"/><rect width="1080" height="1920" fill="url(#v1)"/>
-<rect y="1300" width="1080" height="620" fill="${DOR}"/><rect y="1300" width="1080" height="620" fill="url(#dA)" opacity=".5"/><rect y="1300" width="1080" height="14" fill="#fff" opacity=".8"/>
-${sh(rr(MX,MY-20,MW,MH+40,26),'#fff','#dfe7f3',`<rect x="${MX+14}" y="${MY-6}" width="${MW-28}" height="${MH+12}" rx="16" fill="#e9f0fb"/>${segs}`)}
-<text x="${MX+MW/2}" y="${MY+MH*.45}" font-size="70" fill="#fff" stroke="${INK}" stroke-width="10">???</text>
-<g id="mk"><rect x="${MX-150}" y="${MARK-8}" width="${MW+170}" height="16" rx="8" fill="${INK}"/><polygon points="${star(5,24,56)}" fill="#FFD654" stroke="${INK}" stroke-width="8" stroke-linejoin="round" transform="translate(${MX-150},${MARK})"/></g>
-${pill('mkl',925,MARK,'現役選手',46,INK,'#fff','#fff',240)}
-<ellipse id="jsh" cx="330" cy="1310" rx="110" ry="20" fill="#8c3b00" opacity=".45"/>
-<g id="jf">${figure(4,LBLUE,{armUp:true})}</g>
-<g id="jl" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"><path d="M230,1250 v60"/><path d="M330,1270 v60"/><path d="M430,1250 v60"/></g>
-${bubble('jb',230,640,'あと少し!',40,54)}
-${pill('note',540,1420,'種目は当日のお楽しみ!',46,'#fff',INK,INK,560)}
-${T('c1',540,280,'現役選手の身体能力に、',76,'#fff',INK,16)}${T('c2',540,405,'挑戦!',124,'#fff',INK,18)}</g>`;
+${evc}
+${pill('note',540,1400,'選手の体力測定の記録も展示!',44,'#fff',INK,INK,640)}
+${T('c1',540,300,'現役選手の記録に、',84,'#fff',INK,16)}${T('c2',540,440,'キミも挑戦!',124,'#fff',INK,18)}</g>`;
 h+=endCard(3,`<use href="#trophy" transform="translate(545,1690) scale(.5)"/>`);
 h=h.replace(/<\/g>$/, `${T('t4x',540,395,'トロフィーも、メダルも、選手も',52,INK,'#fff',12,'')}${T('t4y',540,500,'ホンモノに会おう!',104,OR,'#fff',20,INK)}</g>`);
 function s3(u){renderEnd(u);A('st4','display','none');pop('t4x',u,.02);pop('t4y',u,.12,.32);}
@@ -69,11 +74,8 @@ function s1(u){const sc=80+eio(u/4.2)*1470;A('gal','transform',`translate(${-sc}
  A('vis1','transform',`translate(210,${1560+6*Math.sin(u*3)}) rotate(${2*Math.sin(u*2)})`);A('vis2','transform',`translate(860,${1590+6*Math.sin(u*3+1)}) rotate(${-2*Math.sin(u*2+1)})`);
  pop('bb1',u,.35,.25,1.5);pop('bb2',u,1.7,.25,2.95);pop('bb3',u,3.05,.25,4.1);pop('hd',u,.1);pop('hd2',u,.25);}
 function s2(u){A('raysC','transform',`translate(540,900) rotate(${u*14})`);
- const lvl=u<.3?0:Math.min(.86,eo((u-.3)/1.1)*.86+.03*Math.sin(u*18)*cl((u-1.2)/.2));   // メーターが「あと少し」まで上がる
- document.querySelectorAll('.seg').forEach(s=>{const k=+s.dataset.k;s.setAttribute('opacity',(k+1)/SEG<=lvl+.04?1:.12);});
- const ph=((u-.2)%.6+.6)%.6/.6,j=u<.2?0:60*Math.pow(Math.sin(Math.PI*ph),.8);           // キミは応援しながらぴょんぴょん
- A('jf','transform',`translate(330,${1300-j})`);A('jsh','rx',110-j*.4);A('jl','opacity',ph<.2&&u>.2?1-ph/.2:0);
- pop('jb',u,1.25,.2);A('mk','opacity',.75+.25*Math.sin(u*10));pop('mkl',u,.3);pop('note',u,.6);pop('c1',u,.1);pop('c2',u,.24,.32);}
+ EVENTS.forEach((_,i)=>{pop('ev'+i,u,.35+i*.15,.3);const g=$('ev'+i);if(u>.35+i*.15+.3)g.setAttribute('transform',`translate(${g.dataset.x},${+g.dataset.y+6*Math.sin(u*4+i)}) rotate(${1.5*Math.sin(u*3+i*2)})`);});
+ pop('note',u,1.1);pop('c1',u,.05);pop('c2',u,.18,.32);}
 
 { const S = CONFIG.scenes; build(defs, h, [[S.trophy, s0], [S.gallery, s1], [S.challenge, s2], [S.end, s3]]); }
 
