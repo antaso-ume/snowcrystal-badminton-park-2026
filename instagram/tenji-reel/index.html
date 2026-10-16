@@ -27,9 +27,9 @@ let h=`<g id="s0"><rect width="1080" height="1920" fill="url(#v3)"/><rect width=
 ${T('a1',540,300,'法政大学・Snow Crystal が勝ち取った',54,'#fff','#031340',14,'#031340')}${T('a2',540,440,'本物を、目の前で。',112,'#FFD654','#031340',18,'#031340')}</g>`;
 // gallery
 h+=`<g id="s1"><rect width="1080" height="1920" fill="#f4f7fc"/><g id="gal">
- <rect x="-200" width="3200" height="1290" fill="url(#dC)"/><rect x="-200" y="0" width="3200" height="190" fill="${NAVY}"/><rect x="-200" y="150" width="3200" height="14" fill="${INK}"/>
- <rect x="-200" y="1236" width="3200" height="54" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="-200" y="1290" width="3200" height="700" fill="${BLUE}"/><rect x="-200" y="1290" width="3200" height="700" fill="url(#dB)"/>
- ${cone(620,300)}${cone(1330,360)}${cone(2020,300)}
+ <rect x="-200" width="3800" height="1290" fill="url(#dC)"/><rect x="-200" y="0" width="3800" height="190" fill="${NAVY}"/><rect x="-200" y="150" width="3800" height="14" fill="${INK}"/>
+ <rect x="-200" y="1236" width="3800" height="54" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="-200" y="1290" width="3800" height="700" fill="${BLUE}"/><rect x="-200" y="1290" width="3800" height="700" fill="url(#dB)"/>
+ ${cone(620,300)}${cone(1330,360)}${cone(2020,300)}${cone(2710,330)}
  <g transform="translate(620,0)">${sh(rr(-215,1010,430,270,10),'#fff','#dfe7f3')}<rect x="-240" y="990" width="480" height="36" rx="8" fill="${NAVY}" stroke="${INK}" stroke-width="7"/>${plate(0,1130)}
   <g transform="translate(0,990)"><use href="#trophy" transform="scale(.98)"/></g>
   <rect x="-222" y="490" width="444" height="500" fill="url(#glass)" stroke="${INK}" stroke-width="7"/>${ln("M-180,620 L-100,520","#fff",12,.8)}${ln("M-185,700 L-150,656","#fff",9,.7)}</g>
@@ -43,10 +43,16 @@ h+=`<g id="s1"><rect width="1080" height="1920" fill="#f4f7fc"/><g id="gal">
   <text x="0" y="620" font-size="96" fill="${INK}" style="letter-spacing:40px">賞状</text><rect x="-150" y="740" width="300" height="8" rx="4" fill="#cdbf9c"/><rect x="-150" y="786" width="300" height="8" rx="4" fill="#cdbf9c"/><rect x="-150" y="832" width="300" height="8" rx="4" fill="#cdbf9c"/><rect x="-150" y="878" width="300" height="8" rx="4" fill="#cdbf9c"/><rect x="-150" y="924" width="300" height="8" rx="4" fill="#cdbf9c"/>
   <circle cx="140" cy="985" r="34" fill="none" stroke="#D9342B" stroke-width="7"/><circle cx="140" cy="985" r="20" fill="#D9342B" opacity=".25"/>
   ${spark(-260,520,40,'#FFD654')}${spark(250,1040,30,'#FFD654')}${spark(260,560,22,LOR)}${plate(0,1150)}</g>
+ <g transform="translate(2710,0)"><!-- 選手の体力測定の記録 -->
+  <rect x="-280" y="460" width="560" height="640" rx="14" fill="#020b2c" opacity=".14" transform="translate(16,18)"/>
+  <rect x="-280" y="460" width="560" height="640" rx="14" fill="${NAVY}" stroke="${INK}" stroke-width="9"/><rect x="-250" y="490" width="500" height="580" rx="8" fill="#fff" stroke="${INK}" stroke-width="5"/>
+  <rect x="-250" y="490" width="500" height="80" rx="8" fill="${OR}"/><text x="0" y="530" font-size="36" fill="#fff">選手の体力測定の記録</text>
+  <text x="-210" y="640" font-size="34" fill="${INK}" style="text-anchor:start">握力</text><rect x="-20" y="626" width="150" height="28" rx="14" fill="#e9f0fb"/><rect x="-20" y="626" width="122" height="28" rx="14" fill="${BLUE}"/><text x="190" y="640" font-size="30" fill="${INK}">???</text><text x="-210" y="722" font-size="34" fill="${INK}" style="text-anchor:start">立ち幅跳び</text><rect x="-20" y="708" width="150" height="28" rx="14" fill="#e9f0fb"/><rect x="-20" y="708" width="135" height="28" rx="14" fill="${OR}"/><text x="190" y="722" font-size="30" fill="${INK}">???</text><text x="-210" y="804" font-size="34" fill="${INK}" style="text-anchor:start">反復横跳び</text><rect x="-20" y="790" width="150" height="28" rx="14" fill="#e9f0fb"/><rect x="-20" y="790" width="117" height="28" rx="14" fill="${BLUE}"/><text x="190" y="804" font-size="30" fill="${INK}">???</text><text x="-210" y="886" font-size="34" fill="${INK}" style="text-anchor:start">垂直跳び</text><rect x="-20" y="872" width="150" height="28" rx="14" fill="#e9f0fb"/><rect x="-20" y="872" width="129" height="28" rx="14" fill="${OR}"/><text x="190" y="886" font-size="30" fill="${INK}">???</text><text x="-210" y="968" font-size="34" fill="${INK}" style="text-anchor:start">眼球運動</text><rect x="-20" y="954" width="150" height="28" rx="14" fill="#e9f0fb"/><rect x="-20" y="954" width="111" height="28" rx="14" fill="${BLUE}"/><text x="190" y="968" font-size="30" fill="${INK}">???</text>
+  ${spark(-280,500,36,'#FFD654')}${spark(270,1060,28,'#FFD654')}${plate(0,1150)}</g>
 </g>
 <g id="vis1" ><g transform="scale(1.25)">${visitor('#2b2b3d',LBLUE,1)}</g></g><g id="vis2"><g transform="scale(1.35)">${visitor('#5a3a22',LOR,2)}</g></g>
-${bubble('bb1',300,1085,'これ本物…!?',-60)}${bubble('bb2',720,1050,'デザイン細かい!',90)}${bubble('bb3',330,1085,'近くで見たい!',-80)}
-${pill('hd',540,300,'展示ブース',70,INK,'#fff','#fff')}${T('hd2',540,395,'過去に獲得した賞状・メダルを展示',44,INK,'#fff',10,'')}</g>`;
+${bubble('bb1',300,1085,'これ本物…!?',-60)}${bubble('bb2',720,1050,'デザイン細かい!',90)}${bubble('bb3',330,1085,'近くで見たい!',-80)}${bubble('bb4',720,1050,'この記録すごっ…!',90)}
+${pill('hd',540,300,'展示ブース',70,INK,'#fff','#fff')}${T('hd2',540,395,'賞状・メダルと、選手の身体能力の記録を展示',40,INK,'#fff',10,'')}</g>`;
 // challenge：体力測定の5種目（握力・立ち幅跳び・反復横跳び・垂直跳び・眼球運動テスト）で選手の記録に挑戦
 const ICON={
  grip:`<rect x="-48" y="-70" width="96" height="104" rx="22" fill="#fff" stroke="${INK}" stroke-width="7"/><circle cx="0" cy="-22" r="30" fill="${PALE}" stroke="${INK}" stroke-width="6"/><path d="M0,-22 L16,-38" stroke="${OR}" stroke-width="7" stroke-linecap="round"/>
@@ -69,17 +75,20 @@ let evc='';EVENTS.forEach(([k,name,x,y],i)=>{evc+=`<g id="ev${i}" data-x="${x}" 
   <g class="txt"><rect x="-150" y="102" width="300" height="44" rx="22" fill="${INK}"/><text y="123" font-size="28" fill="#fff">選手の記録：???</text></g></g></g>`;});
 h+=`<g id="s2"><rect width="1080" height="1920" fill="${OR}"/><g id="raysC" transform="translate(540,900)">${rays(14,LOR,.75)}</g><rect width="1080" height="1920" fill="url(#dA)"/><rect width="1080" height="1920" fill="url(#v1)"/>
 ${evc}
-${pill('note',540,1300,'キミの記録は、選手に届くか!?',44,'#fff',INK,INK,640)}
-${T('c1',540,300,'選手の記録に挑戦コーナー',76,'#fff',INK,16)}${T('c2',540,440,'5種目を体験!',124,'#fff',INK,18)}</g>`;
+${pill('note',540,1300,'当日、この5種目を体験できる!',44,'#fff',INK,INK,640)}
+${T('c1',540,300,'選手の記録に、',84,'#fff',INK,16)}${T('c2',540,440,'挑戦してみよう!',112,'#fff',INK,18)}</g>`;
 h+=endCard(3,`<use href="#trophy" transform="translate(545,1690) scale(.5)"/>`);
 h=h.replace(/<\/g>$/, `${T('t4x',540,395,'トロフィーも、メダルも、選手も',52,INK,'#fff',12,'')}${T('t4y',540,500,'ホンモノに会おう!',104,OR,'#fff',20,INK)}</g>`);
 function s3(u){renderEnd(u);A('st4','display','none');pop('t4x',u,.02);pop('t4y',u,.12,.32);}
 function s0(u){const on=u<.5?0:(u<.58?1:(u<.66?.25:1));A('coneA','opacity',on);A('trA','transform','translate(540,1500)');A('trD','transform','translate(540,1500)');A('trD','opacity',1-on*.97);
  A('spA','opacity',u<.7?0:.5+.5*Math.sin(u*9));document.querySelectorAll('#s0 .star').forEach((s,i)=>s.setAttribute('opacity',.3+.6*Math.abs(Math.sin(u*5+i))));
  pop('a1',u,.85);pop('a2',u,1.0,.32);}
-function s1(u){const sc=80+eio(u/4.2)*1470;A('gal','transform',`translate(${-sc},0)`);
+function s1(u){   // 展示物ごとに少し止まりながら横へ移動（トロフィー→メダル→賞状→記録）
+  const K=[[0,80],[.5,80],[1.0,790],[1.5,790],[2.0,1480],[2.5,1480],[3.0,2170],[4.0,2170]];
+  let sc=2170;for(let k=0;k<K.length-1;k++){const [t0,a]=K[k],[t1,b]=K[k+1];if(u>=t0&&u<=t1){sc=lerp(a,b,eio((u-t0)/(t1-t0)));break;}}
+  A('gal','transform',`translate(${-sc},0)`);
  A('vis1','transform',`translate(210,${1560+6*Math.sin(u*3)}) rotate(${2*Math.sin(u*2)})`);A('vis2','transform',`translate(860,${1590+6*Math.sin(u*3+1)}) rotate(${-2*Math.sin(u*2+1)})`);
- pop('bb1',u,.35,.25,1.5);pop('bb2',u,1.7,.25,2.95);pop('bb3',u,3.05,.25,4.1);pop('hd',u,.1);pop('hd2',u,.25);}
+ pop('bb1',u,.1,.22,.75);pop('bb2',u,1.05,.22,1.75);pop('bb3',u,2.05,.22,2.75);pop('bb4',u,3.05,.22);pop('hd',u,.1);pop('hd2',u,.25);}
 function s2(u){A('raysC','transform',`translate(540,900) rotate(${u*14})`);
  EVENTS.forEach((_,i)=>{pop('ev'+i,u,.3+i*.12,.3);const g=$('ev'+i);if(u>.3+i*.12+.3)g.setAttribute('transform',`translate(${g.dataset.x},${+g.dataset.y+6*Math.sin(u*4+i)}) rotate(${1.5*Math.sin(u*3+i*2)})`);});
  pop('note',u,1.15);pop('c1',u,.05);pop('c2',u,.18,.32);}
