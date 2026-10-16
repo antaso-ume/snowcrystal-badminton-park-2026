@@ -36,12 +36,17 @@ h+=`<g id="s1"><rect width="1080" height="1920" fill="#f4f7fc"/><g id="gal">
  <g transform="translate(1330,0)"><rect x="-290" y="470" width="580" height="580" rx="14" fill="#020b2c" opacity=".14" transform="translate(16,18)"/>
   <rect x="-290" y="470" width="580" height="580" rx="14" fill="${NAVY}" stroke="${INK}" stroke-width="9"/><rect x="-250" y="510" width="500" height="500" rx="6" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="-250" y="510" width="500" height="500" fill="url(#dC)"/>
   <use href="#msilver" transform="translate(-155,830) scale(.78)"/><use href="#mbronze" transform="translate(155,830) scale(.78)"/><use href="#mgold" transform="translate(0,790) scale(.95)"/>${plate(0,1130)}</g>
- <g transform="translate(2020,0)"><circle cx="0" cy="770" r="280" fill="#fff" stroke="${INK}" stroke-width="9"/><circle cx="0" cy="770" r="280" fill="url(#dC)"/><circle cx="0" cy="770" r="246" fill="none" stroke="#FFD654" stroke-width="10" stroke-dasharray="4 26" stroke-linecap="round"/>
-  <use href="#mgold" transform="translate(0,850) scale(1.75)"/>${spark(-190,640,40,'#FFD654')}${spark(180,960,30,'#FFD654')}${spark(200,600,22,LOR)}${plate(0,1130)}</g>
+ <g transform="translate(2020,0)"><!-- 賞状 -->
+  <rect x="-250" y="470" width="500" height="620" rx="14" fill="#020b2c" opacity=".14" transform="translate(16,18)"/>
+  <rect x="-250" y="470" width="500" height="620" rx="14" fill="#C9962B" stroke="${INK}" stroke-width="9"/><rect x="-222" y="498" width="444" height="564" rx="6" fill="#FFFBEF" stroke="${INK}" stroke-width="5"/>
+  <rect x="-202" y="518" width="404" height="524" rx="4" fill="none" stroke="#E2C77A" stroke-width="6"/>
+  <text x="0" y="620" font-size="96" fill="${INK}" style="letter-spacing:40px">賞状</text><rect x="-150" y="740" width="300" height="8" rx="4" fill="#cdbf9c"/><rect x="-150" y="786" width="300" height="8" rx="4" fill="#cdbf9c"/><rect x="-150" y="832" width="300" height="8" rx="4" fill="#cdbf9c"/><rect x="-150" y="878" width="300" height="8" rx="4" fill="#cdbf9c"/><rect x="-150" y="924" width="300" height="8" rx="4" fill="#cdbf9c"/>
+  <circle cx="140" cy="985" r="34" fill="none" stroke="#D9342B" stroke-width="7"/><circle cx="140" cy="985" r="20" fill="#D9342B" opacity=".25"/>
+  ${spark(-260,520,40,'#FFD654')}${spark(250,1040,30,'#FFD654')}${spark(260,560,22,LOR)}${plate(0,1150)}</g>
 </g>
 <g id="vis1" ><g transform="scale(1.25)">${visitor('#2b2b3d',LBLUE,1)}</g></g><g id="vis2"><g transform="scale(1.35)">${visitor('#5a3a22',LOR,2)}</g></g>
 ${bubble('bb1',300,1085,'これ本物…!?',-60)}${bubble('bb2',720,1050,'デザイン細かい!',90)}${bubble('bb3',330,1085,'近くで見たい!',-80)}
-${pill('hd',540,300,'展示ブース',70,INK,'#fff','#fff')}${T('hd2',540,395,'法政大学・Snow Crystal の実物を展示',40,INK,'#fff',10,'')}</g>`;
+${pill('hd',540,300,'展示ブース',70,INK,'#fff','#fff')}${T('hd2',540,395,'過去に獲得した賞状・メダルを展示',44,INK,'#fff',10,'')}</g>`;
 // challenge：体力測定の5種目（握力・立ち幅跳び・反復横跳び・垂直跳び・眼球運動テスト）で選手の記録に挑戦
 const ICON={
  grip:`<rect x="-48" y="-70" width="96" height="104" rx="22" fill="#fff" stroke="${INK}" stroke-width="7"/><circle cx="0" cy="-22" r="30" fill="${PALE}" stroke="${INK}" stroke-width="6"/><path d="M0,-22 L16,-38" stroke="${OR}" stroke-width="7" stroke-linecap="round"/>
@@ -64,8 +69,8 @@ let evc='';EVENTS.forEach(([k,name,x,y],i)=>{evc+=`<g id="ev${i}" data-x="${x}" 
   <g class="txt"><rect x="-150" y="102" width="300" height="44" rx="22" fill="${INK}"/><text y="123" font-size="28" fill="#fff">選手の記録：???</text></g></g></g>`;});
 h+=`<g id="s2"><rect width="1080" height="1920" fill="${OR}"/><g id="raysC" transform="translate(540,900)">${rays(14,LOR,.75)}</g><rect width="1080" height="1920" fill="url(#dA)"/><rect width="1080" height="1920" fill="url(#v1)"/>
 ${evc}
-${pill('note',540,1300,'選手の体力測定の記録も展示!',44,'#fff',INK,INK,640)}
-${T('c1',540,300,'現役選手の記録に、',84,'#fff',INK,16)}${T('c2',540,440,'キミも挑戦!',124,'#fff',INK,18)}</g>`;
+${pill('note',540,1300,'キミの記録は、選手に届くか!?',44,'#fff',INK,INK,640)}
+${T('c1',540,300,'選手の記録に挑戦コーナー',76,'#fff',INK,16)}${T('c2',540,440,'5種目を体験!',124,'#fff',INK,18)}</g>`;
 h+=endCard(3,`<use href="#trophy" transform="translate(545,1690) scale(.5)"/>`);
 h=h.replace(/<\/g>$/, `${T('t4x',540,395,'トロフィーも、メダルも、選手も',52,INK,'#fff',12,'')}${T('t4y',540,500,'ホンモノに会おう!',104,OR,'#fff',20,INK)}</g>`);
 function s3(u){renderEnd(u);A('st4','display','none');pop('t4x',u,.02);pop('t4y',u,.12,.32);}
