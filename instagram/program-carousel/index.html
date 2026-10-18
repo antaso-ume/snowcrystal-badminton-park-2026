@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@500;800;900&display=block">
+<title>当日のプログラム カルーセル</title>
+<script src="lib.js"></script>
+<style>
+ body{background:#2b2f3a!important;display:flex;flex-direction:column;align-items:center;gap:40px;padding:40px 0}
+ svg.slide{width:1080px;height:1350px}
+ text.l{text-anchor:start} text.r{text-anchor:end}
+ text.m{font-weight:800}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+<div id="root"></div>
+<script>
+/* ============================================================
+   当日のプログラム紹介カルーセル（1080×1350 / 8枚）
+   ・文言を変えるときは下の各スライド関数の文字列を編集
+   ・書き出し: python render.py → out/01.png 〜 08.png
+   ============================================================ */
+const W=1080,H=1350,TOTAL=8;
+document.getElementById('defs').innerHTML=DEFS();
+
+// ---------- 共通パーツ ----------
+// 複数行テキスト
+function P(x,y,lines,size,fill,lh=1.5,cls='m'){return lines.map((s,i)=>`<text class="${cls}" x="${x}" y="${y+i*size*lh}" font-size="${size}" fill="${fill}">${s}</text>`).join('');}
+// 縁取りつき見出し（T と同じ見た目・位置指定版）
+function TT(x,y,str,size,fill,stroke='#fff',sw=16){return `<g transform="translate(${x},${y})"><text font-size="${size}" fill="${INK}" stroke="${INK}" stroke-width="${sw}" y="${Math.round(size*.085)}">${str}</text><text font-size="${size}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}">${str}</text></g>`;}
+// 角丸カード（右下に紺の影）
+function card(x,y,w,h,fill='#fff',r=34,sw=7){return `<rect x="${x+10}" y="${y+12}" width="${w}" height="${h}" rx="${r}" fill="${INK}"/><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}" stroke="${INK}" stroke-width="${sw}"/>`;}
+// 小さいラベル
+function tag(x,y,str,size,bg,fg,stk=INK){const w=str.length*size*1.02+size*1.2,h=size*1.7;return `<g transform="translate(${x},${y})"><rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" rx="${h/2}" fill="${bg}" stroke="${stk}" stroke-width="6"/><text font-size="${size}" fill="${fg}">${str}</text></g>`;}
+const tagW=(str,size)=>str.length*size*1.02+size*1.2;
+// 横に並べるラベル
+function tags(cx,y,list,size){const gap=18;const ws=list.map(t=>tagW(t[0],size));let x=cx-(ws.reduce((a,b)=>a+b,0)+gap*(list.length-1))/2;return list.map((t,i)=>{const s=tag(x+ws[i]/2,y,t[0],size,t[1],t[2]);x+=ws[i]+gap;return s;}).join('');}
+// 背景（白〜うす青＋ドット）
+const bgLight=()=>`<rect width="${W}" height="${H}" fill="url(#g4)"/><rect width="${W}" height="${H}" fill="url(#dC)"/>`;
+// 上の帯：イベント名とページ番号
+function header(n){return `<rect x="0" y="0" width="${W}" height="96" fill="${INK}"/><text x="60" y="50" class="l" font-size="34" fill="#fff">バドミントンパーク<tspan fill="${LOR}">2026</tspan></text><text x="1020" y="50" class="r" font-size="32" fill="#9fbaf0">${n} / ${TOTAL}</text>`;}
+// 情報の行（ラベル＋内容）
+function info(x,y,w,label,val,col){return `<rect x="${x}" y="${y}" width="${w}" height="92" rx="26" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="${x}" y="${y}" width="150" height="92" rx="26" fill="${col}" stroke="${INK}" stroke-width="6"/><text x="${x+75}" y="${y+46}" font-size="34" fill="#fff">${label}</text><text x="${x+180}" y="${y+46}" class="l m" font-size="36" fill="${INK}">${val}</text>`;}
+const slide=(body)=>`<svg class="slide" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+const use=(id,x,y,s=1,rot=0)=>`<use href="#${id}" transform="translate(${x},${y}) rotate(${rot}) scale(${s})"/>`;
+const g=(x,y,s,inner,flip=false,rot=0)=>`<g transform="translate(${x},${y}) rotate(${rot}) scale(${flip?-s:s},${s})">${inner}</g>`;
+
+// パーク紹介スライドの共通レイアウト
+function park(n,o){
+ return slide(`${bgLight()}${header(n)}
+  <rect x="0" y="96" width="${W}" height="330" fill="${o.col}"/><rect x="0" y="96" width="${W}" height="330" fill="url(#dA)"/><rect x="0" y="420" width="${W}" height="10" fill="${INK}"/>
+  ${tags(540,170,o.badges,34)}
+  ${o.title.length==1?TT(540,300,o.title[0],o.ts||104,'#fff',INK,18):TT(540,262,o.title[0],70,'#fff',INK,16)+TT(540,360,o.title[1],o.ts||104,'#fff',INK,18)}
+  <g>${o.illus}</g>
+  ${card(70,905,940,o.descH||200)}${P(540,965,o.desc,42,INK,1.55)}${o.note?`<text x="540" y="${965+o.desc.length*65+4}" font-size="30" fill="${o.col==OR?DOR:BLUE}" class="m">${o.note}</text>`:''}
+  ${info(70,1140,940,o.info[0][0],o.info[0][1],o.col)}${info(70,1246,940,o.info[1][0],o.info[1][1],o.col)}`);}
+
+// ---------- 1. 表紙 ----------
+function s1(){
+ const parks=[['トップ選手との交流パーク',BLUE],['理学療法講習パーク',OR],['お悩み相談パーク',LBLUE],['プラスワンパーク',LOR]];
+ let chips='';parks.forEach((p,i)=>{const y=860+i*92;chips+=`<rect x="200" y="${y-38}" width="680" height="76" rx="38" fill="#fff" stroke="${INK}" stroke-width="7"/><circle cx="246" cy="${y}" r="20" fill="${p[1]}" stroke="${INK}" stroke-width="5"/><text x="560" y="${y}" font-size="40" fill="${INK}">${p[0]}</text>`;});
+ return slide(`<rect width="${W}" height="${H}" fill="url(#g2)"/><g transform="translate(540,620)">${rays(16,'#fff',.07)}</g><rect width="${W}" height="${H}" fill="url(#dA)"/>
+  <text x="540" y="110" font-size="38" fill="#fff">Snow Crystal × 法政大学バドミントン部</text>
+  ${tag(540,200,'バドミントンパーク2026',46,INK,'#fff','#fff')}
+  ${TT(540,390,'当日のプログラム',118,'#fff',INK,20)}
+  ${TT(540,560,'ぜんぶ見せます!',124,'#FFD654',INK,22)}
+  ${use('shuttle',110,215,.72,-28)}${g(975,860,.36,racket(),false,22)}
+  <text x="540" y="745" font-size="40" fill="#fff">4つのパークを一気に紹介！</text>
+  ${chips}
+  <g transform="translate(150,1270) scale(.42)">${trophy()}</g>
+  <g transform="translate(870,1268)"><rect x="-140" y="-40" width="280" height="80" rx="40" fill="${OR}" stroke="${INK}" stroke-width="7"/><text font-size="40" fill="#fff" x="-14">スワイプ</text><path d="M84,-16 L108,0 L84,16 Z" fill="#fff"/></g>`);}
+
+// ---------- 2. 全体像（4つのパーク＋会場マップ） ----------
+function s2(){
+ const C=[['トップ選手との','交流パーク','要予約',BLUE],['理学療法','講習パーク','要予約',OR],['お悩み相談','パーク','予約不要',LBLUE],['プラスワン','パーク','予約不要',LOR]];
+ let cards='';C.forEach((c,i)=>{const x=70+(i%2)*480,y=300+Math.floor(i/2)*250;
+  cards+=card(x,y,460,220,'#fff',30)+`<rect x="${x}" y="${y}" width="22" height="220" rx="11" fill="${c[3]}"/>`
+   +tag(x+110,y+48,c[2],28,c[2]=='要予約'?OR:BLUE,'#fff')
+   +`<text x="${x+245}" y="${y+112}" font-size="40" fill="${INK}">${c[0]}</text><text x="${x+245}" y="${y+168}" font-size="48" fill="${c[3]==LBLUE?BLUE:c[3]==LOR?DOR:c[3]}">${c[1]}</text>`;});
+ // 会場マップ（サイトと同じ配置）
+ const mx=70,my=860,mw=940,mh=420;
+ const zone=(x,y,w,h,col,label,size=32,fg='#fff')=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="${col}" stroke="${INK}" stroke-width="5"/><text x="${x+w/2}" y="${y+h/2}" font-size="${size}" fill="${fg}">${label}</text>`;
+ const court=(x,y,w,h,col,label)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${col}" stroke="${INK}" stroke-width="5"/><rect x="${x+16}" y="${y+16}" width="${w-32}" height="${h-32}" fill="none" stroke="#fff" stroke-width="4" opacity=".8"/><line x1="${x+16}" y1="${y+h/2}" x2="${x+w-16}" y2="${y+h/2}" stroke="#fff" stroke-width="7"/><rect x="${x+w/2-(label.length*15+20)}" y="${y+h/2-26}" width="${label.length*30+40}" height="52" rx="26" fill="#fff" stroke="${INK}" stroke-width="4"/><text x="${x+w/2}" y="${y+h/2}" font-size="28" fill="${INK}">${label}</text>`;
+ return slide(`${bgLight()}${header(2)}
+  ${TT(540,190,'4つのパークで遊びつくそう!',72,BLUE,'#fff',16)}
+  ${cards}
+  <text x="${mx}" y="${my-24}" class="l" font-size="36" fill="${INK}">会場マップ</text><text x="${mx+mw}" y="${my-24}" class="r m" font-size="26" fill="#5a6b8c">※配置は変更になる場合があります</text>
+  ${card(mx,my,mw,mh,PALE,26,6)}
+  ${zone(mx+24,my+24,170,mh-48,NAVY,'',30)}<text x="${mx+109}" y="${my+mh/2-50}" font-size="32" fill="#fff">ステージ</text><text x="${mx+109}" y="${my+mh/2+10}" font-size="28" fill="${LOR}">お悩み</text><text x="${mx+109}" y="${my+mh/2+50}" font-size="28" fill="${LOR}">相談</text>
+  ${zone(mx+214,my+24,mw-238,62,LOR,'アイテムバドミントン',30)}
+  ${court(mx+214,my+104,226,206,OR,'理学療法')}${court(mx+456,my+104,226,206,BLUE,'交流')}${court(mx+698,my+104,218,206,BLUE,'交流')}
+  ${zone(mx+214,my+328,342,68,LOR,'ごちゃまぜバドミントン',28)}${zone(mx+574,my+328,342,68,LOR,'展示ブース',30)}`);}
+
+// ---------- 3. トップ選手との交流パーク ----------
+function s3(){
+ const il=`<rect x="70" y="470" width="940" height="400" rx="30" fill="${BLUE}" stroke="${INK}" stroke-width="7"/><rect x="70" y="470" width="940" height="400" rx="30" fill="url(#dB)"/>
+  <rect x="110" y="800" width="860" height="10" fill="#fff" opacity=".7"/><rect x="532" y="560" width="16" height="250" fill="#fff" stroke="${INK}" stroke-width="5"/><rect x="500" y="560" width="80" height="14" fill="${INK}" opacity=".0"/>
+  ${g(300,845,.56,figure(1,OR))}${g(780,845,.56,figure(0,'#fff'),true)}
+  ${use('shuttle',540,540,.5,120)}
+  <g transform="translate(160,640)"><rect x="-90" y="-34" width="180" height="68" rx="34" fill="#fff" stroke="${INK}" stroke-width="5"/><text font-size="32" fill="${OR}">キミ</text></g>
+  <g transform="translate(920,640)"><rect x="-90" y="-34" width="180" height="68" rx="34" fill="${INK}" stroke="#fff" stroke-width="5"/><text font-size="32" fill="#fff">選手</text></g>`;
+ return park(3,{col:BLUE,badges:[['要予約',OR,'#fff'],['30分',"#fff",INK]],title:['トップ選手との','交流パーク'],illus:il,
+  desc:['法政大学・Snow Crystalの選手と一緒に','バドミントン！技術と迫力を間近で体感！'],
+  info:[['場所','中央と右のコート（2面）'],['時間','1時間プログラムの前半 or 後半']]});}
+
+// ---------- 4. 理学療法講習パーク ----------
+function s4(){
+ const il=`<rect x="70" y="470" width="940" height="400" rx="30" fill="#fff3e8" stroke="${INK}" stroke-width="7"/><rect x="70" y="470" width="940" height="400" rx="30" fill="url(#dC)"/>
+  <rect x="110" y="800" width="860" height="40" rx="12" fill="#ffd9b8" stroke="${INK}" stroke-width="5"/>
+  ${g(330,812,.56,figure(2,'#fff',{armUp:true,noRacket:true}))}${g(750,812,.56,figure(4,LBLUE,{armUp:true,noRacket:true}),true)}
+  ${g(540,812,.56,figure(3,OR,{armUp:true,noRacket:true}))}
+  <g transform="translate(200,560)"><rect x="-120" y="-34" width="240" height="68" rx="34" fill="${OR}" stroke="${INK}" stroke-width="5"/><text font-size="30" fill="#fff">理学療法士</text></g>
+  <g transform="translate(900,560)"><rect x="-90" y="-34" width="180" height="68" rx="34" fill="${INK}" stroke="#fff" stroke-width="5"/><text font-size="32" fill="#fff">選手</text></g>
+  <g transform="translate(540,850)"><rect x="-80" y="-30" width="160" height="60" rx="30" fill="#fff" stroke="${INK}" stroke-width="5"/><text font-size="30" fill="${OR}">キミ</text></g>
+  ${spark(450,620,22,'#FFD654')}${spark(680,600,18,'#FFD654')}${spark(160,700,16,LOR)}`;
+ return park(4,{col:OR,badges:[['要予約',INK,'#fff'],['30分','#fff',INK]],title:['理学療法','講習パーク'],illus:il,
+  desc:['理学療法士の指導のもと、選手と一緒に','体を動かして、前後の変化を実感しよう！'],
+  info:[['場所','左のコート'],['担当','Snow Crystalの理学療法士']]});}
+
+// ---------- 5. お悩み相談パーク ----------
+function s5(){
+ const bub=(x,y,str,tail,dark=false)=>{const w=str.length*35+70;return `<g transform="translate(${x},${y})"><path d="M${tail-20},30 L${tail*1.5},78 L${tail+20},30 Z" fill="${dark?INK:'#fff'}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><rect x="${-w/2}" y="-42" width="${w}" height="84" rx="38" fill="${dark?INK:'#fff'}" stroke="${INK}" stroke-width="6"/><text font-size="34" fill="${dark?'#fff':INK}">${str}</text></g>`;};
+ const il=`<rect x="70" y="470" width="940" height="400" rx="30" fill="${PALE}" stroke="${INK}" stroke-width="7"/><rect x="70" y="470" width="940" height="400" rx="30" fill="url(#dC)"/>
+  <rect x="110" y="742" width="860" height="56" fill="${NAVY}" stroke="${INK}" stroke-width="6"/><rect x="110" y="798" width="860" height="40" fill="${OR}" stroke="${INK}" stroke-width="6"/>
+  ${g(300,630,.62,avatar(1,'a51','#fff'))}${g(780,630,.62,avatar(0,'a52',BLUE))}
+  ${bub(330,520,'試合で緊張しちゃう…',-60)}${bub(730,540,'こうしてみよう!',60,true)}
+  <text x="540" y="770" font-size="30" fill="#fff">STAGE</text>`;
+ return park(5,{col:LBLUE,badges:[['予約不要',BLUE,'#fff'],['出入り自由','#fff',INK]],title:['お悩み相談','パーク'],illus:il,
+  desc:['日ごろの悩みを、選手やスタッフに','直接相談できる！'],
+  info:[['場所','ステージ（会場の左側）'],['時間','開催中いつでも参加OK']]});}
+
+// ---------- 6. プラスワンパーク ----------
+function s6(){
+ const box=`<g><rect x="-80" y="-60" width="160" height="130" rx="14" fill="${OR}" stroke="${INK}" stroke-width="7"/><rect x="-80" y="-60" width="160" height="34" rx="10" fill="${LOR}" stroke="${INK}" stroke-width="7"/><rect x="-40" y="-50" width="80" height="14" rx="7" fill="${INK}"/><text y="18" font-size="76" fill="#fff" stroke="${INK}" stroke-width="10">?</text></g>`;
+ const teams=`<g transform="translate(-48,-20) scale(.42)">${avatar(2,'a61',BLUE)}</g><g transform="translate(48,-20) scale(.42)">${avatar(5,'a62',OR)}</g>`;
+ const tenji=`<g transform="translate(-40,80) scale(.33)">${trophy()}</g><g transform="translate(55,-10) scale(.38)"><use href="#mgold"/></g>`;
+ const R=[['アイテムバドミントン',box,['選手はラケット禁止！くじで出た','アイテムで戦う選手に、勝てるかな？']],
+          ['ごちゃまぜバドミントン',teams,['選手も参加者もまぜて2チームで対戦！','ルールは「1球打ったら即交代」']],
+          ['展示ブース',tenji,['選手の賞状・メダルと体力測定の記録を','展示！5種目で選手の記録に挑戦']]];
+ let rows='';R.forEach((r,i)=>{const y=470+i*280;
+  rows+=card(70,y,940,250,'#fff',30)+`<rect x="96" y="${y+25}" width="200" height="200" rx="26" fill="${PALE}" stroke="${INK}" stroke-width="5"/><g transform="translate(196,${y+125})">${r[1]}</g>`
+   +tag(380,y+60,'第'+(i+1)+'弾',26,LOR,'#fff')+`<text x="458" y="${y+60}" class="l" font-size="46" fill="${INK}">${r[0]}</text>`+P(320,y+132,r[2],32,'#3a4a6b',1.5,'l m');});
+ return slide(`${bgLight()}${header(6)}
+  <rect x="0" y="96" width="${W}" height="330" fill="${LOR}"/><rect x="0" y="96" width="${W}" height="330" fill="url(#dA)"/><rect x="0" y="420" width="${W}" height="10" fill="${INK}"/>
+  ${tags(540,170,[['予約不要',BLUE,'#fff'],['出入り自由','#fff',INK]],34)}
+  ${TT(540,265,'プラスワンパーク',104,'#fff',INK,18)}
+  <text x="540" y="380" font-size="38" fill="#fff" stroke="${INK}" stroke-width="10" style="paint-order:stroke">3つの企画を好きなタイミングで楽しめる！</text>
+  ${rows}`);}
+
+// ---------- 7. 1日の流れ ----------
+function s7(){
+ const S=[['第1部','9:30-10:30'],['第2部','10:30-11:30'],['第3部','11:30-12:30'],['第4部','12:30-13:30'],['第5部','13:30-14:30']];
+ let rows='';S.forEach((s,i)=>{const y=420+i*112;
+  rows+=`<rect x="70" y="${y}" width="940" height="92" rx="26" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="70" y="${y}" width="330" height="92" rx="26" fill="${INK}"/><text x="132" y="${y+46}" font-size="30" fill="${LOR}">${s[0]}</text><text x="292" y="${y+46}" font-size="28" fill="#fff">${s[1]}</text>
+  <rect x="420" y="${y+18}" width="265" height="56" rx="28" fill="${BLUE}"/><text x="552" y="${y+46}" font-size="30" fill="#fff">交流パーク</text><text x="707" y="${y+46}" font-size="34" fill="${INK}">⇄</text><rect x="730" y="${y+18}" width="260" height="56" rx="28" fill="${OR}"/><text x="860" y="${y+46}" font-size="30" fill="#fff">理学療法講習</text>`;});
+ return slide(`${bgLight()}${header(7)}
+  ${TT(540,190,'1日の流れ',96,BLUE,'#fff',18)}
+  <text x="540" y="300" font-size="40" fill="${INK}">申し込み時に好きな1時間枠を選んで、</text><text x="540" y="356" font-size="40" fill="${INK}">2つのパークを<tspan fill="${OR}">30分ずつ</tspan>体験！</text>
+  ${rows}
+  ${card(70,995,940,230,'#fff3e8',30)}
+  ${tag(540,1050,'予約時間のほかは…',32,LOR,'#fff')}
+  <text x="540" y="1120" font-size="40" fill="${INK}">お悩み相談パーク・プラスワンパークで</text><text x="540" y="1176" font-size="40" fill="${INK}">自由に遊べる！<tspan font-size="32" fill="${DOR}">（出入り自由・早めの来場も大歓迎）</tspan></text>
+  <text x="540" y="1290" font-size="28" class="m" fill="#5a6b8c">※プログラムは、告知なく変更する可能性があります。</text>`);}
+
+// ---------- 8. まとめ ----------
+function s8(){
+ const row=(y,label,val,sub='')=>`<rect x="110" y="${y}" width="860" height="${sub?120:88}" rx="24" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="110" y="${y}" width="170" height="${sub?120:88}" rx="24" fill="${BLUE}" stroke="${INK}" stroke-width="6"/><text x="195" y="${y+(sub?60:44)}" font-size="34" fill="#fff">${label}</text><text x="310" y="${y+(sub?40:44)}" class="l" font-size="38" fill="${INK}">${val}</text>${sub?`<text x="310" y="${y+86}" class="l m" font-size="28" fill="#5a6b8c">${sub}</text>`:''}`;
+ return slide(`<rect width="${W}" height="${H}" fill="url(#g2)"/><g transform="translate(540,1350)">${rays(18,'#fff',.07)}</g><rect width="${W}" height="${H}" fill="url(#dA)"/>
+  <text x="540" y="100" font-size="36" fill="#fff">Snow Crystal × 法政大学バドミントン部</text>
+  ${TT(540,205,'バドミントンパーク',96,'#fff',INK,18)}${TT(540,335,'2026',150,'#FFD654',INK,22)}
+  ${card(70,440,940,520,PALE,34)}
+  ${row(480,'日時','11月23日（月・祝）9:30〜14:30')}
+  ${row(588,'会場','ヤマトフォーラム','京急線 穴守稲荷駅')}
+  ${row(728,'参加費','4,000円','法政大学バドミントン部オリジナルTシャツ付き')}
+  ${row(868,'対象','中学生')}
+  <g transform="translate(540,1080) rotate(-3)"><rect x="-430" y="-78" width="860" height="156" rx="30" fill="#000" opacity=".25" transform="translate(10,12)"/><rect x="-430" y="-78" width="860" height="156" rx="30" fill="${OR}" stroke="${INK}" stroke-width="8"/>
+   <text y="-28" font-size="40" fill="#fff">10/23(金)〜</text><text y="34" font-size="50" fill="#FFD654" stroke="${INK}" stroke-width="10" style="paint-order:stroke">小学生・高校生も受付開始！</text></g>
+  <g transform="translate(540,1255)"><rect x="-380" y="-46" width="760" height="92" rx="46" fill="#fff" stroke="${INK}" stroke-width="7"/><text font-size="38" fill="${INK}">お申し込みはプロフィールのリンクから</text></g>`);}
+
+document.getElementById('root').innerHTML=[s1(),s2(),s3(),s4(),s5(),s6(),s7(),s8()].join('');
+</script></body></html>
