@@ -25,7 +25,7 @@ const DAYS=[
  ['10/21','水','19:00',OR,[['Instagram投稿','当日のプログラム紹介','4つのパークをぜんぶ見せます！']]],
  ['10/23','金','19:00',BLUE,[['特設サイト','小学生・高校生の受付開始','中学生に加えて受付スタート！'],
                        ['特設サイト','参加選手のプロフィール公開','当日会える選手を紹介！'],
-                       ['ストーリーズ','カウントダウン スタート','法政大学とSnow Crystalがリレーでお届け！']]],
+                       ['Instagram','カウントダウン スタート','法政大学とSnow Crystalがリレーでお届け！']]],
 ];
 document.getElementById('defs').innerHTML=DEFS();
 
@@ -44,7 +44,7 @@ function build(){
    +(d[2]?`<text x="185" y="${y+h/2+92}" font-size="40" fill="#FFD654" stroke="${INK}" stroke-width="8" style="paint-order:stroke">${d[2]}</text>`:'');
   d[4].forEach((it,i)=>{const iy=y+20+i*ITEM+(d[4].length==1?(h-ITEM-40)/2:0);
    if(i>0)body+=`<line x1="330" y1="${iy}" x2="980" y2="${iy}" stroke="#c9d6ee" stroke-width="4" stroke-dasharray="10 10"/>`;
-   body+=tagL(330,iy+42,it[0],26,it[0]=='特設サイト'?NAVY:it[0]=='ストーリーズ'?LOR:OR,'#fff')
+   body+=tagL(330,iy+42,it[0],26,it[0]=='特設サイト'?NAVY:it[0]=='Instagram'?LOR:OR,'#fff')
     +`<text x="330" y="${iy+100}" class="l" font-size="44" fill="${INK}">${it[1]}</text>`
     +`<text x="332" y="${iy+146}" class="l m" font-size="30" fill="#5a6b8c">${it[2]}</text>`;});
   y+=h+60;});
