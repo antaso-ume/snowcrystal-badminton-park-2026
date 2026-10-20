@@ -2026,6 +2026,163 @@
         border: none;
         cursor: pointer;
       }
+
+      /* ---------- 選手のたまり場 ---------- */
+      .tamariba-teaser {
+        margin-top: 24px;
+        padding: 22px 20px;
+        background: #0e1b3d;
+        color: var(--white);
+        border-radius: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+      .tamariba-teaser h3 {
+        margin: 0 0 4px;
+        font-size: 18px;
+        font-weight: 900;
+      }
+      .tamariba-teaser p {
+        margin: 0;
+        font-size: 13px;
+        opacity: 0.9;
+      }
+      .tamariba-btn {
+        min-height: 44px;
+        padding: 0 20px;
+        border: 2px solid var(--white);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--white);
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .tamariba-btn:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .tamariba-link {
+        text-align: center;
+        margin-top: 24px;
+      }
+      .tamariba-link button {
+        background: none;
+        border: none;
+        color: #0a2f8f;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      .org-hero.tm-theme {
+        background: #0e1b3d;
+      }
+      .tm-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        padding: 20px 5% 0;
+      }
+      .tm-nav button {
+        min-height: 40px;
+        padding: 0 14px;
+        border: 2px solid #0a2f8f;
+        border-radius: 999px;
+        background: var(--white);
+        color: #0a2f8f;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .tm-nav button.active {
+        background: #0a2f8f;
+        color: var(--white);
+      }
+      .tm-topic[hidden] {
+        display: none;
+      }
+      .tm-topic {
+        padding: 28px 5% 8px;
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      .tm-eyebrow {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--orange);
+      }
+      .tm-topic h2 {
+        margin: 2px 0 8px;
+        font-size: 24px;
+        font-weight: 900;
+        color: #0a2f8f;
+      }
+      .tm-lead {
+        margin: 0 0 18px;
+        font-size: 14px;
+      }
+      .tm-answers {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      @media (max-width: 400px) {
+        .tm-answers {
+          grid-template-columns: 1fr;
+        }
+      }
+      .tm-answer {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 8px 12px 10px;
+        min-width: 0;
+      }
+      .tm-answer p {
+        margin: 2px 0 0;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a2340;
+      }
+      .tm-who {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 32px;
+        padding: 0;
+        border: none;
+        background: none;
+        color: var(--pc-accent-dark);
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .tm-who:hover {
+        text-decoration: underline;
+      }
+      .tm-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--pc-accent);
+      }
+      .tm-team {
+        font-size: 11px;
+        font-weight: 700;
+        color: #6a7896;
+      }
     </style>
   </head>
   <body>
@@ -2182,6 +2339,13 @@
                 >部について詳しく見る</a
               >
             </div>
+          </div>
+          <div class="tamariba-teaser">
+            <div>
+              <h3>選手のたまり場</h3>
+              <p>プロフィールに書ききれなかった、選手たちの話を集めました</p>
+            </div>
+            <button class="tamariba-btn" onclick="goPage('tamariba')">のぞいてみる</button>
           </div>
         </section>
 
@@ -3136,6 +3300,9 @@
             当日参加する6名の選手です。カードを押すとプロフィールが見られます。
           </p>
           <ul class="player-grid" id="houseiPlayers"></ul>
+          <p class="tamariba-link">
+            <button onclick="goPage('tamariba')">選手のたまり場で、もっと選手を知る</button>
+          </p>
         </section>
 
         <!-- ============ SNS / HP リンク集 ============ -->
@@ -3274,7 +3441,29 @@
             カードを押すとプロフィールが見られます。
           </p>
           <ul class="player-grid" id="scPlayers"></ul>
+          <p class="tamariba-link">
+            <button onclick="goPage('tamariba')">選手のたまり場で、もっと選手を知る</button>
+          </p>
         </section>
+      </div>
+    </section>
+
+    <!-- ============ 選手のたまり場（中身は script の TAMARIBA から作られる） ============ -->
+    <section id="page-tamariba" class="page">
+      <div class="back-home-bar">
+        <button onclick="goPage('home')">&larr; ホームに戻る</button>
+      </div>
+      <div class="org-hero tm-theme">
+        <h1>選手のたまり場</h1>
+        <p>プロフィールに書ききれなかった、選手たちの話</p>
+      </div>
+      <div class="page-container" style="padding-bottom: 48px">
+        <nav class="tm-nav" id="tamaribaNav" aria-label="テーマ"></nav>
+        <div id="tamaribaTopics"></div>
+        <p class="tamariba-link">
+          <button onclick="goPage('housei')">法政大学の選手を見る</button>
+          <button onclick="goPage('scplayers')">Snow Crystal の選手を見る</button>
+        </p>
       </div>
     </section>
 
@@ -4326,9 +4515,130 @@
       }
       renderPlayerGrid("housei", "houseiPlayers");
       renderPlayerGrid("sc", "scPlayers");
+
+      // ============ 選手のたまり場 ============
+      // 「全員に聞きました」：1つの質問に対する全選手の答え。player は PLAYERS の id
+      // 新しいテーマを足すときは、この配列に1つ追加する（上に足したものが上に出る）
+      var TAMARIBA = [
+        {
+          id: "routine",
+          q: "試合前のルーティーンは？",
+          lead: "いちばん多かったのは「音楽を聴く」で4人。トイレ派、ストレッチ派、そして食べ物派も。",
+          answers: [
+            ["h1", "トイレに行く"],
+            ["h2", "手を洗う"],
+            ["h3", "音楽を聴く"],
+            ["h4", "昼寝をすること"],
+            ["h5", "音楽を聴く"],
+            ["h6", "音楽を聴きながらストレッチ"],
+            ["s1", "トイレに行く。とっても落ち着く。"],
+            ["s2", "ミートパスタとみかんゼリーを食べる"],
+            ["s3", "談笑"],
+            ["s4", "試合直前の抱え込みジャンプ"],
+            ["s5", "腕立て"],
+            ["s6", "シューズの「タン」（ひもの下のベロ）を整える。あとは前屈"],
+            ["s7", "特にない。けど大切な試合で、エネルギーが欲しいときはコーラを飲む"],
+            ["s8", "肩のストレッチ"],
+            ["s9", "音楽を聴く"],
+            ["s10", "特になし"],
+            ["s11", "ラケットを2本持って素振り"],
+            ["s12", "すき家を食べる"],
+            ["s13", "瞑想"]
+          ]
+        },
+        {
+          id: "dream",
+          q: "子どもの頃の夢は？",
+          lead: "法政大学の3人は子どもの頃から「バドミントン選手」。Snow Crystal では「プロ野球選手」が3人いました。",
+          answers: [
+            ["h1", "バドミントン選手"],
+            ["h2", "自衛隊"],
+            ["h3", "バドミントン選手"],
+            ["h4", "バドミントン選手"],
+            ["h5", "スポーツ選手"],
+            ["h6", "消防士"],
+            ["s1", "プロ野球選手"],
+            ["s2", "プロ野球選手"],
+            ["s4", "仮面ライダー"],
+            ["s5", "サッカー選手"],
+            ["s6", "スポーツメーカーで製品開発"],
+            ["s7", "一本釣りのマグロ漁師"],
+            ["s8", "プロ野球選手"],
+            ["s9", "パティシエ（今もです）"],
+            ["s10", "警察官、消防士"],
+            ["s11", "料理人"],
+            ["s13", "ロボット設計者"]
+          ]
+        },
+        {
+          id: "gear",
+          q: "道具のこだわりは？",
+          lead: "グリップにこだわる人が6人。太さ、巻き方、手ざわりまで、人それぞれです。",
+          answers: [
+            ["h1", "ヨネックスのデコボコグリップ"],
+            ["h2", "感覚の良いものをずっと使う"],
+            ["h3", "ガットの色（青）"],
+            ["h4", "グリップに段差ができるように巻く"],
+            ["h5", "特にないです"],
+            ["h6", "定期的にグリップの色を変える"],
+            ["s1", "実はグリップを削って細くしています。ソックスは絶対5本指。何より眼鏡にとってもこだわり"],
+            ["s2", "物にこだわるレベルに達していません"],
+            ["s3", "重いラケットが好き"],
+            ["s4", "特になし。使いやすければ何でもOK"],
+            ["s6", "本当にない。今後こだわっていきたいとは思っている"],
+            ["s7", "シューズはヨネックス！"],
+            ["s8", "グリップ。元グリップの六角形が感じられないとやる気にならない"],
+            ["s9", "シューズの靴底に、ミズノのインソールを入れています"],
+            ["s10", "グリップの太さ"],
+            ["s11", "シューズのインソール。高校のときはオーダーメイドを使っていました"],
+            ["s13", "弘法筆を選ばず"]
+          ]
+        }
+      ];
+
+      function renderTamariba() {
+        var e = escapeHtml;
+        var nav = TAMARIBA.map(function (t) {
+          return '<button type="button" data-tm="' + t.id + '" onclick="showTopic(\'' + t.id + '\')">' + e(t.q) + "</button>";
+        }).join("");
+        var topics = TAMARIBA.map(function (t) {
+          var items = t.answers.map(function (a) {
+            var p = findPlayer(a[0]);
+            if (!p) return "";
+            return (
+              '<li class="tm-answer team-' + p.team + '">' +
+              '<button type="button" class="tm-who" onclick="goPlayer(\'' + p.id + '\')">' +
+              '<span class="tm-dot" aria-hidden="true"></span>' + e(p.name) +
+              '<span class="tm-team">' + (p.team === "housei" ? "法政" : "SC") + "</span></button>" +
+              "<p>" + e(a[1]) + "</p></li>"
+            );
+          }).join("");
+          return (
+            '<section class="tm-topic" id="tm-' + t.id + '">' +
+            '<p class="tm-eyebrow">全員に聞きました</p>' +
+            "<h2>" + e(t.q) + "</h2>" +
+            '<p class="tm-lead">' + e(t.lead) + "</p>" +
+            '<ul class="tm-answers">' + items + "</ul></section>"
+          );
+        }).join("");
+        document.getElementById("tamaribaNav").innerHTML = nav;
+        document.getElementById("tamaribaTopics").innerHTML = topics;
+        showTopic(TAMARIBA[0].id);
+      }
+      // テーマのボタンを押すと、そのテーマだけを表示する
+      function showTopic(id) {
+        document.querySelectorAll(".tm-topic").forEach(function (el) {
+          el.hidden = el.id !== "tm-" + id;
+        });
+        document.querySelectorAll(".tm-nav button").forEach(function (b) {
+          b.classList.toggle("active", b.getAttribute("data-tm") === id);
+          b.setAttribute("aria-pressed", b.getAttribute("data-tm") === id ? "true" : "false");
+        });
+      }
+      renderTamariba();
       window.addEventListener("DOMContentLoaded", function () {
         var initial = (location.hash || "").replace("#", "");
-        var valid = ["home", "apply", "snowcrystal", "housei", "scplayers"];
+        var valid = ["home", "apply", "snowcrystal", "housei", "scplayers", "tamariba"];
         if (initial.indexOf("player-") === 0 && findPlayer(initial.slice(7))) {
           goPlayer(initial.slice(7));
           return;
