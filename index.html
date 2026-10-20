@@ -2143,10 +2143,40 @@
           grid-template-columns: 1fr;
         }
       }
+      .tm-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 22px 0 10px;
+        font-size: 15px;
+        font-weight: 900;
+        color: var(--pc-accent-dark);
+      }
       .tm-answer {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
         background: var(--white);
         border-radius: 12px;
-        padding: 8px 12px 10px;
+        padding: 10px 12px;
+        min-width: 0;
+      }
+      .tm-face {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: var(--pc-sky);
+        border: 2px solid var(--pc-accent);
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 900;
+        object-fit: cover;
+      }
+      .tm-body {
         min-width: 0;
       }
       .tm-answer p {
@@ -2159,7 +2189,7 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        min-height: 32px;
+        min-height: 28px;
         padding: 0;
         border: none;
         background: none;
@@ -4602,23 +4632,30 @@
           return '<button type="button" data-tm="' + t.id + '" onclick="showTopic(\'' + t.id + '\')">' + e(t.q) + "</button>";
         }).join("");
         var topics = TAMARIBA.map(function (t) {
-          var items = t.answers.map(function (a) {
-            var p = findPlayer(a[0]);
-            if (!p) return "";
-            return (
-              '<li class="tm-answer team-' + p.team + '">' +
-              '<button type="button" class="tm-who" onclick="goPlayer(\'' + p.id + '\')">' +
-              '<span class="tm-dot" aria-hidden="true"></span>' + e(p.name) +
-              '<span class="tm-team">' + (p.team === "housei" ? "法政" : "SC") + "</span></button>" +
-              "<p>" + e(a[1]) + "</p></li>"
-            );
+          // 法政大学 → Snow Crystal の順に、チームごとにまとめる
+          var groups = [["housei", "法政大学"], ["sc", "Snow Crystal"]];
+          var items = groups.map(function (g) {
+            var list = t.answers.map(function (a) {
+              var p = findPlayer(a[0]);
+              if (!p || p.team !== g[0]) return "";
+              var face = p.photo
+                ? '<img class="tm-face" src="' + e(p.photo) + '" alt="" />'
+                : '<span class="tm-face" aria-hidden="true">' + e(p.name.charAt(0)) + "</span>";
+              return (
+                '<li class="tm-answer team-' + p.team + '">' + face +
+                '<div class="tm-body"><button type="button" class="tm-who" onclick="goPlayer(\'' + p.id + '\')">' + e(p.name) + "</button>" +
+                "<p>" + e(a[1]) + "</p></div></li>"
+              );
+            }).join("");
+            if (!list) return "";
+            return '<h3 class="tm-group team-' + g[0] + '"><span class="tm-dot" aria-hidden="true"></span>' + g[1] + '</h3><ul class="tm-answers">' + list + "</ul>";
           }).join("");
           return (
             '<section class="tm-topic" id="tm-' + t.id + '">' +
             '<p class="tm-eyebrow">全員に聞きました</p>' +
             "<h2>" + e(t.q) + "</h2>" +
             '<p class="tm-lead">' + e(t.lead) + "</p>" +
-            '<ul class="tm-answers">' + items + "</ul></section>"
+            items + "</section>"
           );
         }).join("");
         document.getElementById("tamaribaNav").innerHTML = nav;
