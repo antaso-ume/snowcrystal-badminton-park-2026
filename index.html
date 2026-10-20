@@ -1563,6 +1563,469 @@
       .site-footer p {
         margin: 4px 0;
       }
+
+      /* ---------- 選手紹介（カード型） ---------- */
+      /* チームごとの色：法政はオレンジ、Snow Crystal は青 */
+      .team-housei {
+        --pc-accent: #f47216;
+        --pc-accent-dark: #b84e0b;
+        --pc-sky: #2b5bb0;
+        --pc-stripe: rgba(244, 114, 22, 0.35);
+        --pc-label: #f9b98a;
+      }
+      .team-sc {
+        --pc-accent: #2e8be8;
+        --pc-accent-dark: #0558ab;
+        --pc-sky: #4f8fd6;
+        --pc-stripe: rgba(255, 255, 255, 0.18);
+        --pc-label: #8fc2f5;
+      }
+      .players-lead {
+        text-align: center;
+        font-size: 14px;
+        margin: -10px 0 24px;
+      }
+      /* 一覧のミニカード（2列） */
+      .player-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+      }
+      @media (min-width: 701px) {
+        .player-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          max-width: 760px;
+        }
+      }
+      .mini-card {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+        padding: 6px;
+        background: #0e1b3d;
+        border: 2px solid var(--pc-accent);
+        border-radius: 12px;
+        color: var(--white);
+        font-family: inherit;
+        text-align: left;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(1, 30, 90, 0.25);
+        transition: transform 0.15s ease;
+      }
+      .mini-card:hover {
+        transform: translateY(-3px);
+      }
+      .mini-card-name {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 30px;
+        padding: 0 6px;
+        background: var(--pc-accent-dark);
+        border-radius: 4px;
+        font-size: 15px;
+        font-weight: 900;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .mini-card-photo {
+        position: relative;
+        height: 170px;
+        border-radius: 4px;
+        overflow: hidden;
+        background: var(--pc-sky);
+      }
+      .mini-card-badge {
+        position: absolute;
+        left: 6px;
+        top: 6px;
+        z-index: 1;
+        background: var(--pc-accent-dark);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 999px;
+      }
+      .mini-card-foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 4px;
+        padding: 0 2px 2px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--pc-label);
+      }
+      .mini-card-foot svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        stroke: var(--pc-accent);
+      }
+      /* 写真がないときの表示（名字の1文字目）。写真を用意したら data の photo に画像パスを入れる */
+      .pc-photo-stripe {
+        position: absolute;
+        right: -50px;
+        top: 20px;
+        width: 220px;
+        height: 34px;
+        background: var(--pc-stripe);
+        transform: rotate(-24deg);
+      }
+      .pc-photo-stripe.thin {
+        top: 70px;
+        height: 14px;
+      }
+      .pc-initial {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 72px;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.85);
+      }
+      .pc-photo-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* 選手詳細：カード */
+      .player-detail-top {
+        background: #0e1b3d;
+        padding: 20px 16px 30px;
+        display: flex;
+        justify-content: center;
+      }
+      .player-card {
+        width: 100%;
+        max-width: 350px;
+        aspect-ratio: 5 / 7;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px;
+        background: #0e1b3d;
+        border: 3px solid var(--pc-accent);
+        border-radius: 18px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+        color: var(--white);
+      }
+      .pc-head {
+        position: relative;
+        height: 40px;
+        display: flex;
+        align-items: center;
+      }
+      .pc-mark {
+        position: absolute;
+        left: 0;
+        top: -4px;
+        z-index: 1;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--pc-accent);
+        border: 3px solid #0e1b3d;
+        box-shadow: 0 0 0 2px var(--pc-accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .pc-namebar {
+        margin-left: 30px;
+        flex: 1;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-left: 28px;
+        background: var(--pc-accent-dark);
+        clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .pc-name {
+        font-size: 18px;
+        font-weight: 900;
+      }
+      .pc-nick {
+        font-size: 11px;
+        font-weight: 700;
+        opacity: 0.9;
+      }
+      .pc-photo {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        border-radius: 6px;
+        overflow: hidden;
+        background: var(--pc-sky);
+        border: 2px solid var(--pc-accent-dark);
+      }
+      .pc-photo .pc-initial {
+        font-size: 120px;
+        padding-bottom: 70px;
+      }
+      .pc-style {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        z-index: 1;
+        background: rgba(14, 27, 61, 0.8);
+        font-size: 13px;
+        font-weight: 900;
+        padding: 2px 10px;
+        border-radius: 999px;
+      }
+      .pc-intro {
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px 10px;
+        background: rgba(255, 255, 255, 0.93);
+        border-radius: 6px;
+        color: #1a2340;
+      }
+      .pc-sub {
+        align-self: flex-start;
+        background: var(--pc-accent-dark);
+        color: var(--white);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 1px 8px;
+        border-radius: 3px;
+      }
+      .pc-intro p {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.55;
+      }
+      .pc-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        min-height: 86px;
+      }
+      .pc-col {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 4px 2px;
+        min-width: 0;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .pc-col.right {
+        text-align: right;
+      }
+      .pc-col .k {
+        font-size: 11px;
+        color: var(--pc-label);
+      }
+      .pc-col .k + .v + .k {
+        margin-top: 4px;
+      }
+      .pc-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        padding: 6px 8px;
+        background: var(--pc-accent-dark);
+        border-radius: 6px;
+      }
+      .pc-center div {
+        display: flex;
+        justify-content: space-between;
+        gap: 4px;
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .pc-center b {
+        font-size: 11px;
+        color: #ffe08a;
+      }
+
+      /* 選手詳細：本文 */
+      .player-body {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 28px 5% 48px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+      .player-body h2 {
+        margin: 0 0 12px;
+        font-size: 20px;
+        font-weight: 900;
+        color: #0a2f8f;
+      }
+      .pb-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .pb-tags span {
+        background: var(--pc-accent-dark);
+        color: var(--white);
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 12px;
+        border-radius: 999px;
+      }
+      .pb-tags span + span {
+        background: #0a2f8f;
+      }
+      .pb-name {
+        margin: 8px 0 0;
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1.3;
+        color: #0a2f8f;
+      }
+      .pb-nick {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .pb-table {
+        margin: 0;
+        padding: 4px 16px;
+        background: var(--white);
+        border-radius: 14px;
+      }
+      .pb-table div {
+        display: flex;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #e3e8f2;
+      }
+      .pb-table div:last-child {
+        border-bottom: none;
+      }
+      .pb-table dt {
+        width: 96px;
+        flex-shrink: 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--pc-accent-dark);
+      }
+      .pb-table dd {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .pb-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .pb-list li {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .pb-list.voice li {
+        border: 2px solid var(--pc-accent);
+        color: #0a2f8f;
+      }
+      .pb-qa {
+        background: var(--white);
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+      }
+      .pb-qa .q {
+        margin: 0 0 6px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--pc-accent-dark);
+      }
+      .pb-qa .a {
+        margin: 0;
+        font-size: 15px;
+      }
+      .pb-msg {
+        background: #0a2f8f;
+        color: var(--white);
+        border: 3px solid var(--pc-accent);
+        border-radius: 18px;
+        padding: 20px;
+      }
+      .pb-msg .label {
+        margin: 0 0 8px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .pb-msg .text {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 900;
+      }
+      .pb-nav {
+        display: flex;
+        gap: 10px;
+      }
+      .pb-nav button {
+        flex: 1;
+        min-height: 52px;
+        border: 2px solid #0a2f8f;
+        border-radius: 14px;
+        background: var(--white);
+        color: #0a2f8f;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .pb-nav button + button {
+        background: #0a2f8f;
+        color: var(--white);
+      }
+      .pb-back {
+        align-self: center;
+        background: none;
+        border: none;
+        color: #0a2f8f;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      /* Snow Crystal ページから選手一覧へのボタン */
+      .players-link {
+        text-align: center;
+      }
+      .players-link .btn-apply {
+        border: none;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -1642,8 +2105,16 @@
               >
             </li>
             <li>
-              <time datetime="2026-10-18">2026.10.18</time>
+              <time datetime="2026-10-23">2026.10.23</time>
               <span class="news-tag">NEW</span>
+              <a
+                href="#housei"
+                onclick="goPage('housei'); document.getElementById('housei-players').scrollIntoView({ behavior: 'instant' }); return false"
+                >当日参加する選手の紹介を公開しました</a
+              >
+            </li>
+            <li>
+              <time datetime="2026-10-18">2026.10.18</time>
               <a
                 href="#apply"
                 onclick="goPage('apply'); document.getElementById('map').scrollIntoView({ behavior: 'instant' }); return false"
@@ -2406,6 +2877,20 @@
           </p>
         </section>
 
+        <!-- 選手紹介：一覧は別ページ（page-scplayers） -->
+        <section class="block bg-pale players-link" id="sc-players">
+          <div class="section-header">
+            <h2 class="ja">選手紹介</h2>
+            <div class="line"></div>
+          </div>
+          <p class="players-lead">
+            当日参加する実業団チームの選手13名を紹介しています。
+          </p>
+          <button class="btn-apply" onclick="goPage('scplayers')">
+            選手一覧を見る
+          </button>
+        </section>
+
         <!-- ============ SNS / HP リンク集 ============ -->
         <section class="links-section">
           <div class="section-header">
@@ -2641,18 +3126,16 @@
           </ol>
         </section>
 
-        <!-- 選手紹介（後日公開予定：公開時にこのセクションの中身を差し替え） -->
-        <section class="block">
+        <!-- 選手紹介（当日参加する6名。カードの中身は下の script の PLAYERS から作られる） -->
+        <section class="block team-housei" id="housei-players">
           <div class="section-header">
             <h2 class="ja">選手紹介</h2>
             <div class="line"></div>
           </div>
-          <div class="coming-soon">
-            <p class="cs-title">Coming soon</p>
-            <p class="cs-desc">
-              当日参加する選手は近日公開予定です。お楽しみに！
-            </p>
-          </div>
+          <p class="players-lead">
+            当日参加する6名の選手です。カードを押すとプロフィールが見られます。
+          </p>
+          <ul class="player-grid" id="houseiPlayers"></ul>
         </section>
 
         <!-- ============ SNS / HP リンク集 ============ -->
@@ -2776,6 +3259,33 @@
       </div>
     </section>
 
+    <!-- ============ SNOW CRYSTAL 選手一覧 ============ -->
+    <section id="page-scplayers" class="page">
+      <div class="back-home-bar">
+        <button onclick="goPage('snowcrystal')">&larr; Snow Crystal のページに戻る</button>
+      </div>
+      <div class="org-hero sc-theme">
+        <h1>Snow Crystal 選手紹介</h1>
+        <p>当日参加する実業団チームの選手たち</p>
+      </div>
+      <div class="page-container">
+        <section class="block team-sc">
+          <p class="players-lead" style="margin-top: 0">
+            カードを押すとプロフィールが見られます。
+          </p>
+          <ul class="player-grid" id="scPlayers"></ul>
+        </section>
+      </div>
+    </section>
+
+    <!-- ============ 選手詳細（中身は script の goPlayer で作られる） ============ -->
+    <section id="page-player" class="page">
+      <div class="back-home-bar">
+        <button id="playerBackBtn" onclick="goPage('home')">&larr; ホームに戻る</button>
+      </div>
+      <div id="playerDetail"></div>
+    </section>
+
     <footer class="site-footer">
       <p>バドミントンパーク2026</p>
       <p>NPO法人 Snow Crystal × 法政大学バドミントン部</p>
@@ -2815,9 +3325,989 @@
             });
         });
       });
+
+      // ============ 選手紹介 ============
+      // 選手のデータ。内容を直すときはここを書き換える
+      // photo に画像のパス（例: "image/players/kawabata.jpg"）を入れると、名字の1文字の代わりに写真が出る
+      var PLAYERS = [
+              {
+                      "team": "housei",
+                      "name": "川畑 史吹",
+                      "mark": "4年",
+                      "nick": "しぶき",
+                      "style": "粘りのプレー",
+                      "shot": "スマッシュ/ドライブ",
+                      "shotFull": "スマッシュ、ドライブ",
+                      "styleFull": "粘りのプレー",
+                      "height": "164cm",
+                      "from": "大阪",
+                      "years": "15年",
+                      "extraA": [
+                              "情熱",
+                              "★×5"
+                      ],
+                      "extraB": [
+                              "子どもの夢",
+                              "バド選手"
+                      ],
+                      "intro": "大阪出身、バドミントン歴15年。全中3位、インターハイ団体3位の実力者。粘り強いラリーから、得意のスマッシュとドライブで攻めに転じます。",
+                      "results": [
+                              "小学生:近畿大会 1位",
+                              "中学生:全国中学校大会 3位",
+                              "高校生:選抜大会団体・インターハイ団体 3位",
+                              "東日本大会 2位"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "両親の影響です。"
+                              ],
+                              [
+                                      "印象に残っている恩師の言葉は?",
+                                      "「凡事徹底」"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "ラムネを食べること。"
+                              ]
+                      ],
+                      "msgLabel": "中学生の自分に一言",
+                      "msg": "頑張り続けろ!",
+                      "titles": [],
+                      "id": "h1",
+                      "photo": ""
+              },
+              {
+                      "team": "housei",
+                      "name": "河北 勝希",
+                      "mark": "4年",
+                      "nick": "しょきさん",
+                      "style": "身体能力で勝負",
+                      "shot": "飛びつきスマッシュ",
+                      "shotFull": "飛びつきスマッシュ",
+                      "styleFull": "身体能力を活かしたプレー",
+                      "height": "174cm",
+                      "from": "北海道",
+                      "years": "15年",
+                      "extraA": [
+                              "情熱",
+                              "★×10"
+                      ],
+                      "extraB": [
+                              "子どもの夢",
+                              "自衛隊"
+                      ],
+                      "intro": "北海道旭川市出身。バドミントンへの情熱は★10個!身体能力を活かしたプレーが持ち味で、決め球は豪快な飛びつきスマッシュです。",
+                      "results": [
+                              "小学生:北海道 1位",
+                              "中学生:全国大会 ベスト8",
+                              "高校生:選抜大会 ベスト8、北海道 1位"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "親と兄・姉の影響です。"
+                              ],
+                              [
+                                      "印象に残っている恩師の言葉は?",
+                                      "「継続は力なりだぞ」"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "アルバイト終わりのまかないで、お寿司を20貫食べること。"
+                              ]
+                      ],
+                      "msgLabel": "中学生の自分に一言",
+                      "msg": "もう少ししっかりやってや",
+                      "titles": [],
+                      "id": "h2",
+                      "photo": ""
+              },
+              {
+                      "team": "housei",
+                      "name": "城戸 郁也",
+                      "mark": "4年",
+                      "nick": "ドンジュ",
+                      "style": "守り型",
+                      "shot": "レシーブ",
+                      "shotFull": "レシーブ",
+                      "styleFull": "守り型",
+                      "height": "176cm",
+                      "from": "熊本",
+                      "years": "17年",
+                      "extraA": [
+                              "情熱",
+                              "★×2"
+                      ],
+                      "extraB": [
+                              "子どもの夢",
+                              "バド選手"
+                      ],
+                      "intro": "熊本出身、競技歴17年。全国中学校大会の男子ダブルスで日本一に輝いた守りのスペシャリスト。どんな球も拾う得意のレシーブに注目です。",
+                      "results": [
+                              "全日本中学生バドミントン大会 男子ダブルス 1位",
+                              "全日本学生選手権大会 男子ダブルス ベスト16"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "親の影響です。"
+                              ],
+                              [
+                                      "印象に残っている恩師の言葉は?",
+                                      "「自分のしたことは必ず自分に返ってくる」"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "Netflix"
+                              ]
+                      ],
+                      "msgLabel": "中学生の自分に一言",
+                      "msg": "なんだかんだ今この時が一番楽しいんだよ",
+                      "titles": [],
+                      "id": "h3",
+                      "photo": ""
+              },
+              {
+                      "team": "housei",
+                      "name": "桑原 朋也",
+                      "mark": "3年",
+                      "nick": "くわ",
+                      "style": "攻め続ける",
+                      "shot": "ヘアピン",
+                      "shotFull": "ヘアピン",
+                      "styleFull": "相手がミスをするまで攻撃する",
+                      "height": "174cm",
+                      "from": "滋賀",
+                      "years": "15年",
+                      "extraA": [
+                              "情熱",
+                              "★×6"
+                      ],
+                      "extraB": [
+                              "子どもの夢",
+                              "バド選手"
+                      ],
+                      "intro": "滋賀県出身。高校3年でインターハイシングルスベスト16、国民スポーツ大会5位。相手がミスをするまで攻め続けるスタイルで、繊細なヘアピンも得意です。",
+                      "results": [
+                              "小学4年:全国小学生大会 ダブルス 3位",
+                              "中学2年:近畿大会 シングルス 3位、全国中学校大会 出場",
+                              "高校3年:インターハイ シングルス ベスト16、国民スポーツ大会 5位",
+                              "大学:全日本インカレ 出場"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "親がバドミントンをしていました。"
+                              ],
+                              [
+                                      "印象に残っている恩師の言葉は?",
+                                      "「自分に甘くならない人生を歩め」"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "ウエイトトレーニング"
+                              ]
+                      ],
+                      "msgLabel": "中学生の自分に一言",
+                      "msg": "よくバドミントンを辞めずに頑張った",
+                      "titles": [],
+                      "id": "h4",
+                      "photo": ""
+              },
+              {
+                      "team": "housei",
+                      "name": "上元 瑛汰",
+                      "mark": "3年",
+                      "nick": "えいた",
+                      "style": "粘りまくる",
+                      "shot": "クロスドロップ",
+                      "shotFull": "フォア奥からのクロスドロップ",
+                      "styleFull": "粘りまくる",
+                      "height": "175cm",
+                      "from": "岡山",
+                      "years": "11年",
+                      "extraA": [
+                              "情熱",
+                              "★×5"
+                      ],
+                      "extraB": [
+                              "子どもの夢",
+                              "スポーツ選手"
+                      ],
+                      "intro": "岡山県出身。高校時代に中国地方大会シングルスで優勝、JOCシングルス3位。粘りまくるラリーと、フォア奥からのクロスドロップが武器です。",
+                      "results": [
+                              "高校生:中国地方大会 シングルス 1位・ダブルス 3位",
+                              "JOC シングルス 3位"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "お姉ちゃんの影響です。"
+                              ],
+                              [
+                                      "座右の銘は?",
+                                      "「塵も積もれば山となる」"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "麻辣湯を食べること。"
+                              ]
+                      ],
+                      "msgLabel": "中学生の自分に一言",
+                      "msg": "もっと勉強しなさい",
+                      "titles": [],
+                      "id": "h5",
+                      "photo": ""
+              },
+              {
+                      "team": "housei",
+                      "name": "林 優太",
+                      "mark": "2年",
+                      "nick": "ねぎさん",
+                      "style": "攻めのスマッシャー",
+                      "shot": "スマッシュ",
+                      "shotFull": "スマッシュ",
+                      "styleFull": "攻め",
+                      "height": "178cm",
+                      "from": "神奈川",
+                      "years": "11年",
+                      "extraA": [
+                              "情熱",
+                              "★×5"
+                      ],
+                      "extraB": [
+                              "子どもの夢",
+                              "消防士"
+                      ],
+                      "intro": "神奈川県出身、178cmの2年生。中学で全国中学校大会団体3位、高校では全国大会個人ベスト16。攻めのプレーで得意のスマッシュを打ち込みます。",
+                      "results": [
+                              "小学生:関東大会 ベスト8",
+                              "中学生:全国中学校大会 団体 3位",
+                              "高校生:宮城県 1位、東北大会 3位、全国大会 個人ベスト16・団体ベスト8",
+                              "大学生:関東大会 ベスト8"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "お姉ちゃんがやっていたからです。"
+                              ],
+                              [
+                                      "座右の銘は?",
+                                      "「やらない後悔よりやって後悔」"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "早寝"
+                              ]
+                      ],
+                      "msgLabel": "中学生の自分に一言",
+                      "msg": "上手い人のプレーを真似すること!",
+                      "titles": [],
+                      "id": "h6",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "成田 圭佑",
+                      "mark": "#3",
+                      "nick": "なりぼー",
+                      "style": "攻守万能",
+                      "shot": "ジャンプスマッシュ",
+                      "shotFull": "サーブ、ジャンプスマッシュ、ハイバック",
+                      "styleFull": "シングルスはとにかく拾ってつなぎ、ダブルスはスマッシュで攻める",
+                      "height": "169cm",
+                      "from": "東京",
+                      "years": "24年",
+                      "extraA": [
+                              "好きな種目",
+                              "どっちも"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "環境づくり"
+                      ],
+                      "intro": "Snow Crystal発足時からの初期メンバーで、理学療法士としても活躍中。高校1年で148cmだった悔しさから磨いたジャンプスマッシュが武器です。",
+                      "results": [
+                              "東京都選手権 ダブルス 準優勝",
+                              "城南大会 シングルス 優勝",
+                              "東京都大会 ダブルス 決勝トーナメント出場"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "野球もバスケも続かなかったけれど、バドミントンはなぜか最初からよく当たったので続けました!"
+                              ],
+                              [
+                                      "印象に残っているアドバイスは?",
+                                      "勝てなくて落ち込んでいた19歳のとき、強い選手に相談したら「楽しんだもん勝ちだよ」と言われました。その時からずっと楽しいです。"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "Snow Crystalを盛り上げること"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "将来、君は人に教える人になるから、なんでもたくさん経験しなさい。",
+                      "titles": [
+                              "チームメイトが選ぶ「一番しっかりしている人」4票"
+                      ],
+                      "id": "s1",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "上野 祐太",
+                      "mark": "#6",
+                      "nick": "ゆーた",
+                      "style": "超負けず嫌い",
+                      "shot": "ヘアピン/スマッシュ",
+                      "shotFull": "ヘアピンとスマッシュ",
+                      "styleFull": "スマッシュ&ネット",
+                      "height": "178cm",
+                      "from": "東京",
+                      "years": "19年",
+                      "extraA": [
+                              "好きな種目",
+                              "シングルス"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "迷走中"
+                      ],
+                      "intro": "背の順で前の子に「お前にバドミントンは負けない」と言われたのがきっかけでバドミントン部へ。超負けず嫌いなシングルスプレーヤーです。",
+                      "results": [],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "背の順で並んだとき、前の子に「お前にバドミントンは負けない」と言われ、バドミントン部に入部しました。"
+                              ],
+                              [
+                                      "バドミントンの魅力は?",
+                                      "やってみて初めて難しさ、楽しさがわかるスポーツ"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "コカコーラがおいしい"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "ドロップは諦めなさい。",
+                      "titles": [
+                              "チームメイトが選ぶ「一番面白い人」2票"
+                      ],
+                      "id": "s2",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "柳澤 壮",
+                      "mark": "#9",
+                      "nick": "やなぎ",
+                      "style": "攻め",
+                      "shot": "スマッシュ",
+                      "shotFull": "スマッシュ(「波動球」と言われたことも)",
+                      "styleFull": "攻め",
+                      "height": "172cm",
+                      "from": "東京",
+                      "years": "18年",
+                      "extraA": [
+                              "好きな種目",
+                              "どっちも"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "スーパーサブ"
+                      ],
+                      "intro": "中学にテニス部がなかったことからバドミントンを始め、高校時代にSnow Crystalに加入。「波動球」と言われたこともある強烈なスマッシュで攻めます。",
+                      "results": [
+                              "高体連 東京都大会 団体 ベスト16"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "小学生のときはテニスをしていましたが、中学にテニス部がなかったのでバドミントン部に入りました。"
+                              ],
+                              [
+                                      "印象に残っているアドバイスは?",
+                                      "「決め球があるなら、その前の段階から組み立てろ」"
+                              ],
+                              [
+                                      "趣味は?",
+                                      "サウナ"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "とにかく走っとけ…",
+                      "titles": [],
+                      "id": "s3",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "大根田 悠太",
+                      "mark": "#20",
+                      "nick": "ちゅうねだ",
+                      "style": "諦めない粘り",
+                      "shot": "レシーブ/スマッシュ",
+                      "shotFull": "粘り強いレシーブと全力一発のスマッシュ",
+                      "styleFull": "諦めの悪さと粘り強さ",
+                      "height": "174cm",
+                      "from": "東京",
+                      "years": "15年",
+                      "extraA": [
+                              "好きな種目",
+                              "ダブルス"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "声出し隊長"
+                      ],
+                      "intro": "お兄さんの影響でバドミントンを始め、そのままSnow Crystalへ。諦めの悪さと粘り強さが持ち味で、試合での声出しはおまかせの「声出し隊長」です。",
+                      "results": [
+                              "中学生:都大会 ベスト8",
+                              "高校生:ベスト16"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "兄の影響です。"
+                              ],
+                              [
+                                      "印象に残っているアドバイスは?",
+                                      "中学の顧問の先生に「無意識は、意識し続けないとできるようにならない」と言われたこと。何事もまずは意識から始めることが大事だと感じました。"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "K-POPのライブに行くこと"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "自分にも少なからず原因はあるぞ。",
+                      "titles": [
+                              "チームメイトが選ぶ「一番元気な人」2票"
+                      ],
+                      "id": "s4",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "松岡 らいふ",
+                      "mark": "#27",
+                      "nick": "",
+                      "style": "速さとパワー",
+                      "shot": "スマッシュ/ドライブ",
+                      "shotFull": "スマッシュ、ドライブ",
+                      "styleFull": "速さとパワーで押し切る",
+                      "height": "165cm",
+                      "from": "札幌",
+                      "years": "11年",
+                      "extraA": [
+                              "好きな種目",
+                              "ダブルス"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "雰囲気づくり"
+                      ],
+                      "intro": "札幌出身。中学2年でSnow Crystalに加入しました。速さとパワーで押し切る攻撃型で、スマッシュとドライブが得意なダブルスプレーヤーです。",
+                      "results": [
+                              "関東大会 出場"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "小6のとき、お姉ちゃんがやっていたバドミントンを近くのクラブでやってみたのが始まりです。"
+                              ],
+                              [
+                                      "印象に残っているアドバイスは?",
+                                      "「ベンチプレス70キロ上げられないとスマッシュじゃない」"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "小説を読むこと"
+                              ]
+                      ],
+                      "msgLabel": "",
+                      "msg": "",
+                      "titles": [],
+                      "id": "s5",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "沓澤 暖",
+                      "mark": "#39",
+                      "nick": "だん",
+                      "style": "耐久戦",
+                      "shot": "高めのスマッシュ",
+                      "shotFull": "コート奥に落ちる高めのスマッシュ",
+                      "styleFull": "できる限り耐えて、相手のミスを待つ",
+                      "height": "174cm",
+                      "from": "大田区",
+                      "years": "高校〜",
+                      "extraA": [
+                              "好きな種目",
+                              "どっちも"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "マネジメント"
+                      ],
+                      "intro": "高校1年で初めてSnow Crystalへ。社会人になって再び戻ってきました。できる限り耐えて相手のミスを待つ、粘りのプレースタイルです。",
+                      "results": [],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "やったことのないスポーツをやってみたかったのと、部活に友人がいたからです。"
+                              ],
+                              [
+                                      "印象に残っているアドバイスは?",
+                                      "「球の軌跡をイメージ」。コートをより立体的に捉えるきっかけになりました。"
+                              ],
+                              [
+                                      "趣味・特技は?",
+                                      "映画鑑賞や読書。中学ではサッカー部だったので、リフティングも得意です。"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "もう少し落ち着け。",
+                      "titles": [],
+                      "id": "s6",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "宍戸 優太",
+                      "mark": "#45",
+                      "nick": "しっしー",
+                      "style": "頭脳派スマッシャー",
+                      "shot": "宍戸カット",
+                      "shotFull": "スマッシュと宍戸カット",
+                      "styleFull": "ゴリゴリのスマッシャーと思わせて、意外と頭を使っています",
+                      "height": "175cm",
+                      "from": "大田区",
+                      "years": "9年",
+                      "extraA": [
+                              "好きな種目",
+                              "ダブルス"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "リーダー"
+                      ],
+                      "intro": "高3でスクールの体験に来たはずが、次の回にはなぜかコーチになっていた実力派。ゴリゴリのスマッシャーと思わせて、実は頭脳派です。",
+                      "results": [
+                              "中学生:大田区大会 11連覇、ブロック大会 優勝、都大会 ベスト16",
+                              "高校生:都大会 ベスト8",
+                              "専門学校:全国専門学校大会 団体優勝・ダブルス優勝"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "両親がバドミントンをしていて、中学校の部活体験で面白さを知りました。"
+                              ],
+                              [
+                                      "印象に残っているアドバイスは?",
+                                      "「ダブルスの2人は、ロープでつながれているイメージ。ロープはゆるんでもちぎれてもいけない」"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "テスト勉強"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "バドミントンに真剣に向き合え、関東まで突き進め。",
+                      "titles": [
+                              "チームメイトが選ぶ「一番元気な人」4票",
+                              "チームメイトが羨む「無限の体力」"
+                      ],
+                      "id": "s7",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "小野寺 楽",
+                      "mark": "#52",
+                      "nick": "がく",
+                      "style": "前衛の仕掛け人",
+                      "shot": "前衛のフェイント",
+                      "shotFull": "前衛で前に落とすと見せかけてプッシュ…と見せかけて、やっぱり前に落とす",
+                      "styleFull": "前に入り込んで、いろいろちょっかいを出す",
+                      "height": "169cm",
+                      "from": "杉並区",
+                      "years": "19年",
+                      "extraA": [
+                              "好きな種目",
+                              "ダブルス"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "モチベ作り"
+                      ],
+                      "intro": "中学2年でバドミントンを始め、2か月後にはブロック大会に出場。チームメイト投票で「一番しっかりしている人」に最多選出。前衛で相手を惑わせます。",
+                      "results": [
+                              "高校生:東京都3年生ダブルス大会 優勝"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "中学のバドミントン部のコーチが母の知り合いで、母もバドミントンをやっていました。"
+                              ],
+                              [
+                                      "バドミントンの魅力は?",
+                                      "身長も力も関係なく、ラケットと自分の体を上手く使えば勝てること。"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "サーフィン(まだ一回しかやってない)"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "練習はやった分だけ強くなる。部活の時間以外も有効活用しろ。",
+                      "titles": [
+                              "チームメイトが選ぶ「一番しっかりしている人」6票",
+                              "チームメイトが選ぶ「一番面白い人」3票"
+                      ],
+                      "id": "s8",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "松澤 奏",
+                      "mark": "#58",
+                      "nick": "奏",
+                      "style": "長期戦が得意",
+                      "shot": "レシーブ",
+                      "shotFull": "レシーブ",
+                      "styleFull": "体力勝負(長期戦が好き)",
+                      "height": "172cm",
+                      "from": "東京",
+                      "years": "約12年",
+                      "extraA": [
+                              "好きな種目",
+                              "どっちも"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "勝ちを持ってくる"
+                      ],
+                      "intro": "長野県生まれ、東京育ち。得意のレシーブで長期戦に持ち込む体力勝負型。チームでの役割は「勝ちを持ってくる」こと!",
+                      "results": [
+                              "中学生:都大会 出場"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "兄がやっていたからです。"
+                              ],
+                              [
+                                      "印象に残っているアドバイスは?",
+                                      "「嫌なプレーをするようになったね」と褒められたこと。"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "他の国の言葉を話すこと"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "全力で楽しめ。早く留学に行け、日本だけを見るな。",
+                      "titles": [
+                              "チームメイトが選ぶ「癒しキャラ」2票"
+                      ],
+                      "id": "s9",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "山本 風翔",
+                      "mark": "#68",
+                      "nick": "やまちゃん",
+                      "style": "粘り強く、しぶとく",
+                      "shot": "ヘアピン",
+                      "shotFull": "ヘアピン、相手の逆をつくこと",
+                      "styleFull": "粘り強く、しぶとく",
+                      "height": "175cm",
+                      "from": "富山",
+                      "years": "10年",
+                      "extraA": [
+                              "好きな種目",
+                              "シングルス"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "士気を上げる"
+                      ],
+                      "intro": "富山県出身。インターハイ出場、全国専門学校大会優勝の実績を持つシングルスプレーヤー。粘り強いラリーとヘアピンで相手の逆をつきます。",
+                      "results": [
+                              "インターハイ 出場",
+                              "全国専門学校バドミントン大会 優勝"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "母と姉がやっていたからです。"
+                              ],
+                              [
+                                      "バドミントンの魅力は?",
+                                      "ショットを打つ爽快さ、早い展開でのラリーが楽しい!"
+                              ],
+                              [
+                                      "趣味は?",
+                                      "英語、歌"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "がむしゃらも大事だが、課題をクリアするための練習を考えてやるべきだ。",
+                      "titles": [],
+                      "id": "s10",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "布村 俊太",
+                      "mark": "SC",
+                      "nick": "ぬの",
+                      "style": "ガンガン攻める",
+                      "shot": "スマッシュ",
+                      "shotFull": "スマッシュ",
+                      "styleFull": "ガンガン攻めていくスタイル",
+                      "height": "173cm",
+                      "from": "富山",
+                      "years": "8年",
+                      "extraA": [
+                              "好きな種目",
+                              "ダブルス"
+                      ],
+                      "extraB": [
+                              "特技",
+                              "大食い"
+                      ],
+                      "intro": "富山県出身。先生の「そのスマッシュが持ち味だから、もっと磨け」の一言でスタイルが確立。スマッシュを軸にガンガン攻めるダブルスプレーヤーです。",
+                      "results": [
+                              "インターハイ富山県予選 団体ベスト4・ダブルス ベスト16・シングルス ベスト32"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "兄がバドミントンをする姿がカッコイイと思ったからです。"
+                              ],
+                              [
+                                      "印象に残っているアドバイスは?",
+                                      "試合後、先生に「そのスマッシュが持ち味だから、もっと磨け」と言われ、自分のスタイルが確立しました。"
+                              ],
+                              [
+                                      "最近のマイブームは?",
+                                      "SNSで服や家具を見ること"
+                              ]
+                      ],
+                      "msgLabel": "昔の自分に伝えたいこと",
+                      "msg": "柔軟を毎日してほしい。",
+                      "titles": [],
+                      "id": "s11",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "都築 駿介",
+                      "mark": "#15",
+                      "nick": "",
+                      "style": "ガンガンいこうぜ",
+                      "shot": "スマッシュ",
+                      "shotFull": "スマッシュ",
+                      "styleFull": "ガンガンいこうぜ。",
+                      "height": "—",
+                      "from": "東京",
+                      "years": "16年",
+                      "extraA": [
+                              "好きな種目",
+                              "ダブルス"
+                      ],
+                      "extraB": [
+                              "役割",
+                              "飯担当"
+                      ],
+                      "intro": "お兄さんの影響でバドミントンを始め、中学時代の練習参加をきっかけにSnow Crystalへ。プレースタイルは「ガンガンいこうぜ」。チームでは飯担当です。",
+                      "results": [
+                              "高校生:都大会 ベスト16"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "兄の影響です。"
+                              ],
+                              [
+                                      "趣味は?",
+                                      "ゴルフ"
+                              ],
+                              [
+                                      "好きな食べ物は?",
+                                      "タコライス"
+                              ]
+                      ],
+                      "msgLabel": "",
+                      "msg": "",
+                      "titles": [],
+                      "id": "s12",
+                      "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "小寺 智浩",
+                      "mark": "#87",
+                      "nick": "",
+                      "style": "攻撃型",
+                      "shot": "プッシュ",
+                      "shotFull": "プッシュ",
+                      "styleFull": "フィジカルと戦略で点を取りに行く攻撃型",
+                      "height": "—",
+                      "from": "調布市",
+                      "years": "17年",
+                      "extraA": [
+                              "好きな種目",
+                              "どっちも"
+                      ],
+                      "extraB": [
+                              "特技",
+                              "けん玉"
+                      ],
+                      "intro": "バドミントン指導の仕事のつながりでSnow Crystalに加入。フィジカルと戦略で点を取りに行く攻撃型で、決め球はプッシュ。けん玉やピアノなど多趣味です。",
+                      "results": [
+                              "インターハイ東東京予選 団体優勝",
+                              "関東大学バドミントンサークル連盟大会 男子シングルス優勝・団体優勝"
+                      ],
+                      "qa": [
+                              [
+                                      "バドミントンを始めたきっかけは?",
+                                      "サッカーを辞めてヒマしていたときに、友達に誘われたのがきっかけです。"
+                              ],
+                              [
+                                      "Snow Crystalに入ったきっかけは?",
+                                      "バドミントン指導の仕事のつながりで出会い、活動の方針に共感したのが決め手です。"
+                              ],
+                              [
+                                      "趣味は?",
+                                      "レザークラフト、雪山登山、けん玉、ピアノ、ゲーム"
+                              ]
+                      ],
+                      "msgLabel": "",
+                      "msg": "",
+                      "titles": [],
+                      "id": "s13",
+                      "photo": ""
+              }
+      ];
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+      function findPlayer(id) {
+        return PLAYERS.filter(function (p) { return p.id === id; })[0];
+      }
+      // 写真（ないときは名字の1文字目）
+      function photoHtml(p) {
+        if (p.photo) {
+          return '<img class="pc-photo-img" src="' + escapeHtml(p.photo) + '" alt="' + escapeHtml(p.name) + '" />';
+        }
+        return (
+          '<span class="pc-photo-stripe"></span><span class="pc-photo-stripe thin"></span>' +
+          '<span class="pc-initial" aria-hidden="true">' + escapeHtml(p.name.charAt(0)) + "</span>"
+        );
+      }
+      function subLabel(p) {
+        if (p.team === "housei") return p.mark + "生";
+        return p.mark === "SC" ? "実業団チーム" : "背番号 " + p.mark.replace("#", "");
+      }
+      // 一覧のミニカード
+      function renderPlayerGrid(team, elId) {
+        var html = PLAYERS.filter(function (p) { return p.team === team; })
+          .map(function (p) {
+            return (
+              '<li><button type="button" class="mini-card team-' + p.team + '" onclick="goPlayer(\'' + p.id + '\')">' +
+              '<span class="mini-card-name">' + escapeHtml(p.name) + "</span>" +
+              '<span class="mini-card-photo">' + photoHtml(p) +
+              '<span class="mini-card-badge">' + escapeHtml(subLabel(p)) + "</span></span>" +
+              '<span class="mini-card-foot"><span>' + escapeHtml(p.style) + "</span>" +
+              '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>' +
+              "</span></button></li>"
+            );
+          })
+          .join("");
+        document.getElementById(elId).innerHTML = html;
+      }
+      // 選手詳細ページ
+      function goPlayer(id) {
+        var p = findPlayer(id);
+        if (!p) return goPage("home");
+        var same = PLAYERS.filter(function (x) { return x.team === p.team; });
+        var i = same.indexOf(p);
+        var prev = same[(i - 1 + same.length) % same.length];
+        var next = same[(i + 1) % same.length];
+        var backPage = p.team === "housei" ? "housei" : "scplayers";
+        var backLabel = p.team === "housei" ? "法政大学バドミントン部のページに戻る" : "Snow Crystal の選手一覧に戻る";
+        var e = escapeHtml;
+        var profile = [
+          ["得意ショット", p.shotFull],
+          ["プレースタイル", p.styleFull],
+          ["身長", p.height],
+          ["出身", p.from],
+          ["競技歴", p.years],
+          p.extraA,
+          p.extraB
+        ];
+        var html =
+          '<div class="player-detail-top"><div class="player-card">' +
+          '<div class="pc-head"><span class="pc-mark">' + e(p.mark) + "</span>" +
+          '<div class="pc-namebar"><span class="pc-name">' + e(p.name) + "</span>" +
+          (p.nick ? '<span class="pc-nick">(' + e(p.nick) + ")</span>" : "") + "</div></div>" +
+          '<div class="pc-photo">' + photoHtml(p) +
+          '<span class="pc-style">' + e(p.style) + "</span>" +
+          '<div class="pc-intro"><span class="pc-sub">' + e(subLabel(p)) + "</span><p>" + e(p.intro) + "</p></div></div>" +
+          '<div class="pc-stats">' +
+          '<div class="pc-col"><span class="k">得意ショット</span><span class="v">' + e(p.shot) + '</span><span class="k">あだ名</span><span class="v">' + e(p.nick || "—") + "</span></div>" +
+          '<div class="pc-center"><div>身長<b>' + e(p.height) + "</b></div><div>出身<b>" + e(p.from) + "</b></div><div>競技歴<b>" + e(p.years) + "</b></div></div>" +
+          '<div class="pc-col right"><span class="k">' + e(p.extraA[0]) + '</span><span class="v">' + e(p.extraA[1]) + '</span><span class="k">' + e(p.extraB[0]) + '</span><span class="v">' + e(p.extraB[1]) + "</span></div>" +
+          "</div></div></div>" +
+          '<div class="player-body">' +
+          '<div><div class="pb-tags"><span>' + (p.team === "housei" ? "法政大学" : "Snow Crystal") + "</span><span>" + e(subLabel(p)) + "</span></div>" +
+          '<h1 class="pb-name">' + e(p.name) + "</h1>" +
+          (p.nick ? '<p class="pb-nick">あだ名:' + e(p.nick) + "</p>" : "") + "</div>" +
+          "<section><h2>プロフィール</h2><dl class=\"pb-table\">" +
+          profile.map(function (r) { return "<div><dt>" + e(r[0]) + "</dt><dd>" + e(r[1]) + "</dd></div>"; }).join("") +
+          "</dl></section>" +
+          (p.titles.length
+            ? '<section><h2>チームメイトの声</h2><ul class="pb-list voice">' + p.titles.map(function (t) { return "<li>" + e(t) + "</li>"; }).join("") + "</ul></section>"
+            : "") +
+          (p.results.length
+            ? '<section><h2>主な成績</h2><ul class="pb-list">' + p.results.map(function (r) { return "<li>" + e(r) + "</li>"; }).join("") + "</ul></section>"
+            : "") +
+          "<section><h2>一問一答</h2>" +
+          p.qa.map(function (q) { return '<div class="pb-qa"><p class="q">Q. ' + e(q[0]) + '</p><p class="a">' + e(q[1]) + "</p></div>"; }).join("") +
+          "</section>" +
+          (p.msg ? '<div class="pb-msg"><p class="label">' + e(p.msgLabel) + '</p><p class="text">「' + e(p.msg) + "」</p></div>" : "") +
+          '<div class="pb-nav"><button type="button" onclick="goPlayer(\'' + prev.id + '\')">← ' + e(prev.name.split(" ")[0]) + "</button>" +
+          '<button type="button" onclick="goPlayer(\'' + next.id + '\')">' + e(next.name.split(" ")[0]) + " →</button></div>" +
+          '<button type="button" class="pb-back" onclick="goPage(\'' + backPage + '\')">' + backLabel + "</button>" +
+          "</div>";
+        var page = document.getElementById("page-player");
+        page.className = "page team-" + p.team;
+        document.getElementById("playerBackBtn").setAttribute("onclick", "goPage('" + backPage + "')");
+        document.getElementById("playerBackBtn").innerHTML = "&larr; " + backLabel;
+        document.getElementById("playerDetail").innerHTML = html;
+        goPage("player");
+        history.replaceState(null, "", "#player-" + p.id);
+      }
+      renderPlayerGrid("housei", "houseiPlayers");
+      renderPlayerGrid("sc", "scPlayers");
       window.addEventListener("DOMContentLoaded", function () {
         var initial = (location.hash || "").replace("#", "");
-        var valid = ["home", "apply", "snowcrystal", "housei"];
+        var valid = ["home", "apply", "snowcrystal", "housei", "scplayers"];
+        if (initial.indexOf("player-") === 0 && findPlayer(initial.slice(7))) {
+          goPlayer(initial.slice(7));
+          return;
+        }
         goPage(valid.includes(initial) ? initial : "home");
       });
     </script>
