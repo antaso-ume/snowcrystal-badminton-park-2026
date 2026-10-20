@@ -2130,36 +2130,72 @@
         margin: 0 0 18px;
         font-size: 14px;
       }
+      /* チャット画面風：質問は右から、選手の答えは左に吹き出しで並べる */
+      .tm-chat {
+        background: #dfe7f3;
+        border-radius: 18px;
+        padding: 16px 12px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .tm-ask {
+        align-self: flex-end;
+        max-width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+      }
+      .tm-ask-name {
+        font-size: 11px;
+        font-weight: 700;
+        color: #4a5577;
+      }
+      .tm-ask p {
+        margin: 0;
+        padding: 10px 14px;
+        background: #0a2f8f;
+        color: var(--white);
+        border-radius: 18px 4px 18px 18px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .tm-sep {
+        align-self: center;
+        margin: 6px 0 0;
+      }
+      .tm-sep > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 12px;
+        border-radius: 999px;
+        background: rgba(10, 47, 143, 0.12);
+        color: var(--pc-accent-dark);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .tm-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--pc-accent);
+      }
       .tm-answers {
         list-style: none;
         margin: 0;
         padding: 0;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-      @media (max-width: 400px) {
-        .tm-answers {
-          grid-template-columns: 1fr;
-        }
-      }
-      .tm-group {
         display: flex;
-        align-items: center;
-        gap: 8px;
-        margin: 22px 0 10px;
-        font-size: 15px;
-        font-weight: 900;
-        color: var(--pc-accent-dark);
+        flex-direction: column;
+        gap: 10px;
       }
       .tm-answer {
         display: flex;
         align-items: flex-start;
-        gap: 10px;
-        background: var(--white);
-        border-radius: 12px;
-        padding: 10px 12px;
+        gap: 8px;
         min-width: 0;
+        max-width: 92%;
       }
       .tm-face {
         width: 40px;
@@ -2178,40 +2214,32 @@
       }
       .tm-body {
         min-width: 0;
-      }
-      .tm-answer p {
-        margin: 2px 0 0;
-        font-size: 14px;
-        font-weight: 700;
-        color: #1a2340;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
       }
       .tm-who {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        min-height: 28px;
+        min-height: 24px;
         padding: 0;
         border: none;
         background: none;
-        color: var(--pc-accent-dark);
+        color: #3b4a6b;
         font-family: inherit;
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 700;
         cursor: pointer;
       }
       .tm-who:hover {
         text-decoration: underline;
       }
-      .tm-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: var(--pc-accent);
-      }
-      .tm-team {
-        font-size: 11px;
+      .tm-answer p {
+        margin: 0;
+        padding: 9px 13px;
+        background: var(--white);
+        border-radius: 4px 18px 18px 18px;
+        font-size: 14px;
         font-weight: 700;
-        color: #6a7896;
+        color: #1a2340;
       }
     </style>
   </head>
@@ -4648,14 +4676,15 @@
               );
             }).join("");
             if (!list) return "";
-            return '<h3 class="tm-group team-' + g[0] + '"><span class="tm-dot" aria-hidden="true"></span>' + g[1] + '</h3><ul class="tm-answers">' + list + "</ul>";
+            return '<p class="tm-sep team-' + g[0] + '"><span><span class="tm-dot" aria-hidden="true"></span>' + g[1] + '</span></p><ul class="tm-answers">' + list + "</ul>";
           }).join("");
           return (
             '<section class="tm-topic" id="tm-' + t.id + '">' +
             '<p class="tm-eyebrow">全員に聞きました</p>' +
             "<h2>" + e(t.q) + "</h2>" +
             '<p class="tm-lead">' + e(t.lead) + "</p>" +
-            items + "</section>"
+            '<div class="tm-chat"><div class="tm-ask"><span class="tm-ask-name">たまり場</span><p>' + e(t.q) + "</p></div>" +
+            items + "</div></section>"
           );
         }).join("");
         document.getElementById("tamaribaNav").innerHTML = nav;
