@@ -2241,6 +2241,85 @@
         font-weight: 700;
         color: #1a2340;
       }
+
+      /* たまり場：アイコンを押したときのカード表示 */
+      .tm-face-btn {
+        padding: 0;
+        border: none;
+        background: none;
+        border-radius: 50%;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .tm-face-btn:focus-visible,
+      .card-modal .player-card:focus-visible {
+        outline: 3px solid var(--orange);
+        outline-offset: 3px;
+      }
+      .card-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px));
+      }
+      .card-modal[hidden] {
+        display: none;
+      }
+      .card-modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(6, 14, 40, 0.72);
+      }
+      .card-modal-inner {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        animation: cardpop 0.22s ease;
+      }
+      .card-modal .player-card {
+        width: min(350px, calc(100vw - 48px), calc((100vh - 150px) / 1.4));
+        font-family: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      .card-modal-hint {
+        margin: 0;
+        color: var(--white);
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .card-modal-close {
+        min-height: 44px;
+        padding: 0 24px;
+        border: 2px solid var(--white);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--white);
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      @keyframes cardpop {
+        from {
+          opacity: 0;
+          transform: scale(0.92);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .card-modal-inner {
+          animation: none;
+        }
+      }
     </style>
   </head>
   <body>
@@ -3533,6 +3612,16 @@
       <div id="playerDetail"></div>
     </section>
 
+    <!-- たまり場でアイコンを押したときのカード表示 -->
+    <div class="card-modal" id="cardModal" hidden>
+      <div class="card-modal-backdrop" onclick="closeCard()"></div>
+      <div class="card-modal-inner">
+        <button type="button" class="player-card" id="cardModalCard"></button>
+        <p class="card-modal-hint">カードをタップすると、選手紹介ページへ</p>
+        <button type="button" class="card-modal-close" onclick="closeCard()">閉じる</button>
+      </div>
+    </div>
+
     <footer class="site-footer">
       <p>バドミントンパーク2026</p>
       <p>NPO法人 Snow Crystal × 法政大学バドミントン部</p>
@@ -4507,8 +4596,44 @@
           .join("");
         document.getElementById(elId).innerHTML = html;
       }
+      // 選手カード（表面）の中身。詳細ページの上と、たまり場でアイコンを押したときに使う
+      function cardInner(p) {
+        var e = escapeHtml;
+        return (
+          '<div class="pc-head"><span class="pc-mark">' + e(p.mark) + "</span>" +
+          '<div class="pc-namebar"><span class="pc-name">' + e(p.name) + "</span>" +
+          (p.nick ? '<span class="pc-nick">(' + e(p.nick) + ")</span>" : "") + "</div></div>" +
+          '<div class="pc-photo">' + photoHtml(p) +
+          '<span class="pc-style">' + e(p.style) + "</span>" +
+          '<div class="pc-intro"><span class="pc-sub">' + e(subLabel(p)) + "</span><p>" + e(p.intro) + "</p></div></div>" +
+          '<div class="pc-stats">' +
+          '<div class="pc-col"><span class="k">得意ショット</span><span class="v">' + e(p.shot) + '</span><span class="k">あだ名</span><span class="v">' + e(p.nick || "—") + "</span></div>" +
+          '<div class="pc-center"><div>身長<b>' + e(p.height) + "</b></div><div>出身<b>" + e(p.from) + "</b></div><div>競技歴<b>" + e(p.years) + "</b></div></div>" +
+          '<div class="pc-col right"><span class="k">' + e(p.extraA[0]) + '</span><span class="v">' + e(p.extraA[1]) + '</span><span class="k">' + e(p.extraB[0]) + '</span><span class="v">' + e(p.extraB[1]) + "</span></div>" +
+          "</div>"
+        );
+      }
+      // たまり場：アイコンを押すとカードを表示、カードをもう一度押すと選手紹介ページへ
+      function showCard(id) {
+        var p = findPlayer(id);
+        if (!p) return;
+        var card = document.getElementById("cardModalCard");
+        card.className = "player-card team-" + p.team;
+        card.innerHTML = cardInner(p);
+        card.setAttribute("onclick", "goPlayer('" + p.id + "')");
+        card.setAttribute("aria-label", p.name + "の選手紹介を見る");
+        document.getElementById("cardModal").hidden = false;
+        card.focus();
+      }
+      function closeCard() {
+        document.getElementById("cardModal").hidden = true;
+      }
+      document.addEventListener("keydown", function (ev) {
+        if (ev.key === "Escape") closeCard();
+      });
       // 選手詳細ページ
       function goPlayer(id) {
+        closeCard();
         var p = findPlayer(id);
         if (!p) return goPage("home");
         var same = PLAYERS.filter(function (x) { return x.team === p.team; });
@@ -4529,17 +4654,8 @@
         ];
         var html =
           '<div class="player-detail-top"><div class="player-card">' +
-          '<div class="pc-head"><span class="pc-mark">' + e(p.mark) + "</span>" +
-          '<div class="pc-namebar"><span class="pc-name">' + e(p.name) + "</span>" +
-          (p.nick ? '<span class="pc-nick">(' + e(p.nick) + ")</span>" : "") + "</div></div>" +
-          '<div class="pc-photo">' + photoHtml(p) +
-          '<span class="pc-style">' + e(p.style) + "</span>" +
-          '<div class="pc-intro"><span class="pc-sub">' + e(subLabel(p)) + "</span><p>" + e(p.intro) + "</p></div></div>" +
-          '<div class="pc-stats">' +
-          '<div class="pc-col"><span class="k">得意ショット</span><span class="v">' + e(p.shot) + '</span><span class="k">あだ名</span><span class="v">' + e(p.nick || "—") + "</span></div>" +
-          '<div class="pc-center"><div>身長<b>' + e(p.height) + "</b></div><div>出身<b>" + e(p.from) + "</b></div><div>競技歴<b>" + e(p.years) + "</b></div></div>" +
-          '<div class="pc-col right"><span class="k">' + e(p.extraA[0]) + '</span><span class="v">' + e(p.extraA[1]) + '</span><span class="k">' + e(p.extraB[0]) + '</span><span class="v">' + e(p.extraB[1]) + "</span></div>" +
-          "</div></div></div>" +
+          cardInner(p) +
+          "</div></div>" +
           '<div class="player-body">' +
           '<div><div class="pb-tags"><span>' + (p.team === "housei" ? "法政大学" : "Snow Crystal") + "</span><span>" + e(subLabel(p)) + "</span></div>" +
           '<h1 class="pb-name">' + e(p.name) + "</h1>" +
@@ -4669,9 +4785,10 @@
               var face = p.photo
                 ? '<img class="tm-face" src="' + e(p.photo) + '" alt="" />'
                 : '<span class="tm-face" aria-hidden="true">' + e(p.name.charAt(0)) + "</span>";
+              face = '<button type="button" class="tm-face-btn" onclick="showCard(\'' + p.id + '\')" aria-label="' + e(p.name) + 'のカードを見る">' + face + "</button>";
               return (
                 '<li class="tm-answer team-' + p.team + '">' + face +
-                '<div class="tm-body"><button type="button" class="tm-who" onclick="goPlayer(\'' + p.id + '\')">' + e(p.name) + "</button>" +
+                '<div class="tm-body"><button type="button" class="tm-who" onclick="showCard(\'' + p.id + '\')">' + e(p.name) + "</button>" +
                 "<p>" + e(a[1]) + "</p></div></li>"
               );
             }).join("");
