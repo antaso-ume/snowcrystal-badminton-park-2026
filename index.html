@@ -2884,7 +2884,7 @@
             <div class="line"></div>
           </div>
           <p class="players-lead">
-            当日参加する実業団チームの選手13名を紹介しています。
+            当日参加する実業団チームの選手14名を紹介しています。
           </p>
           <button class="btn-apply" onclick="goPage('scplayers')">
             選手一覧を見る
@@ -4195,6 +4195,29 @@
                       "titles": [],
                       "id": "s13",
                       "photo": ""
+              },
+              {
+                      "team": "sc",
+                      "name": "高橋 光",
+                      "mark": "SC",
+                      "nick": "",
+                      "style": "近日公開",
+                      "shot": "—",
+                      "shotFull": "—",
+                      "styleFull": "—",
+                      "height": "—",
+                      "from": "—",
+                      "years": "—",
+                      "extraA": ["好きな種目", "—"],
+                      "extraB": ["役割", "—"],
+                      "intro": "プロフィールは近日公開予定です。お楽しみに!",
+                      "results": [],
+                      "qa": [],
+                      "msgLabel": "",
+                      "msg": "",
+                      "titles": [],
+                      "id": "s14",
+                      "photo": ""
               }
       ];
 
@@ -4283,9 +4306,11 @@
           (p.results.length
             ? '<section><h2>主な成績</h2><ul class="pb-list">' + p.results.map(function (r) { return "<li>" + e(r) + "</li>"; }).join("") + "</ul></section>"
             : "") +
-          "<section><h2>一問一答</h2>" +
-          p.qa.map(function (q) { return '<div class="pb-qa"><p class="q">Q. ' + e(q[0]) + '</p><p class="a">' + e(q[1]) + "</p></div>"; }).join("") +
-          "</section>" +
+          (p.qa.length
+            ? "<section><h2>一問一答</h2>" +
+              p.qa.map(function (q) { return '<div class="pb-qa"><p class="q">Q. ' + e(q[0]) + '</p><p class="a">' + e(q[1]) + "</p></div>"; }).join("") +
+              "</section>"
+            : '<div class="pb-qa"><p class="a">くわしいプロフィールは準備中です。お楽しみに!</p></div>') +
           (p.msg ? '<div class="pb-msg"><p class="label">' + e(p.msgLabel) + '</p><p class="text">「' + e(p.msg) + "」</p></div>" : "") +
           '<div class="pb-nav"><button type="button" onclick="goPlayer(\'' + prev.id + '\')">← ' + e(prev.name.split(" ")[0]) + "</button>" +
           '<button type="button" onclick="goPlayer(\'' + next.id + '\')">' + e(next.name.split(" ")[0]) + " →</button></div>" +
