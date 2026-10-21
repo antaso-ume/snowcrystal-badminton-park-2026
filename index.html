@@ -2373,6 +2373,42 @@
         font-size: 11px;
         font-weight: 700;
       }
+
+      /* 情熱の星 */
+      .passion {
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 2px;
+        vertical-align: middle;
+      }
+      .ps-big {
+        width: 28px;
+        height: 28px;
+      }
+      .ps-big path {
+        fill: #ffc93c;
+        stroke: #c98a00;
+        stroke-width: 0.8;
+        stroke-linejoin: round;
+      }
+      .ps-big text {
+        fill: #5a3a00;
+        font-family: inherit;
+        font-size: 8px;
+        font-weight: 900;
+      }
+      .ps-small {
+        color: #ffc93c;
+        font-size: 14px;
+        line-height: 1;
+      }
+      .pc-col.right .passion {
+        justify-content: flex-end;
+      }
+      .pb-table .ps-small {
+        color: #e0a800;
+      }
     </style>
   </head>
   <body>
@@ -4677,6 +4713,27 @@
           .join("");
         document.getElementById(elId).innerHTML = html;
       }
+      // 情熱（★の数）：5個分を大きな星1個（中に「5」）にまとめ、余りは小さな星で表す
+      function passionHtml(n) {
+        var big = Math.floor(n / 5);
+        var small = n % 5;
+        var star =
+          '<svg class="ps-big" viewBox="0 0 24 24" aria-hidden="true">' +
+          '<path d="M12 1.6l3.1 6.6 7.2.9-5.3 5 1.4 7.1L12 17.7l-6.4 3.5 1.4-7.1-5.3-5 7.2-.9z"></path>' +
+          '<text x="12" y="15.2" text-anchor="middle">5</text></svg>';
+        var html = "";
+        for (var i = 0; i < big; i++) html += star;
+        for (var j = 0; j < small; j++) html += '<span class="ps-small" aria-hidden="true">★</span>';
+        return '<span class="passion" role="img" aria-label="情熱 星' + n + '個">' + html + "</span>";
+      }
+      // プロフィールの値。「情熱」だけは星で表示する
+      function valueHtml(pair) {
+        if (pair[0] === "情熱") {
+          var n = parseInt(String(pair[1]).replace(/[^0-9]/g, ""), 10);
+          if (n > 0) return passionHtml(n);
+        }
+        return escapeHtml(pair[1]);
+      }
       // 選手カード（表面）の中身。詳細ページの上と、たまり場でアイコンを押したときに使う
       function cardInner(p) {
         var e = escapeHtml;
@@ -4690,7 +4747,7 @@
           '<div class="pc-stats">' +
           '<div class="pc-col"><span class="k">得意ショット</span><span class="v">' + e(p.shot) + '</span><span class="k">あだ名</span><span class="v">' + e(p.nick || "—") + "</span></div>" +
           '<div class="pc-center"><div>身長<b>' + e(p.height) + "</b></div><div>出身<b>" + e(p.from) + "</b></div><div>競技歴<b>" + e(p.years) + "</b></div></div>" +
-          '<div class="pc-col right"><span class="k">' + e(p.extraA[0]) + '</span><span class="v">' + e(p.extraA[1]) + '</span><span class="k">' + e(p.extraB[0]) + '</span><span class="v">' + e(p.extraB[1]) + "</span></div>" +
+          '<div class="pc-col right"><span class="k">' + e(p.extraA[0]) + '</span><span class="v">' + valueHtml(p.extraA) + '</span><span class="k">' + e(p.extraB[0]) + '</span><span class="v">' + e(p.extraB[1]) + "</span></div>" +
           "</div>"
         );
       }
@@ -4742,7 +4799,7 @@
           '<h1 class="pb-name">' + e(p.name) + "</h1>" +
           (p.nick ? '<p class="pb-nick">あだ名:' + e(p.nick) + "</p>" : "") + "</div>" +
           "<section><h2>プロフィール</h2><dl class=\"pb-table\">" +
-          profile.map(function (r) { return "<div><dt>" + e(r[0]) + "</dt><dd>" + e(r[1]) + "</dd></div>"; }).join("") +
+          profile.map(function (r) { return "<div><dt>" + e(r[0]) + "</dt><dd>" + valueHtml(r) + "</dd></div>"; }).join("") +
           "</dl></section>" +
           (p.titles.length
             ? '<section><h2>チームメイトの声</h2><ul class="pb-list voice">' + p.titles.map(function (t) { return "<li>" + e(t) + "</li>"; }).join("") + "</ul></section>"
