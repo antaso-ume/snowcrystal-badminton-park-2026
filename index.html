@@ -2534,17 +2534,17 @@
       /* 切り抜き写真：頭の上に少し余白をとる（背景が透明なので上はチーム色になる） */
       .mini-card-photo .pc-photo-img,
       .pc-photo .pc-photo-img {
-        top: 7%;
-        height: 93%;
+        top: 4%;
+        height: 96%;
         object-fit: cover;
         object-position: center top;
       }
       /* 大きいカードは紹介文の箱に顔がかからないよう、少し小さくして上寄せ */
       .pc-photo .pc-photo-img {
-        top: 3%;
+        top: 0;
         left: 50%;
-        width: 80%;
-        height: auto;
+        width: auto;
+        height: calc(100% - 72px);
         aspect-ratio: 1 / 1;
         transform: translateX(-50%);
       }
