@@ -2393,6 +2393,38 @@
       .pb-table .ps-small {
         color: #e0a800;
       }
+
+      /* 名前の下の情熱の星 */
+      .pc-passion {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: -2px 0 -2px 58px;
+        min-height: 16px;
+      }
+      .pc-passion > span:first-child,
+      .pb-passion > span:first-child {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--pc-label);
+      }
+      .pc-passion .ps-small {
+        font-size: 13px;
+      }
+      .pb-passion {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 4px 0 0;
+      }
+      .pb-passion > span:first-child {
+        color: var(--pc-accent-dark);
+        font-size: 12px;
+      }
+      .pb-passion .ps-small {
+        color: #e0a800;
+        font-size: 18px;
+      }
     </style>
   </head>
   <body>
@@ -3756,9 +3788,10 @@
                       "height": "164cm",
                       "from": "大阪",
                       "years": "15年",
+                      "passion": 5,
                       "extraA": [
-                              "情熱",
-                              "★×5"
+                              "好きな食べ物",
+                              "オムライス"
                       ],
                       "extraB": [
                               "子どもの夢",
@@ -3803,9 +3836,10 @@
                       "height": "174cm",
                       "from": "北海道",
                       "years": "15年",
+                      "passion": 10,
                       "extraA": [
-                              "情熱",
-                              "★×10"
+                              "好きな食べ物",
+                              "まぐろ、グミ"
                       ],
                       "extraB": [
                               "子どもの夢",
@@ -3849,9 +3883,10 @@
                       "height": "176cm",
                       "from": "熊本",
                       "years": "17年",
+                      "passion": 2,
                       "extraA": [
-                              "情熱",
-                              "★×2"
+                              "好きな食べ物",
+                              "納豆パスタ"
                       ],
                       "extraB": [
                               "子どもの夢",
@@ -3894,9 +3929,10 @@
                       "height": "174cm",
                       "from": "滋賀",
                       "years": "15年",
+                      "passion": 6,
                       "extraA": [
-                              "情熱",
-                              "★×6"
+                              "好きな食べ物",
+                              "肉"
                       ],
                       "extraB": [
                               "子どもの夢",
@@ -3941,9 +3977,10 @@
                       "height": "175cm",
                       "from": "岡山",
                       "years": "11年",
+                      "passion": 5,
                       "extraA": [
-                              "情熱",
-                              "★×5"
+                              "好きな食べ物",
+                              "お寿司、梨、海鮮"
                       ],
                       "extraB": [
                               "子どもの夢",
@@ -3986,9 +4023,10 @@
                       "height": "178cm",
                       "from": "神奈川",
                       "years": "11年",
+                      "passion": 5,
                       "extraA": [
-                              "情熱",
-                              "★×5"
+                              "好きな食べ物",
+                              "お肉"
                       ],
                       "extraB": [
                               "子どもの夢",
@@ -4718,6 +4756,7 @@
           '<div class="pc-head"><span class="pc-mark">' + e(p.mark) + "</span>" +
           '<div class="pc-namebar"><span class="pc-name">' + e(p.name) + "</span>" +
           (p.nick ? '<span class="pc-nick">(' + e(p.nick) + ")</span>" : "") + "</div></div>" +
+          (p.passion ? '<div class="pc-passion"><span>情熱</span>' + passionHtml(p.passion) + "</div>" : "") +
           '<div class="pc-photo">' + photoHtml(p) +
           '<span class="pc-style">' + e(p.style) + "</span>" +
           '<div class="pc-intro"><span class="pc-sub">' + e(subLabel(p)) + "</span><p>" + e(p.intro) + "</p></div></div>" +
@@ -4763,10 +4802,10 @@
           ["プレースタイル", p.styleFull],
           ["身長", p.height],
           ["出身", p.from],
-          ["競技歴", p.years],
-          p.extraA,
-          p.extraB
+          ["競技歴", p.years]
         ];
+        if (p.passion) profile.push(["情熱", "★×" + p.passion]);
+        profile.push(p.extraA, p.extraB);
         var html =
           '<div class="player-detail-top"><div class="player-card">' +
           cardInner(p) +
@@ -4774,6 +4813,7 @@
           '<div class="player-body">' +
           '<div><div class="pb-tags"><span>' + (p.team === "housei" ? "法政大学" : "Snow Crystal") + "</span><span>" + e(subLabel(p)) + "</span></div>" +
           '<h1 class="pb-name">' + e(p.name) + "</h1>" +
+          (p.passion ? '<p class="pb-passion"><span>情熱</span>' + passionHtml(p.passion) + "</p>" : "") +
           (p.nick ? '<p class="pb-nick">あだ名:' + e(p.nick) + "</p>" : "") + "</div>" +
           "<section><h2>プロフィール</h2><dl class=\"pb-table\">" +
           profile.map(function (r) { return "<div><dt>" + e(r[0]) + "</dt><dd>" + valueHtml(r) + "</dd></div>"; }).join("") +
