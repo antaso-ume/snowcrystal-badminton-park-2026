@@ -2028,43 +2028,6 @@
       }
 
       /* ---------- 選手のたまり場 ---------- */
-      .tamariba-teaser {
-        margin-top: 24px;
-        padding: 22px 20px;
-        background: #0e1b3d;
-        color: var(--white);
-        border-radius: 16px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-      }
-      .tamariba-teaser h3 {
-        margin: 0 0 4px;
-        font-size: 18px;
-        font-weight: 900;
-      }
-      .tamariba-teaser p {
-        margin: 0;
-        font-size: 13px;
-        opacity: 0.9;
-      }
-      .tamariba-btn {
-        min-height: 44px;
-        padding: 0 20px;
-        border: 2px solid var(--white);
-        border-radius: 999px;
-        background: transparent;
-        color: var(--white);
-        font-family: inherit;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-      }
-      .tamariba-btn:hover {
-        background: rgba(255, 255, 255, 0.12);
-      }
       .tamariba-link {
         text-align: center;
         margin-top: 24px;
@@ -2425,6 +2388,96 @@
         color: #e0a800;
         font-size: 18px;
       }
+
+      /* ホームの「選手のたまり場」入口（チャットのチラ見せ） */
+      .tm-teaser {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        margin-top: 20px;
+        padding: 18px;
+        background: var(--white);
+        border: 2px solid #d3deef;
+        border-radius: 16px;
+        font-family: inherit;
+        text-align: left;
+        color: #3b4a6b;
+        cursor: pointer;
+      }
+      .tm-teaser:hover {
+        border-color: #0a2f8f;
+      }
+      .tt-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .tt-faces {
+        display: flex;
+        flex-shrink: 0;
+      }
+      .tt-faces .tm-face {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+        margin-left: -9px;
+        border-color: var(--white);
+      }
+      .tt-faces .tm-face:first-child {
+        margin-left: 0;
+      }
+      .tt-title {
+        display: block;
+        font-size: 17px;
+        font-weight: 900;
+        color: #0a2f8f;
+      }
+      .tt-sub {
+        display: block;
+        font-size: 12px;
+      }
+      .tt-chat {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px;
+        background: #dfe7f3;
+        border-radius: 12px;
+      }
+      .tt-q {
+        align-self: flex-end;
+        padding: 7px 12px;
+        background: #0a2f8f;
+        color: var(--white);
+        border-radius: 14px 4px 14px 14px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .tt-a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .tt-a .tm-face {
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+      }
+      .tt-a .tt-bubble {
+        padding: 6px 11px;
+        background: var(--white);
+        border-radius: 4px 14px 14px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a2340;
+      }
+      .tt-go {
+        align-self: flex-end;
+        font-size: 13px;
+        font-weight: 700;
+        color: #0a2f8f;
+      }
     </style>
   </head>
   <body>
@@ -2582,13 +2635,18 @@
               >
             </div>
           </div>
-          <div class="tamariba-teaser">
-            <div>
-              <h3>選手のたまり場</h3>
-              <p>プロフィールに書ききれなかった、選手たちの話を集めました</p>
-            </div>
-            <button class="tamariba-btn" onclick="goPage('tamariba')">のぞいてみる</button>
-          </div>
+          <!-- 選手のたまり場への入口：中の会話は TAMARIBA の一番上の話題から自動で表示 -->
+          <button type="button" class="tm-teaser" onclick="goPage('tamariba')">
+            <span class="tt-head">
+              <span class="tt-faces" id="ttFaces" aria-hidden="true"></span>
+              <span>
+                <span class="tt-title">選手のたまり場</span>
+                <span class="tt-sub">プロフィールに書ききれなかった話</span>
+              </span>
+            </span>
+            <span class="tt-chat" id="ttChat"></span>
+            <span class="tt-go">のぞいてみる →</span>
+          </button>
         </section>
 
         <section class="block">
@@ -5026,6 +5084,27 @@
         });
       }
       renderTamariba();
+      // ホームの「選手のたまり場」入口：顔アイコンと、一番上の話題の会話を少しだけ見せる
+      function renderTamaribaTeaser() {
+        var e = escapeHtml;
+        document.getElementById("ttFaces").innerHTML = ["h1", "s7", "h2", "s1", "h3"].map(findPlayer).map(function (p) {
+          return '<span class="tm-face team-' + p.team + '">' + e(p.name.charAt(0)) + "</span>";
+        }).join("");
+        var t = TAMARIBA[0];
+        // 法政・Snow Crystal から1人ずつ、短い答えを選ぶ（片方しかいない話題なら最初の2人）
+        var picks = ["housei", "sc"].map(function (team) {
+          return t.answers.filter(function (a) { var p = findPlayer(a[0]); return p && p.team === team; })
+            .filter(function (a) { return a[1].length <= 22; })[0];
+        }).filter(Boolean);
+        if (picks.length < 2) picks = t.answers.slice(0, 2);
+        document.getElementById("ttChat").innerHTML =
+          '<span class="tt-q">' + e(t.q) + "</span>" +
+          picks.map(function (a) {
+            var p = findPlayer(a[0]);
+            return '<span class="tt-a team-' + p.team + '"><span class="tm-face">' + e(p.name.charAt(0)) + '</span><span class="tt-bubble">' + e(a[1]) + "</span></span>";
+          }).join("");
+      }
+      renderTamaribaTeaser();
       window.addEventListener("DOMContentLoaded", function () {
         var initial = (location.hash || "").replace("#", "");
         var valid = ["home", "apply", "snowcrystal", "housei", "scplayers", "tamariba"];
