@@ -2320,6 +2320,59 @@
           animation: none;
         }
       }
+
+      /* たまり場：グループチャット風の見出し */
+      .tm-header {
+        background: #e9f0fb;
+        border-bottom: 1px solid #d3deef;
+      }
+      .tm-header-inner {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 18px 5%;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .tm-header h1 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 900;
+        color: #0a2f8f;
+      }
+      .tm-header h1 span {
+        font-size: 15px;
+        font-weight: 700;
+        color: #4a5577;
+      }
+      .tm-header p {
+        margin: 2px 0 0;
+        font-size: 13px;
+      }
+      .tm-avatars {
+        display: flex;
+        flex-shrink: 0;
+      }
+      .tm-avatars .tm-face {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+        margin-left: -10px;
+        border-color: #e9f0fb;
+      }
+      .tm-avatars .tm-face:first-child {
+        margin-left: 0;
+      }
+      .tm-sys {
+        align-self: center;
+        margin: 0;
+        padding: 2px 12px;
+        border-radius: 999px;
+        background: rgba(59, 74, 107, 0.16);
+        color: #3b4a6b;
+        font-size: 11px;
+        font-weight: 700;
+      }
     </style>
   </head>
   <body>
@@ -3590,9 +3643,14 @@
       <div class="back-home-bar">
         <button onclick="goPage('home')">&larr; ホームに戻る</button>
       </div>
-      <div class="org-hero tm-theme">
-        <h1>選手のたまり場</h1>
-        <p>プロフィールに書ききれなかった、選手たちの話</p>
+      <div class="tm-header">
+        <div class="tm-header-inner">
+          <div class="tm-avatars" id="tmAvatars" aria-hidden="true"></div>
+          <div>
+            <h1>選手のたまり場<span id="tmCount"></span></h1>
+            <p>プロフィールに書ききれなかった、選手たちの話</p>
+          </div>
+        </div>
       </div>
       <div class="page-container" style="padding-bottom: 48px">
         <nav class="tm-nav" id="tamaribaNav" aria-label="テーマ"></nav>
@@ -4718,7 +4776,50 @@
       // 新しいテーマを足すときは、この配列に1つ追加する（上に足したものが上に出る）
       var TAMARIBA = [
         {
+          id: "swap",
+          date: "10/23",
+          label: "全員に聞きました",
+          q: "1日入れ替わるなら誰？",
+          lead: "法政大学は有名人から、Snow Crystal はチームメイトから選んでもらいました。Snow Crystal では宍戸さんが4人から指名。その宍戸さんが選んだのは成田さんでした。",
+          answers: [
+            ["h1", "大谷翔平"],
+            ["h2", "ヒカキン"],
+            ["h3", "イーロン・マスク"],
+            ["h4", "桃田さんになって、バドミントンをする"],
+            ["h5", "ヒカキン"],
+            ["h6", "八村塁"],
+            ["s1", "全員と入れ替わってみたい！ですが、強いて挙げるなら宍戸優太！宍戸のスマッシュは羨ましい！"],
+            ["s2", "宍戸。あんなに動けるの羨ましい"],
+            ["s4", "宍戸。どんなに試合しても動ける、無限の体力がほしい"],
+            ["s10", "宍戸。あの爆発的な運動能力が欲しい"],
+            ["s7", "成田さん。どれだけ忙しいのか体験してみたい。どんな思考回路をしてるのか気になる"],
+            ["s12", "上野選手。異次元のフィジカルでプレーしてみたい"]
+          ]
+        },
+        {
+          id: "steady",
+          date: "10/23",
+          label: "Snow Crystal に聞きました",
+          q: "チームで一番しっかりしている人は？",
+          lead: "小野寺さん派が5人、成田さん派が4人。ちなみに小野寺さん本人は「布村君」と答えています。",
+          answers: [
+            ["s1", "ギャグセン高めに見せて、実はしっかりしている小野寺楽"],
+            ["s2", "小野寺さん"],
+            ["s9", "小野寺さんです"],
+            ["s11", "小野寺さん"],
+            ["s12", "小野寺選手"],
+            ["s3", "成田圭佑"],
+            ["s6", "成田さん"],
+            ["s7", "成田さん"],
+            ["s10", "成田さん"],
+            ["s4", "かなた"],
+            ["s8", "布村君"]
+          ]
+        },
+        {
           id: "routine",
+          date: "10/23",
+          label: "全員に聞きました",
           q: "試合前のルーティーンは？",
           lead: "いちばん多かったのは「音楽を聴く」で4人。トイレ派、ストレッチ派、そして食べ物派も。",
           answers: [
@@ -4745,6 +4846,8 @@
         },
         {
           id: "dream",
+          date: "10/23",
+          label: "全員に聞きました",
           q: "子どもの頃の夢は？",
           lead: "法政大学の3人は子どもの頃から「バドミントン選手」。Snow Crystal では「プロ野球選手」が3人いました。",
           answers: [
@@ -4769,6 +4872,8 @@
         },
         {
           id: "gear",
+          date: "10/23",
+          label: "全員に聞きました",
           q: "道具のこだわりは？",
           lead: "グリップにこだわる人が6人。太さ、巻き方、手ざわりまで、人それぞれです。",
           answers: [
@@ -4820,14 +4925,19 @@
           }).join("");
           return (
             '<section class="tm-topic" id="tm-' + t.id + '">' +
-            '<p class="tm-eyebrow">全員に聞きました</p>' +
+            '<p class="tm-eyebrow">' + e(t.date) + " ・ " + e(t.label) + "</p>" +
             "<h2>" + e(t.q) + "</h2>" +
             '<p class="tm-lead">' + e(t.lead) + "</p>" +
-            '<div class="tm-chat"><div class="tm-ask"><span class="tm-ask-name">たまり場</span><p>' + e(t.q) + "</p></div>" +
+            '<div class="tm-chat"><p class="tm-sys">' + e(t.date) + " の話題</p>" +
+            '<div class="tm-ask"><span class="tm-ask-name">たまり場</span><p>' + e(t.q) + "</p></div>" +
             items + "</div></section>"
           );
         }).join("");
         document.getElementById("tamaribaNav").innerHTML = nav;
+        document.getElementById("tmCount").textContent = "（" + PLAYERS.length + "人）";
+        document.getElementById("tmAvatars").innerHTML = ["h1", "s7", "h2", "s1", "h3"].map(findPlayer).map(function (p) {
+          return '<span class="tm-face team-' + p.team + '">' + e(p.name.charAt(0)) + "</span>";
+        }).join("");
         document.getElementById("tamaribaTopics").innerHTML = topics;
         showTopic(TAMARIBA[0].id);
       }
