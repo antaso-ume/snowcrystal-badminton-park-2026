@@ -2530,6 +2530,24 @@
         color: #6a7896;
         margin-top: -4px;
       }
+
+      /* 切り抜き写真：頭の上に少し余白をとる（背景が透明なので上はチーム色になる） */
+      .mini-card-photo .pc-photo-img,
+      .pc-photo .pc-photo-img {
+        top: 7%;
+        height: 93%;
+        object-fit: cover;
+        object-position: center top;
+      }
+      /* 大きいカードは紹介文の箱に顔がかからないよう、少し小さくして上寄せ */
+      .pc-photo .pc-photo-img {
+        top: 3%;
+        left: 50%;
+        width: 80%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        transform: translateX(-50%);
+      }
     </style>
   </head>
   <body>
@@ -3936,7 +3954,7 @@
                       "msg": "頑張り続けろ!",
                       "titles": [],
                       "id": "h1",
-                      "photo": "image/players/h1-kawabata.jpg"
+                      "photo": "image/players/h1-kawabata.webp"
               },
               {
                       "team": "housei",
@@ -3983,7 +4001,7 @@
                       "msg": "もう少ししっかりやってや",
                       "titles": [],
                       "id": "h2",
-                      "photo": "image/players/h2-kawakita.jpg"
+                      "photo": "image/players/h2-kawakita.webp"
               },
               {
                       "team": "housei",
@@ -4029,7 +4047,7 @@
                       "msg": "なんだかんだ今この時が一番楽しいんだよ",
                       "titles": [],
                       "id": "h3",
-                      "photo": "image/players/h3-kido.jpg"
+                      "photo": "image/players/h3-kido.webp"
               },
               {
                       "team": "housei",
@@ -4077,7 +4095,7 @@
                       "msg": "よくバドミントンを辞めずに頑張った",
                       "titles": [],
                       "id": "h4",
-                      "photo": "image/players/h4-kuwabara.jpg"
+                      "photo": "image/players/h4-kuwabara.webp"
               },
               {
                       "team": "housei",
@@ -4123,7 +4141,7 @@
                       "msg": "もっと勉強しなさい",
                       "titles": [],
                       "id": "h5",
-                      "photo": "image/players/h5-kamimoto.jpg"
+                      "photo": "image/players/h5-kamimoto.webp"
               },
               {
                       "team": "housei",
@@ -4171,7 +4189,7 @@
                       "msg": "上手い人のプレーを真似すること!",
                       "titles": [],
                       "id": "h6",
-                      "photo": "image/players/h6-hayashi.jpg"
+                      "photo": "image/players/h6-hayashi.webp"
               },
               {
                       "team": "sc",
