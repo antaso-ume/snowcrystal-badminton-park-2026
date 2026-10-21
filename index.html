@@ -2531,21 +2531,31 @@
         margin-top: -4px;
       }
 
-      /* 切り抜き写真：頭の上に少し余白をとる（背景が透明なので上はチーム色になる） */
-      .mini-card-photo .pc-photo-img,
-      .pc-photo .pc-photo-img {
+      /* 切り抜き写真（背景が透明なので、余白はチーム色になる） */
+      /* 一覧のミニカード：頭の先が学年バッジのすぐ下に来るよう、大きめに表示 */
+      .mini-card-photo .pc-photo-img {
         top: 4%;
-        height: 96%;
-        object-fit: cover;
-        object-position: center top;
-      }
-      /* 大きいカードは紹介文の箱に顔がかからないよう、少し小さくして上寄せ */
-      .pc-photo .pc-photo-img {
-        top: 0;
+        right: auto;
+        bottom: auto;
         left: 50%;
         width: auto;
-        height: calc(100% - 72px);
+        max-width: none;
+        height: 118%;
         aspect-ratio: 1 / 1;
+        object-fit: contain;
+        transform: translateX(-50%);
+      }
+      /* 大きいカード：紹介文の箱の上に腕組みが見えるように */
+      .pc-photo .pc-photo-img {
+        top: 0;
+        right: auto;
+        bottom: auto;
+        left: 50%;
+        width: auto;
+        max-width: none;
+        height: calc(100% - 60px);
+        aspect-ratio: 1 / 1;
+        object-fit: contain;
         transform: translateX(-50%);
       }
     </style>
