@@ -2379,29 +2379,13 @@
         display: inline-flex;
         align-items: center;
         flex-wrap: wrap;
-        gap: 2px;
+        gap: 1px;
         vertical-align: middle;
-      }
-      .ps-big {
-        width: 28px;
-        height: 28px;
-      }
-      .ps-big path {
-        fill: #ffc93c;
-        stroke: #c98a00;
-        stroke-width: 0.8;
-        stroke-linejoin: round;
-      }
-      .ps-big text {
-        fill: #5a3a00;
-        font-family: inherit;
-        font-size: 8px;
-        font-weight: 900;
       }
       .ps-small {
         color: #ffc93c;
-        font-size: 14px;
-        line-height: 1;
+        font-size: 13px;
+        line-height: 1.1;
       }
       .pc-col.right .passion {
         justify-content: flex-end;
@@ -4713,17 +4697,10 @@
           .join("");
         document.getElementById(elId).innerHTML = html;
       }
-      // 情熱（★の数）：5個分を大きな星1個（中に「5」）にまとめ、余りは小さな星で表す
+      // 情熱（★の数）：回答した数だけ星を並べる
       function passionHtml(n) {
-        var big = Math.floor(n / 5);
-        var small = n % 5;
-        var star =
-          '<svg class="ps-big" viewBox="0 0 24 24" aria-hidden="true">' +
-          '<path d="M12 1.6l3.1 6.6 7.2.9-5.3 5 1.4 7.1L12 17.7l-6.4 3.5 1.4-7.1-5.3-5 7.2-.9z"></path>' +
-          '<text x="12" y="15.2" text-anchor="middle">5</text></svg>';
         var html = "";
-        for (var i = 0; i < big; i++) html += star;
-        for (var j = 0; j < small; j++) html += '<span class="ps-small" aria-hidden="true">★</span>';
+        for (var j = 0; j < n; j++) html += '<span class="ps-small" aria-hidden="true">★</span>';
         return '<span class="passion" role="img" aria-label="情熱 星' + n + '個">' + html + "</span>";
       }
       // プロフィールの値。「情熱」だけは星で表示する
