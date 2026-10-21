@@ -2478,6 +2478,58 @@
         font-weight: 700;
         color: #0a2f8f;
       }
+
+      /* Snow Crystal ページ：選手の顔ぶれ */
+      .sc-roster {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 20px 16px 22px;
+        background: var(--white);
+        border: 2px solid #d3deef;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+      }
+      .sc-roster-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px 6px;
+      }
+      .sc-roster-list button {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 0;
+        border: none;
+        background: none;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .sc-roster-list .tm-face {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+      }
+      .sc-roster-list .sc-roster-name {
+        font-size: 12px;
+        font-weight: 700;
+        color: #0a2f8f;
+        white-space: nowrap;
+      }
+      .sc-roster-list .sc-roster-no {
+        font-size: 10px;
+        font-weight: 700;
+        color: #6a7896;
+        margin-top: -4px;
+      }
     </style>
   </head>
   <body>
@@ -3348,11 +3400,15 @@
             <div class="line"></div>
           </div>
           <p class="players-lead">
-            当日参加する実業団チームの選手15名を紹介しています。
+            当日参加する実業団チームの選手<span id="scCount"></span>名を紹介しています。
           </p>
-          <button class="btn-apply" onclick="goPage('scplayers')">
-            選手一覧を見る
-          </button>
+          <!-- 選手の顔ぶれ（中身は script の PLAYERS から作られる。押すとその選手の紹介へ） -->
+          <div class="sc-roster team-sc">
+            <ul class="sc-roster-list" id="scRoster"></ul>
+            <button class="btn-apply" onclick="goPage('scplayers')">
+              選手一覧を見る
+            </button>
+          </div>
         </section>
 
         <!-- ============ SNS / HP リンク集 ============ -->
@@ -5105,6 +5161,23 @@
           }).join("");
       }
       renderTamaribaTeaser();
+      // Snow Crystal ページ：選手の顔ぶれ（名字と背番号）
+      function renderScRoster() {
+        var e = escapeHtml;
+        var list = PLAYERS.filter(function (p) { return p.team === "sc"; });
+        document.getElementById("scCount").textContent = list.length;
+        document.getElementById("scRoster").innerHTML = list.map(function (p) {
+          var face = p.photo
+            ? '<img class="tm-face" src="' + e(p.photo) + '" alt="" />'
+            : '<span class="tm-face" aria-hidden="true">' + e(p.name.charAt(0)) + "</span>";
+          return (
+            '<li><button type="button" onclick="goPlayer(\'' + p.id + '\')">' + face +
+            '<span class="sc-roster-name">' + e(p.name.split(" ")[0]) + "</span>" +
+            '<span class="sc-roster-no">' + (p.mark === "SC" ? "&nbsp;" : e(p.mark)) + "</span></button></li>"
+          );
+        }).join("");
+      }
+      renderScRoster();
       window.addEventListener("DOMContentLoaded", function () {
         var initial = (location.hash || "").replace("#", "");
         var valid = ["home", "apply", "snowcrystal", "housei", "scplayers", "tamariba"];
