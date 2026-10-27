@@ -2678,7 +2678,7 @@
       }
       .staff-list {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 1fr);
         gap: 10px;
         margin: 0;
         padding: 0;
@@ -2730,6 +2730,12 @@
         font-size: 16px;
         font-weight: 900;
         color: #0a2f8f;
+      }
+      .staff-kana {
+        margin-left: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #5a6b8c;
       }
       .staff-role {
         display: inline-block;
@@ -5195,11 +5201,11 @@
       // ============ 当日いっしょに交流するメンバー（選手以外） ============
       // featured: true にすると横長の大きい枠で出る。photo がない人は名字の1文字目
       var STAFF = [
-        { name: "青木", role: "理学療法ブース担当", photo: "image/players/staff-aoki.webp", featured: true, note: "" },
-        { name: "内田", role: "交流メンバー" },
-        { name: "天野", role: "交流メンバー" },
-        { name: "〇〇", role: "交流メンバー" },
-        { name: "物部", role: "交流メンバー" }
+        { name: "青木 香央里", kana: "あおき かおり", role: "理学療法ブース担当", photo: "image/players/staff-aoki.webp", featured: true, note: "理学療法士で、実業団の専属トレーナー。楽しみながらできるトレーニングを考えてくれます。" },
+        { name: "物部 咲月", kana: "ものべ さつき", role: "交流メンバー", note: "SC屈指の実力者。SJリーグにも参加経験あり。" },
+        { name: "天野 聡士", kana: "あまの さとし", role: "交流メンバー", note: "バドミントン大好き、おしゃべり大好き。バドミントンをしているときはとても楽しそう。" },
+        { name: "内田 湧斗", kana: "うちだ ゆうと", role: "交流メンバー" },
+        { name: "笠川 杏", kana: "かさかわ あん", role: "交流メンバー" }
       ];
       function renderStaff() {
         var e = escapeHtml;
@@ -5210,7 +5216,7 @@
           return (
             '<li class="staff-item' + (m.featured ? " featured" : "") + '">' +
             '<span class="staff-photo" aria-hidden="true">' + ph + "</span>" +
-            "<div><p class=\"staff-name\">" + e(m.name) + " さん</p>" +
+            "<div><p class=\"staff-name\">" + e(m.name) + (m.kana ? '<span class="staff-kana">' + e(m.kana) + "</span>" : "") + "</p>" +
             '<span class="staff-role">' + e(m.role) + "</span>" +
             (m.note ? '<p class="staff-note">' + e(m.note) + "</p>" : "") +
             "</div></li>"
