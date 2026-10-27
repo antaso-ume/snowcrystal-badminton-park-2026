@@ -1221,8 +1221,8 @@
         position: absolute;
         left: 0;
         top: 0;
-        width: 48px;
-        height: 48px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         background: var(--navy);
         display: flex;
@@ -1796,8 +1796,8 @@
         left: 0;
         top: -4px;
         z-index: 1;
-        width: 48px;
-        height: 48px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         background: var(--pc-accent);
         border: 3px solid #0e1b3d;
@@ -2686,7 +2686,7 @@
       }
       .staff-item {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
         padding: 10px;
         background: var(--white);
@@ -2700,8 +2700,8 @@
       .staff-photo {
         position: relative;
         flex-shrink: 0;
-        width: 48px;
-        height: 48px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         overflow: hidden;
         background: #4f8fd6;
@@ -5201,22 +5201,25 @@
       // ============ 当日いっしょに交流するメンバー（選手以外） ============
       // featured: true にすると横長の大きい枠で出る。photo がない人は名字の1文字目
       var STAFF = [
-        { name: "青木 香央里", kana: "あおき かおり", role: "理学療法ブース担当", photo: "image/players/staff-aoki.webp", featured: true, note: "理学療法士で、実業団の専属トレーナー。楽しみながらできるトレーニングを考えてくれます。" },
-        { name: "物部 咲月", kana: "ものべ さつき", role: "交流メンバー", note: "SC屈指の実力者。SJリーグにも参加経験あり。" },
-        { name: "天野 聡士", kana: "あまの さとし", role: "交流メンバー", note: "バドミントン大好き、おしゃべり大好き。バドミントンをしているときはとても楽しそう。" },
-        { name: "内田 湧斗", kana: "うちだ ゆうと", role: "交流メンバー" },
-        { name: "笠川 杏", kana: "かさかわ あん", role: "交流メンバー" }
+        { name: "青木 香央里", kana: "あおき かおり", role: "理学療法ブース担当", photo: "image/players/staff-aoki.webp", featured: true,
+          note: "理学療法士で、実業団の専属トレーナー。楽しみながらできるトレーニングを考えてくれます。" },
+        { name: "物部 咲月", kana: "ものべ さつき", role: "交流メンバー",
+          note: "Snow Crystal 屈指の実力者。S/Jリーグにも参加経験があります。" },
+        { name: "内田 湧斗", kana: "うちだ ゆうと", role: "交流メンバー", note: "" },
+        { name: "天野 聡士", kana: "あまの さとし", role: "交流メンバー",
+          note: "バドミントンもおしゃべりも大好き。バドミントンをしているときは、とても楽しそうです。" },
+        { name: "笠川 杏", kana: "かさかわ あん", role: "案内係",
+          note: "Snow Crystal のSNS担当。当日は案内係として場内を歩き回ります。話しかけると何かもらえるかも？" }
       ];
       function renderStaff() {
         var e = escapeHtml;
         document.getElementById("staffList").innerHTML = STAFF.map(function (m) {
-          var ph = m.photo
-            ? '<img src="' + e(m.photo) + '" alt="" />'
-            : e(m.name.charAt(0));
+          var ph = m.photo ? '<img src="' + e(m.photo) + '" alt="" />' : e(m.name.charAt(0));
           return (
             '<li class="staff-item' + (m.featured ? " featured" : "") + '">' +
             '<span class="staff-photo" aria-hidden="true">' + ph + "</span>" +
-            "<div><p class=\"staff-name\">" + e(m.name) + (m.kana ? '<span class="staff-kana">' + e(m.kana) + "</span>" : "") + "</p>" +
+            '<div><p class="staff-name">' + e(m.name) +
+            (m.kana ? '<span class="staff-kana">' + e(m.kana) + "</span>" : "") + "</p>" +
             '<span class="staff-role">' + e(m.role) + "</span>" +
             (m.note ? '<p class="staff-note">' + e(m.note) + "</p>" : "") +
             "</div></li>"
