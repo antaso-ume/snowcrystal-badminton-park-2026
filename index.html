@@ -2623,6 +2623,42 @@
         object-fit: contain;
         transform: translateX(-50%);
       }
+
+      /* ---------- カード写真の背景（B案：チームロゴ＋斜めライン） ---------- */
+      .team-housei .pc-photo,
+      .team-housei .mini-card-photo {
+        background:
+          linear-gradient(118deg, transparent 0 52%, rgba(244, 114, 22, 0.75) 52% 58%, transparent 58% 61%, rgba(255, 255, 255, 0.35) 61% 62.5%, transparent 62.5%),
+          linear-gradient(118deg, transparent 0 18%, rgba(255, 255, 255, 0.18) 18% 19.5%, transparent 19.5% 22%, rgba(244, 114, 22, 0.45) 22% 24%, transparent 24%),
+          radial-gradient(circle at 50% 38%, #4a7fd4 0%, #2b5bb0 45%, #163c86 100%);
+      }
+      .team-sc .pc-photo,
+      .team-sc .mini-card-photo {
+        background:
+          linear-gradient(118deg, transparent 0 52%, rgba(255, 255, 255, 0.55) 52% 57%, transparent 57% 60%, rgba(143, 194, 245, 0.7) 60% 61.5%, transparent 61.5%),
+          linear-gradient(118deg, transparent 0 18%, rgba(255, 255, 255, 0.18) 18% 19.5%, transparent 19.5% 22%, rgba(46, 139, 232, 0.6) 22% 24%, transparent 24%),
+          radial-gradient(circle at 50% 38%, #7fb2ea 0%, #4f8fd6 45%, #2a64b0 100%);
+      }
+      /* 選手詳細のカードだけ、左上にチームロゴを出す（一覧のミニカードはバッジがあるので出さない） */
+      .pc-photo::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .team-housei .pc-photo::before {
+        background: url(image/housei_logo-removebg.png) 6% 6% / 26% no-repeat;
+        opacity: 0.9;
+      }
+      .team-sc .pc-photo::before {
+        background: url(image/snowcrystal_logo-removebg.png) 5% 5% / 20% no-repeat;
+        opacity: 0.95;
+      }
+      /* 写真がない選手は、斜めの帯を消してロゴ背景を見せる */
+      .pc-photo .pc-photo-stripe,
+      .mini-card-photo .pc-photo-stripe {
+        display: none;
+      }
     </style>
   </head>
   <body>
