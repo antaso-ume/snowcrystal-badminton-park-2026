@@ -1651,6 +1651,33 @@
         padding: 2px 8px;
         border-radius: 999px;
       }
+      /* 当日参加する選手のタグ（SC_ATTEND に入っている選手） */
+      .attend-tag {
+        position: absolute;
+        right: 6px;
+        top: 6px;
+        z-index: 1;
+        background: #f47216;
+        color: var(--white);
+        font-size: 11px;
+        font-weight: 900;
+        padding: 2px 8px;
+        border-radius: 999px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      }
+      .pb-tags span.attend {
+        background: #f47216;
+      }
+      .sc-roster-list .attend .tm-face {
+        box-shadow: 0 0 0 3px #f47216;
+      }
+      .sc-roster-list .sc-roster-attend {
+        margin-top: -2px;
+        font-size: 9px;
+        font-weight: 900;
+        color: #f47216;
+        white-space: nowrap;
+      }
       .mini-card-foot {
         display: flex;
         justify-content: space-between;
@@ -4837,6 +4864,12 @@
               }
       ];
 
+      // 当日参加する Snow Crystal の選手（PLAYERS の id）。変わったらここを書き換える
+      var SC_ATTEND = ["s3", "s4", "s5", "s7", "s8", "s9", "s13", "s14"];
+      function isAttend(p) {
+        return p.team === "sc" && SC_ATTEND.indexOf(p.id) !== -1;
+      }
+
       function escapeHtml(s) {
         return String(s).replace(/[&<>"']/g, function (c) {
           return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -4867,7 +4900,8 @@
               '<li><button type="button" class="mini-card team-' + p.team + '" onclick="goPlayer(\'' + p.id + '\')">' +
               '<span class="mini-card-name">' + escapeHtml(p.name) + "</span>" +
               '<span class="mini-card-photo">' + photoHtml(p) +
-              '<span class="mini-card-badge">' + escapeHtml(subLabel(p)) + "</span></span>" +
+              '<span class="mini-card-badge">' + escapeHtml(subLabel(p)) + "</span>" +
+              (isAttend(p) ? '<span class="attend-tag">当日参加</span>' : "") + "</span>" +
               '<span class="mini-card-foot"><span>' + escapeHtml(p.style) + "</span>" +
               '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>' +
               "</span></button></li>"
@@ -4952,7 +4986,8 @@
           cardInner(p) +
           "</div></div>" +
           '<div class="player-body">' +
-          '<div><div class="pb-tags"><span>' + (p.team === "housei" ? "法政大学" : "Snow Crystal") + "</span><span>" + e(subLabel(p)) + "</span></div>" +
+          '<div><div class="pb-tags"><span>' + (p.team === "housei" ? "法政大学" : "Snow Crystal") + "</span><span>" + e(subLabel(p)) + "</span>" +
+          (isAttend(p) ? '<span class="attend">当日参加</span>' : "") + "</div>" +
           '<h1 class="pb-name">' + e(p.name) + "</h1>" +
           (p.passion ? '<p class="pb-passion"><span>情熱</span>' + passionHtml(p.passion) + "</p>" : "") +
           (p.nick ? '<p class="pb-nick">あだ名:' + e(p.nick) + "</p>" : "") + "</div>" +
@@ -5198,9 +5233,10 @@
             ? '<img class="tm-face" src="' + e(p.photo) + '" alt="" />'
             : '<span class="tm-face" aria-hidden="true">' + e(p.name.charAt(0)) + "</span>";
           return (
-            '<li><button type="button" onclick="goPlayer(\'' + p.id + '\')">' + face +
+            '<li' + (isAttend(p) ? ' class="attend"' : "") + '><button type="button" onclick="goPlayer(\'' + p.id + '\')">' + face +
             '<span class="sc-roster-name">' + e(p.name.split(" ")[0]) + "</span>" +
-            '<span class="sc-roster-no">' + (p.mark === "SC" ? "&nbsp;" : e(p.mark)) + "</span></button></li>"
+            '<span class="sc-roster-no">' + (p.mark === "SC" ? "&nbsp;" : e(p.mark)) + "</span>" +
+            (isAttend(p) ? '<span class="sc-roster-attend">当日参加</span>' : "") + "</button></li>"
           );
         }).join("");
       }
