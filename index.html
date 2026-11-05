@@ -2774,6 +2774,25 @@
         font-weight: 700;
         cursor: pointer;
       }
+
+      /* ---------- 理学療法講習パーク：講習の内容 ---------- */
+      .lecture-label {
+        margin: 12px 0 6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--navy);
+      }
+      .lecture-list {
+        margin: 0 0 14px;
+        padding: 10px 12px 10px 32px;
+        background: #f4f7fc;
+        border-radius: 10px;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .lecture-list li + li {
+        margin-top: 4px;
+      }
       /* ---------- ホームのカウントダウン ---------- */
       .countdown {
         display: flex;
@@ -3384,14 +3403,17 @@
           <h2 class="ja" style="font-size: 21px">ご予約が必要なパーク</h2>
           <div class="line"></div>
         </div>
-        <div class="park-grid">
-          <div class="park-card">
+        <!-- 要予約の2パーク：交流は短いので横長1段、理学療法講習は講習内容つき -->
+        <div class="park-grid park-grid-free">
+          <div class="park-card park-card-wide">
             <div class="park-card-top-line bg-req"></div>
             <div class="park-badge badge-req">要予約／30分</div>
-            <h4>トップ選手との交流パーク</h4>
-            <p>
-              選手と一緒にバドミントンを楽しみながら、その技術と迫力を間近で体感できます。
-            </p>
+            <div class="park-wide-body">
+              <h4>トップ選手との交流パーク</h4>
+              <p>
+                選手と一緒にバドミントンを楽しみながら、その技術と迫力を間近で体感できます。
+              </p>
+            </div>
             <div class="park-tag">1時間プログラムの前半 or 後半で実施</div>
           </div>
           <div class="park-card">
@@ -3401,6 +3423,12 @@
             <p>
               理学療法士の指導のもと、選手と一緒に体を動かし、前後の変化を実感できます。
             </p>
+            <p class="lecture-label">講習の内容</p>
+            <ol class="lecture-list">
+              <li>高い位置でより速くタッチするための身体の使い方</li>
+              <li>フットワークを速くするための骨盤の使い方</li>
+              <li>フットワークを速くするための足部の使い方</li>
+            </ol>
             <div class="park-tag">1時間プログラムの前半 or 後半で実施</div>
           </div>
         </div>
