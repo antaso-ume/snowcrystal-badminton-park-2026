@@ -2755,12 +2755,12 @@
         justify-content: center;
         gap: 10px;
         margin: 18px 5% 0;
-        padding: 12px 16px;
+        padding: 16px 16px 18px;
         background: var(--navy);
-        border-radius: 14px;
+        border-radius: 16px;
         color: var(--white);
-        font-weight: 700;
-        font-size: 15px;
+        font-weight: 900;
+        font-size: 22px;
       }
       .countdown[hidden] {
         display: none;
@@ -2769,8 +2769,8 @@
         white-space: nowrap;
       }
       .countdown b {
-        margin: 0 2px;
-        font-size: 40px;
+        margin: 0 4px;
+        font-size: 64px;
         font-weight: 900;
         line-height: 1;
         color: #ffb27a;
@@ -2908,7 +2908,6 @@
       <div class="page-container">
         <!-- カウントダウン（日付は script で自動計算。当日は「本日開催」、終了後は非表示） -->
         <div class="countdown" id="countdown" hidden>
-          <span class="cd-date">11.23</span>
           <span id="countdownText"></span>
         </div>
         <p
