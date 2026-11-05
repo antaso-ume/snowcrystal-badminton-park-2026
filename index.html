@@ -2980,22 +2980,40 @@
           </div>
           <ul class="news-list" id="newsList">
             <li>
-              <time datetime="2026-11-02">2026.11.02</time>
+              <time datetime="2026-11-06">2026.11.06</time>
               <span class="news-tag">NEW</span>
+              <a href="#apply" onclick="goPage('apply'); document.getElementById('reserve').scrollIntoView({ behavior: 'instant' }); return false"
+                >受付状況を更新しました</a
+              >
+            </li>
+            <li>
+              <time datetime="2026-11-06">2026.11.06</time>
+              <span class="news-tag">NEW</span>
+              <a href="#scplayers" onclick="goPage('scplayers'); return false"
+                >当日参加する選手を追加しました</a
+              >
+            </li>
+            <li>
+              <time datetime="2026-11-06">2026.11.06</time>
+              <span class="news-tag">NEW</span>
+              <a href="#scplayers" onclick="goPage('scplayers'); return false"
+                >Snow Crystalの選手のプロフィール写真を追加しました</a
+              >
+            </li>
+            <li>
+              <time datetime="2026-11-02">2026.11.02</time>
               <a href="#apply" onclick="goPage('apply'); return false"
                 >大人の方も参加できるようになりました</a
               >
             </li>
             <li>
               <time datetime="2026-10-23">2026.10.23</time>
-              <span class="news-tag">NEW</span>
               <a href="#apply" onclick="goPage('apply'); return false"
                 >小学生・高校生の申し込み受付を開始しました</a
               >
             </li>
             <li>
               <time datetime="2026-10-23">2026.10.23</time>
-              <span class="news-tag">NEW</span>
               <a
                 href="#housei"
                 onclick="goPage('housei'); document.getElementById('housei-players').scrollIntoView({ behavior: 'instant' }); return false"
@@ -3312,7 +3330,7 @@
         </div>
       </section>
 
-      <section class="block bg-pale">
+      <section class="block bg-pale" id="reserve">
         <div class="section-header">
           <h2 class="ja">ご予約枠（全5枠）</h2>
           <div class="line"></div>
