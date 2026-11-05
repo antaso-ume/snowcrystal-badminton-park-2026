@@ -2686,6 +2686,68 @@
           white-space: nowrap;
         }
       }
+
+      /* ---------- ご予約不要のパーク：縦に2段（お悩み相談は横長、プラスワンは3企画を横並び） ---------- */
+      .park-grid-free {
+        grid-template-columns: 1fr;
+      }
+      .park-card-wide {
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
+      .park-card-wide .park-wide-body {
+        flex: 1;
+      }
+      .park-card-wide .park-tag {
+        margin-top: 0;
+        flex-shrink: 0;
+      }
+      .plusone-items {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 4px;
+      }
+      .plusone-item {
+        padding: 14px;
+        background: #f4f7fc;
+        border-radius: 10px;
+      }
+      .plusone-item strong {
+        display: block;
+        margin: 4px 0 6px;
+        color: var(--navy);
+        font-size: 15px;
+      }
+      .plusone-item p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.7;
+      }
+      .plusone-no {
+        display: inline-block;
+        padding: 1px 10px;
+        border-radius: 999px;
+        background: var(--orange);
+        color: var(--white);
+        font-size: 11px;
+        font-weight: 700;
+      }
+      @media (max-width: 700px) {
+        .park-card-wide {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0;
+        }
+        .park-card-wide .park-tag {
+          margin-top: 12px;
+          align-self: stretch;
+        }
+        .plusone-items {
+          grid-template-columns: 1fr;
+        }
+      }
       /* ---------- ホームのカウントダウン ---------- */
       .countdown {
         display: flex;
@@ -3299,33 +3361,41 @@
           <h2 class="ja" style="font-size: 21px">ご予約不要のパーク</h2>
           <div class="line"></div>
         </div>
-        <div class="park-grid">
-          <div class="park-card">
+        <!-- 予約不要の2パーク：お悩み相談は短いので横長1段、プラスワンは3企画を横に並べる -->
+        <div class="park-grid park-grid-free">
+          <div class="park-card park-card-wide">
             <div class="park-card-top-line bg-free1"></div>
             <div class="park-badge badge-free">時間指定なし</div>
-            <h4>お悩み相談パーク</h4>
-            <p>
-              日ごろの悩みを、選手やスタッフに直接相談できます。当日、会場で自由にご参加ください。
-            </p>
+            <div class="park-wide-body">
+              <h4>お悩み相談パーク</h4>
+              <p>
+                日ごろの悩みを、選手やスタッフに直接相談できます。当日、会場で自由にご参加ください。
+              </p>
+            </div>
             <div class="park-tag">出入り自由</div>
           </div>
           <div class="park-card">
             <div class="park-card-top-line bg-free2"></div>
             <div class="park-badge badge-free">時間指定なし</div>
             <h4>プラスワンパーク</h4>
-            <p>
-              <strong>第1弾：アイテムバドミントン</strong><br />
-              選手はラケット禁止！くじ引きで出たアイテムで戦います。何が出るかは当日のお楽しみ。法政大学・Snow Crystalの選手に勝てるかな？
-            </p>
-            <p style="margin-top: 8px">
-              <strong>第2弾：ごちゃまぜバドミントン</strong><br />
-              法政大学・Snow Crystalの選手と参加者を全員まぜて、2チームで対戦！1球打ったら即交代のルールで、みんなでシャトルをつなごう！
-            </p>
-            <p style="margin-top: 8px">
-              <strong>第3弾：展示ブース</strong><br />
-              法政大学・Snow Crystalの選手が過去に獲得した賞状やメダルに加えて、選手の身体能力（体力測定の記録）も展示します。展示を見たら、握力・立ち幅跳び・反復横跳び・垂直跳び・眼球運動テストの5種目で、実際に選手の記録に挑戦してみよう！
-            </p>
-            <p style="font-size: 12px; margin-top: 8px">
+            <div class="plusone-items">
+              <div class="plusone-item">
+                <span class="plusone-no">第1弾</span>
+                <strong>アイテムバドミントン</strong>
+                <p>選手はラケット禁止！くじ引きで出たアイテムで戦います。何が出るかは当日のお楽しみ。法政大学・Snow Crystalの選手に勝てるかな？</p>
+              </div>
+              <div class="plusone-item">
+                <span class="plusone-no">第2弾</span>
+                <strong>ごちゃまぜバドミントン</strong>
+                <p>法政大学・Snow Crystalの選手と参加者を全員まぜて、2チームで対戦！1球打ったら即交代のルールで、みんなでシャトルをつなごう！</p>
+              </div>
+              <div class="plusone-item">
+                <span class="plusone-no">第3弾</span>
+                <strong>展示ブース</strong>
+                <p>法政大学・Snow Crystalの選手が過去に獲得した賞状やメダルに加えて、選手の身体能力（体力測定の記録）も展示します。展示を見たら、握力・立ち幅跳び・反復横跳び・垂直跳び・眼球運動テストの5種目で、実際に選手の記録に挑戦してみよう！</p>
+              </div>
+            </div>
+            <p style="font-size: 12px; margin-top: 12px">
               ※場所は予告なく変更する場合があります。
             </p>
             <div class="park-tag">出入り自由</div>
