@@ -2748,6 +2748,32 @@
           grid-template-columns: 1fr;
         }
       }
+
+      /* ---------- 新着ニュース：最新3件だけ表示 ---------- */
+      .news-list li.news-old {
+        display: none;
+      }
+      .news-list.show-all li.news-old {
+        display: flex;
+      }
+      .news-more {
+        margin: 14px 0 0;
+        text-align: center;
+      }
+      .news-more[hidden] {
+        display: none;
+      }
+      .news-more button {
+        padding: 8px 20px;
+        border: 2px solid var(--navy);
+        border-radius: 999px;
+        background: var(--white);
+        color: var(--navy);
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
       /* ---------- ホームのカウントダウン ---------- */
       .countdown {
         display: flex;
@@ -2952,7 +2978,7 @@
             <h2 class="ja">新着ニュース</h2>
             <div class="line"></div>
           </div>
-          <ul class="news-list">
+          <ul class="news-list" id="newsList">
             <li>
               <time datetime="2026-11-02">2026.11.02</time>
               <span class="news-tag">NEW</span>
@@ -3019,6 +3045,10 @@
               >
             </li>
           </ul>
+          <!-- 最新の3件だけ表示。古いお知らせはボタンで開く（件数は script の NEWS_SHOW） -->
+          <p class="news-more" id="newsMoreWrap" hidden>
+            <button type="button" id="newsMore">過去のお知らせを見る</button>
+          </p>
         </section>
 
         <section class="block bg-pale" id="orgs">
@@ -5588,6 +5618,21 @@
           );
         }).join("");
       }
+      // ============ 新着ニュース：最新の NEWS_SHOW 件だけ表示 ============
+      (function () {
+        var NEWS_SHOW = 3;
+        var list = document.getElementById("newsList");
+        var items = list.querySelectorAll("li");
+        if (items.length <= NEWS_SHOW) return;
+        for (var i = NEWS_SHOW; i < items.length; i++) items[i].classList.add("news-old");
+        var wrap = document.getElementById("newsMoreWrap");
+        var btn = document.getElementById("newsMore");
+        wrap.hidden = false;
+        btn.addEventListener("click", function () {
+          var open = list.classList.toggle("show-all");
+          btn.textContent = open ? "閉じる" : "過去のお知らせを見る";
+        });
+      })();
       // ============ カウントダウン（日本時間で 11/23 までの日数） ============
       (function () {
         var el = document.getElementById("countdown");
