@@ -2889,22 +2889,43 @@
       }
       .rt-status {
         flex-shrink: 0;
-        padding: 2px 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 14px;
         border-radius: 999px;
-        border: 2px solid #2e8be8;
-        color: #2e8be8;
-        font-size: 12px;
-        font-weight: 700;
+        border: 2px solid #1f7ae0;
+        background: #1f7ae0;
+        color: var(--white);
+        font-size: 14px;
+        font-weight: 900;
+        box-shadow: 0 3px 8px rgba(31, 122, 224, 0.35);
+      }
+      /* 受付中は白い点を点滅させて「いま申し込める」を目立たせる */
+      .rt-status:not(.few):not(.full)::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--white);
+        animation: rt-blink 1.4s ease-in-out infinite;
+      }
+      @keyframes rt-blink {
+        50% {
+          opacity: 0.25;
+        }
       }
       .rt-status.few {
         background: #f47216;
         border-color: #f47216;
         color: var(--white);
+        box-shadow: 0 3px 8px rgba(244, 114, 22, 0.35);
       }
       .rt-status.full {
         background: #c3cad6;
         border-color: #c3cad6;
         color: var(--white);
+        box-shadow: none;
       }
       .rt-parks {
         margin: 6px 0 0;
