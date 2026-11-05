@@ -2812,6 +2812,121 @@
         font-weight: 700;
         white-space: nowrap;
       }
+
+      /* ---------- ご予約枠：タイムテーブル形式 ---------- */
+      .reserve-tt {
+        list-style: none;
+        margin: 0 auto;
+        padding: 0;
+        max-width: 720px;
+        position: relative;
+      }
+      .reserve-tt::before {
+        content: "";
+        position: absolute;
+        left: 74px;
+        top: 12px;
+        bottom: 12px;
+        width: 3px;
+        background: #c9d6ea;
+      }
+      .rt-row {
+        display: flex;
+        gap: 22px;
+        margin-bottom: 14px;
+        position: relative;
+      }
+      .rt-row::before {
+        content: "";
+        position: absolute;
+        left: 69px;
+        top: 12px;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--navy);
+        border: 3px solid #f4f7fc;
+      }
+      .rt-time {
+        width: 60px;
+        flex-shrink: 0;
+        text-align: right;
+        line-height: 1.2;
+        padding-top: 6px;
+      }
+      .rt-time b {
+        display: block;
+        font-size: 18px;
+        font-weight: 900;
+        color: var(--navy);
+      }
+      .rt-time span {
+        font-size: 11px;
+        color: #61708f;
+      }
+      .rt-card {
+        flex: 1;
+        min-width: 0;
+        background: var(--white);
+        border-radius: 12px;
+        border-left: 6px solid var(--rt-color);
+        padding: 12px 14px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+      .rt-theme1 { --rt-color: #f47216; }
+      .rt-theme2 { --rt-color: #2e8be8; }
+      .rt-theme3 { --rt-color: #16a085; }
+      .rt-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .rt-part {
+        font-size: 16px;
+        font-weight: 900;
+        color: var(--navy);
+      }
+      .rt-status {
+        flex-shrink: 0;
+        padding: 2px 12px;
+        border-radius: 999px;
+        border: 2px solid #2e8be8;
+        color: #2e8be8;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .rt-status.few {
+        background: #f47216;
+        border-color: #f47216;
+        color: var(--white);
+      }
+      .rt-status.full {
+        background: #c3cad6;
+        border-color: #c3cad6;
+        color: var(--white);
+      }
+      .rt-parks {
+        margin: 6px 0 0;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .rt-lec {
+        margin: 6px 0 0;
+        font-size: 12px;
+        line-height: 1.6;
+        color: #3a4766;
+      }
+      .rt-no {
+        display: inline-block;
+        margin-right: 6px;
+        padding: 0 8px;
+        border-radius: 4px;
+        background: var(--rt-color);
+        color: var(--white);
+        font-size: 11px;
+        font-weight: 700;
+      }
       /* ---------- ホームのカウントダウン ---------- */
       .countdown {
         display: flex;
@@ -3373,48 +3488,64 @@
           <h2 class="ja">ご予約枠（全5枠）</h2>
           <div class="line"></div>
         </div>
-        <table class="timetable reserve-table">
-          <thead>
-            <tr>
-              <th width="15%">枠</th>
-              <th width="25%">時間</th>
-              <th width="45%">内容</th>
-              <th width="15%">受付状況</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="col-part">第1部</td>
-              <td class="col-time">9:30-10:30</td>
-              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習①高い位置でより速くタッチするための身体の使い方</span></td>
-              <td class="col-status">受付中</td>
-            </tr>
-            <tr>
-              <td class="col-part">第2部</td>
-              <td class="col-time">10:30-11:30</td>
-              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習①高い位置でより速くタッチするための身体の使い方</span></td>
-              <td class="col-status few">残りわずか</td>
-            </tr>
-            <tr>
-              <td class="col-part">第3部</td>
-              <td class="col-time">11:30-12:30</td>
-              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習②フットワークを速くするための骨盤の使い方</span></td>
-              <td class="col-status">受付中</td>
-            </tr>
-            <tr>
-              <td class="col-part">第4部</td>
-              <td class="col-time">12:30-13:30</td>
-              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習②フットワークを速くするための骨盤の使い方</span></td>
-              <td class="col-status">受付中</td>
-            </tr>
-            <tr>
-              <td class="col-part">第5部</td>
-              <td class="col-time">13:30-14:30</td>
-              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習③フットワークを速くするための足部の使い方</span></td>
-              <td class="col-status">受付中</td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- 予約枠のタイムテーブル。受付状況は rt-status に few（残りわずか）/ full（満員）を付けて切り替える -->
+        <ol class="reserve-tt">
+          <li class="rt-row">
+            <div class="rt-time"><b>9:30</b><span>〜10:30</span></div>
+            <div class="rt-card rt-theme1">
+              <div class="rt-top">
+                <span class="rt-part">第1部</span>
+                <span class="rt-status">受付中</span>
+              </div>
+              <p class="rt-parks">交流パーク＋理学療法講習パーク</p>
+              <p class="rt-lec"><span class="rt-no">講習①</span>高い位置でより速くタッチするための身体の使い方</p>
+            </div>
+          </li>
+          <li class="rt-row">
+            <div class="rt-time"><b>10:30</b><span>〜11:30</span></div>
+            <div class="rt-card rt-theme1">
+              <div class="rt-top">
+                <span class="rt-part">第2部</span>
+                <span class="rt-status few">残りわずか</span>
+              </div>
+              <p class="rt-parks">交流パーク＋理学療法講習パーク</p>
+              <p class="rt-lec"><span class="rt-no">講習①</span>高い位置でより速くタッチするための身体の使い方</p>
+            </div>
+          </li>
+          <li class="rt-row">
+            <div class="rt-time"><b>11:30</b><span>〜12:30</span></div>
+            <div class="rt-card rt-theme2">
+              <div class="rt-top">
+                <span class="rt-part">第3部</span>
+                <span class="rt-status">受付中</span>
+              </div>
+              <p class="rt-parks">交流パーク＋理学療法講習パーク</p>
+              <p class="rt-lec"><span class="rt-no">講習②</span>フットワークを速くするための骨盤の使い方</p>
+            </div>
+          </li>
+          <li class="rt-row">
+            <div class="rt-time"><b>12:30</b><span>〜13:30</span></div>
+            <div class="rt-card rt-theme2">
+              <div class="rt-top">
+                <span class="rt-part">第4部</span>
+                <span class="rt-status">受付中</span>
+              </div>
+              <p class="rt-parks">交流パーク＋理学療法講習パーク</p>
+              <p class="rt-lec"><span class="rt-no">講習②</span>フットワークを速くするための骨盤の使い方</p>
+            </div>
+          </li>
+          <li class="rt-row">
+            <div class="rt-time"><b>13:30</b><span>〜14:30</span></div>
+            <div class="rt-card rt-theme3">
+              <div class="rt-top">
+                <span class="rt-part">第5部</span>
+                <span class="rt-status">受付中</span>
+              </div>
+              <p class="rt-parks">交流パーク＋理学療法講習パーク</p>
+              <p class="rt-lec"><span class="rt-no">講習③</span>フットワークを速くするための足部の使い方</p>
+            </div>
+          </li>
+        </ol>
       </section>
 
       <section class="block">
