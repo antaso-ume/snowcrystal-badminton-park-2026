@@ -2793,6 +2793,25 @@
       .lecture-list li + li {
         margin-top: 4px;
       }
+
+      .slot-lecture {
+        display: block;
+        margin-top: 4px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #0558ab;
+      }
+      .lecture-slot {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 0 8px;
+        border-radius: 999px;
+        background: var(--navy);
+        color: var(--white);
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
       /* ---------- ホームのカウントダウン ---------- */
       .countdown {
         display: flex;
@@ -3367,31 +3386,31 @@
             <tr>
               <td class="col-part">第1部</td>
               <td class="col-time">9:30-10:30</td>
-              <td>交流パーク＋理学療法講習パーク</td>
+              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習①高い位置でより速くタッチするための身体の使い方</span></td>
               <td class="col-status">受付中</td>
             </tr>
             <tr>
               <td class="col-part">第2部</td>
               <td class="col-time">10:30-11:30</td>
-              <td>交流パーク＋理学療法講習パーク</td>
+              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習①高い位置でより速くタッチするための身体の使い方</span></td>
               <td class="col-status few">残りわずか</td>
             </tr>
             <tr>
               <td class="col-part">第3部</td>
               <td class="col-time">11:30-12:30</td>
-              <td>交流パーク＋理学療法講習パーク</td>
+              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習②フットワークを速くするための骨盤の使い方</span></td>
               <td class="col-status">受付中</td>
             </tr>
             <tr>
               <td class="col-part">第4部</td>
               <td class="col-time">12:30-13:30</td>
-              <td>交流パーク＋理学療法講習パーク</td>
+              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習②フットワークを速くするための骨盤の使い方</span></td>
               <td class="col-status">受付中</td>
             </tr>
             <tr>
               <td class="col-part">第5部</td>
               <td class="col-time">13:30-14:30</td>
-              <td>交流パーク＋理学療法講習パーク</td>
+              <td>交流パーク＋理学療法講習パーク<span class="slot-lecture">講習③フットワークを速くするための足部の使い方</span></td>
               <td class="col-status">受付中</td>
             </tr>
           </tbody>
@@ -3423,11 +3442,11 @@
             <p>
               理学療法士の指導のもと、選手と一緒に体を動かし、前後の変化を実感できます。
             </p>
-            <p class="lecture-label">講習の内容</p>
+            <p class="lecture-label">講習の内容（枠ごとにテーマが変わります）</p>
             <ol class="lecture-list">
-              <li>高い位置でより速くタッチするための身体の使い方</li>
-              <li>フットワークを速くするための骨盤の使い方</li>
-              <li>フットワークを速くするための足部の使い方</li>
+              <li>高い位置でより速くタッチするための身体の使い方<span class="lecture-slot">第1部・第2部</span></li>
+              <li>フットワークを速くするための骨盤の使い方<span class="lecture-slot">第3部・第4部</span></li>
+              <li>フットワークを速くするための足部の使い方<span class="lecture-slot">第5部</span></li>
             </ol>
             <div class="park-tag">1時間プログラムの前半 or 後半で実施</div>
           </div>
