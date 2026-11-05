@@ -2659,6 +2659,47 @@
       .mini-card-photo .pc-photo-stripe {
         display: none;
       }
+
+      /* ---------- 予約枠の受付状況（受付中／残りわずか／満員） ---------- */
+      .col-status.few {
+        color: #f47216;
+      }
+      .col-status.full {
+        color: #8a94a8;
+      }
+      /* ---------- ホームのカウントダウン ---------- */
+      .countdown {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 18px 5% 0;
+        padding: 12px 16px;
+        background: var(--navy);
+        border-radius: 14px;
+        color: var(--white);
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .countdown[hidden] {
+        display: none;
+      }
+      #countdownText {
+        white-space: nowrap;
+      }
+      .countdown b {
+        margin: 0 2px;
+        font-size: 40px;
+        font-weight: 900;
+        line-height: 1;
+        color: #ffb27a;
+      }
+      .countdown .cd-date {
+        padding: 2px 10px;
+        border-radius: 999px;
+        background: var(--orange);
+        font-size: 13px;
+      }
     </style>
   </head>
   <body>
@@ -2686,6 +2727,11 @@
       </div>
 
       <div class="page-container">
+        <!-- カウントダウン（日付は script で自動計算。当日は「本日開催」、終了後は非表示） -->
+        <div class="countdown" id="countdown" hidden>
+          <span class="cd-date">11.23</span>
+          <span id="countdownText"></span>
+        </div>
         <p
           class="text-center font-bold"
           style="
@@ -5321,6 +5367,22 @@
           );
         }).join("");
       }
+      // ============ カウントダウン（日本時間で 11/23 までの日数） ============
+      (function () {
+        var el = document.getElementById("countdown");
+        var text = document.getElementById("countdownText");
+        var now = new Date(Date.now() + 9 * 60 * 60 * 1000); // 日本時間
+        var today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+        var days = Math.round((Date.UTC(2026, 10, 23) - today) / 86400000);
+        if (days > 0) {
+          text.innerHTML = "開催まで あと <b>" + days + "</b> 日";
+        } else if (days === 0) {
+          text.innerHTML = "<b>本日開催！</b>";
+        } else {
+          return;
+        }
+        el.hidden = false;
+      })();
       renderScRoster();
       window.addEventListener("DOMContentLoaded", function () {
         var initial = (location.hash || "").replace("#", "");
