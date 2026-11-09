@@ -2961,6 +2961,47 @@
         font-size: 11px;
         font-weight: 700;
       }
+
+      /* ---------- 申込フォームへのボタン（増量） ---------- */
+      .reserve-cta {
+        margin: 24px 0 0;
+        text-align: center;
+      }
+      .reserve-cta span {
+        display: block;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #61708f;
+      }
+      .home-form-link {
+        margin: 10px 5% 0;
+        text-align: center;
+      }
+      .home-form-link a {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--orange);
+      }
+      .float-apply {
+        position: fixed;
+        right: 14px;
+        bottom: calc(14px + env(safe-area-inset-bottom));
+        z-index: 900;
+        padding: 14px 22px;
+        border-radius: 999px;
+        background: var(--orange);
+        color: var(--white);
+        font-size: 15px;
+        font-weight: 900;
+        text-decoration: none;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+        transition: opacity 0.2s, transform 0.2s;
+      }
+      .float-apply.hide {
+        opacity: 0;
+        transform: translateY(20px);
+        pointer-events: none;
+      }
       /* ---------- ホームのカウントダウン ---------- */
       .countdown {
         display: flex;
@@ -3123,6 +3164,9 @@
         <div class="countdown" id="countdown" hidden>
           <span id="countdownText"></span>
         </div>
+        <p class="home-form-link">
+          <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" target="_blank" rel="noopener">申込フォームへ直接すすむ →</a>
+        </p>
         <p
           class="text-center font-bold"
           style="
@@ -3584,6 +3628,10 @@
             </div>
           </li>
         </ol>
+        <p class="reserve-cta">
+          <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="btn-apply" target="_blank" rel="noopener">空いている枠に申し込む</a>
+          <span>申込フォームが開きます</span>
+        </p>
       </section>
 
       <section class="block">
@@ -5852,6 +5900,20 @@
           );
         }).join("");
       }
+      // ============ 右下の申込ボタン：申込ページの大きい申込ボタンが見えている間は隠す ============
+      window.addEventListener("DOMContentLoaded", function () {
+        var fab = document.getElementById("floatApply");
+        var big = document.querySelectorAll('#page-apply a.btn-apply[href*="forms.gle"]');
+        if (!fab || !("IntersectionObserver" in window)) return;
+        var visible = new Set();
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) visible.add(en.target); else visible.delete(en.target);
+          });
+          fab.classList.toggle("hide", visible.size > 0);
+        });
+        big.forEach(function (b) { io.observe(b); });
+      });
       // ============ 新着ニュース：最新の NEWS_SHOW 件だけ表示 ============
       (function () {
         var NEWS_SHOW = 3;
@@ -5894,5 +5956,7 @@
         goPage(valid.includes(initial) ? initial : "home");
       });
     </script>
+    <!-- 画面の右下にいつも出る申込ボタン（申込ページの下の大きいボタンが見えている間は隠す） -->
+    <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="float-apply" id="floatApply" target="_blank" rel="noopener">申込フォームへ</a>
   </body>
 </html>
