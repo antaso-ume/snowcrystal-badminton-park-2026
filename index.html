@@ -3016,6 +3016,30 @@
       .header-cta {
         margin-top: 18px;
       }
+
+      /* ---------- 予約枠：先着順の注意書き ---------- */
+      .reserve-note {
+        max-width: 720px;
+        margin: 20px auto 0;
+        padding: 14px 16px;
+        background: #fff6ee;
+        border: 2px solid #f9c9a6;
+        border-radius: 12px;
+      }
+      .reserve-note p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.7;
+      }
+      .reserve-note .reserve-note-title {
+        margin-bottom: 4px;
+        font-size: 14px;
+        font-weight: 900;
+        color: #b84e0b;
+      }
+      .reserve-note .reserve-note-title::before {
+        content: "⚠ ";
+      }
       /* ---------- ホームのカウントダウン ---------- */
       .countdown {
         display: flex;
@@ -3648,6 +3672,13 @@
             </div>
           </li>
         </ol>
+        <!-- 先着順の注意書き -->
+        <div class="reserve-note">
+          <p class="reserve-note-title">ご予約は先着順です</p>
+          <p>
+            お申し込みの状況によっては、第一希望の枠にご案内できない場合があります。あらかじめご了承ください。<br />その場合は、事務局からご連絡いたします。
+          </p>
+        </div>
         <p class="reserve-cta">
           <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="btn-apply" target="_blank" rel="noopener">空いている枠に申し込む</a>
           <span>申込フォームが開きます</span>
