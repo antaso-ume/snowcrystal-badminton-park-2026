@@ -88,7 +88,7 @@
           "@type": "Offer",
           "price": "4000",
           "priceCurrency": "JPY",
-          "availability": "https://schema.org/InStock",
+          "availability": "https://schema.org/SoldOut",
           "validFrom": "2026-09-23T00:00:00+09:00",
           "url": "https://antaso-ume.github.io/snowcrystal-badminton-park-2026/#apply"
         }
@@ -3040,6 +3040,80 @@
       .reserve-note .reserve-note-title::before {
         content: "⚠ ";
       }
+
+      /* ---------- 満員後：見学・入場券のご案内 ---------- */
+      .visit-block {
+        max-width: 720px;
+        margin: 24px auto 0;
+        padding: 20px 16px;
+        background: var(--white);
+        border: 3px solid var(--orange);
+        border-radius: 16px;
+        text-align: center;
+      }
+      .visit-lead {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--navy);
+        line-height: 1.6;
+      }
+      .visit-lead b {
+        color: var(--orange);
+      }
+      .visit-title {
+        margin: 16px 0 12px;
+        font-size: 19px;
+        font-weight: 900;
+        color: var(--navy);
+      }
+      .visit-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      @media (max-width: 520px) {
+        .visit-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .visit-card {
+        padding: 14px;
+        border-radius: 12px;
+        background: #f4f7fc;
+        text-align: left;
+      }
+      .visit-card.pick {
+        background: #fff6ee;
+      }
+      .visit-card h4 {
+        margin: 6px 0 4px;
+        font-size: 16px;
+        color: var(--navy);
+      }
+      .visit-card p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .visit-price {
+        display: inline-block;
+        padding: 2px 12px;
+        border-radius: 999px;
+        background: #1f7ae0;
+        color: var(--white);
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .visit-card.pick .visit-price {
+        background: var(--orange);
+      }
+      .visit-how {
+        margin: 14px 0 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: #3a4766;
+      }
       /* ---------- ホームのカウントダウン ---------- */
       .countdown {
         display: flex;
@@ -3191,8 +3265,8 @@
     <section id="page-home" class="page active">
       <div class="hero">
         <div class="hero-inner">
-          <button class="btn-cta" onclick="goPage('apply')">
-            お申し込みはこちらから
+          <button class="btn-cta" onclick="goVisit()">
+            満員御礼｜見学のご案内
           </button>
         </div>
       </div>
@@ -3203,7 +3277,7 @@
           <span id="countdownText"></span>
         </div>
         <p class="home-form-link">
-          <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" target="_blank" rel="noopener">申込フォームへ直接すすむ →</a>
+          <a href="#apply" onclick="goVisit(); return false">全枠満員！見学・入場券のご案内はこちら →</a>
         </p>
         <p
           class="text-center font-bold"
@@ -3497,15 +3571,15 @@
 
         <section class="cta-section">
           <h2 class="cta-title">
-            小学生から大人のみなさんまで、お申し込みお待ちしています！
+            ご予約枠は満員となりました。ありがとうございます！
           </h2>
-          <p class="cta-desc">会場でお会いできるのを楽しみにしています。</p>
+          <p class="cta-desc">見学（無料）・入場券（1,000円）でもご来場いただけます。</p>
           <button
             class="btn-apply"
             onclick="goPage('apply')"
             style="border: none; cursor: pointer"
           >
-            お申し込みページへ
+            見学・入場券のご案内
           </button>
         </section>
       </div>
@@ -3526,9 +3600,9 @@
             参加費 4,000円 ＋<br />法政大学バドミントン部オリジナルTシャツ付き！
           </div>
           <br />
-          <div class="badge-reservation">本イベントは完全事前申込制です</div>
+          <div class="badge-reservation">ご予約枠は全枠満員となりました</div>
           <p class="inline-cta header-cta">
-            <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="btn-apply" target="_blank" rel="noopener">今すぐ申し込む</a>
+            <a href="#apply" class="btn-apply" onclick="goVisit(); return false">見学・入場券のご案内</a>
           </p>
         </div>
       </header>
@@ -3589,7 +3663,7 @@
           </div>
         </div>
         <p class="inline-cta">
-          <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="btn-apply" target="_blank" rel="noopener">申込フォームへ進む</a><span>まずはフォームからお申し込みください</span>
+          <a href="#apply" class="btn-apply" onclick="goVisit(); return false">見学・入場券のご案内</a><span>ご予約枠は満員となりました</span>
         </p>
       </section>
 
@@ -3690,17 +3764,24 @@
             </div>
           </li>
         </ol>
-        <!-- 先着順の注意書き -->
-        <div class="reserve-note">
-          <p class="reserve-note-title">ご予約は先着順です</p>
-          <p>
-            お申し込みの状況によっては、第一希望の枠にご案内できない場合があります。あらかじめご了承ください。<br />その場合は、運営からご連絡いたします。
-          </p>
+        <!-- 満員後の案内：見学（無料）と入場券（1,000円） -->
+        <div class="visit-block" id="visit">
+          <p class="visit-lead">ご予約枠は<b>全枠満員</b>となりました。<br />たくさんのお申し込み、ありがとうございます！</p>
+          <h3 class="visit-title">見学・入場券のご案内</h3>
+          <div class="visit-grid">
+            <div class="visit-card">
+              <span class="visit-price">無料</span>
+              <h4>見学のみ（ギャラリー）</h4>
+              <p>ギャラリーから、選手のプレーや交流の様子をご覧いただけます。</p>
+            </div>
+            <div class="visit-card pick">
+              <span class="visit-price">1,000円</span>
+              <h4>入場券</h4>
+              <p>予約不要のパーク（お悩み相談パーク・プラスワンパーク）に参加できます。</p>
+            </div>
+          </div>
+          <p class="visit-how">※お申し込み方法は確認中です</p>
         </div>
-        <p class="reserve-cta">
-          <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="btn-apply" target="_blank" rel="noopener">空いている枠に申し込む</a>
-          <span>申込フォームが開きます</span>
-        </p>
       </section>
 
       <section class="block">
@@ -3782,7 +3863,7 @@
           </div>
         </div>
         <p class="inline-cta">
-          <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="btn-apply" target="_blank" rel="noopener">このパークを体験しに申し込む</a>
+          <a href="#apply" class="btn-apply" onclick="goVisit(); return false">入場券（1,000円）で参加する</a>
         </p>
       </section>
 
@@ -3931,15 +4012,12 @@
       </section>
 
       <section class="cta-section" style="padding: 50px 20px">
-        <h2 class="cta-title">お申し込みはこちらから</h2>
+        <h2 class="cta-title">満員御礼！</h2>
         <p class="cta-desc">
-          本イベントは完全事前申込制です。<br />お申し込みの際に、ご希望の1時間枠もあわせてお選びください。
+          ご予約枠は全枠満員となりました。たくさんのお申し込み、ありがとうございます。<br />見学（無料）・入場券（1,000円）でもご来場いただけます。
         </p>
-        <p class="cta-desc">
-          対象：試合ができる、ショットを打ち分けられるレベルの方（年齢不問）
-        </p>
-        <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="btn-apply"
-          >申込フォームへ進む</a
+        <a href="#apply" class="btn-apply" onclick="goVisit(); return false"
+          >見学・入場券のご案内</a
         >
       </section>
     </section>
@@ -5975,7 +6053,7 @@
       // ============ 右下の申込ボタン：申込ページの大きい申込ボタンが見えている間は隠す ============
       window.addEventListener("DOMContentLoaded", function () {
         var fab = document.getElementById("floatApply");
-        var big = document.querySelectorAll('#page-apply a.btn-apply[href*="forms.gle"]');
+        var big = document.querySelectorAll('#visit, #page-apply .cta-section .btn-apply');
         if (!fab || !("IntersectionObserver" in window)) return;
         var visible = new Set();
         var io = new IntersectionObserver(function (entries) {
@@ -5986,6 +6064,12 @@
         });
         big.forEach(function (b) { io.observe(b); });
       });
+      // 満員後の「見学・入場券のご案内」へ移動
+      function goVisit() {
+        goPage("apply");
+        var v = document.getElementById("visit");
+        if (v) v.scrollIntoView({ behavior: "instant", block: "start" });
+      }
       // ============ 新着ニュース：最新の NEWS_SHOW 件だけ表示 ============
       (function () {
         var NEWS_SHOW = 3;
@@ -6029,6 +6113,6 @@
       });
     </script>
     <!-- 画面の右下にいつも出る申込ボタン（申込ページの下の大きいボタンが見えている間は隠す） -->
-    <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="float-apply" id="floatApply" target="_blank" rel="noopener">申込フォームへ</a>
+    <a href="#apply" class="float-apply" id="floatApply" onclick="goVisit(); return false">見学のご案内</a>
   </body>
 </html>
