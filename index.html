@@ -3096,6 +3096,30 @@
         font-size: 13px;
         line-height: 1.6;
       }
+      .visit-card {
+        display: flex;
+        flex-direction: column;
+      }
+      .visit-btn {
+        margin-top: auto;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 2px solid #1f7ae0;
+        color: #1f7ae0;
+        background: var(--white);
+        font-size: 14px;
+        font-weight: 900;
+        text-align: center;
+        text-decoration: none;
+      }
+      .visit-card p + .visit-btn {
+        margin-top: 12px;
+      }
+      .visit-btn.pick {
+        border-color: var(--orange);
+        background: var(--orange);
+        color: var(--white);
+      }
       .visit-note {
         margin-top: 8px !important;
         font-weight: 700;
@@ -3105,6 +3129,7 @@
         color: #b84e0b;
       }
       .visit-price {
+        align-self: flex-start;
         display: inline-block;
         padding: 2px 12px;
         border-radius: 999px;
@@ -3782,12 +3807,14 @@
               <h4>見学のみ（ギャラリー）</h4>
               <p>ギャラリーから、選手のプレーや交流の様子をご覧いただけます。</p>
               <p class="visit-note">申込なしでもOK（事前のお申し込みもできます）</p>
+              <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="visit-btn" target="_blank" rel="noopener">見学を申し込む（任意）</a>
             </div>
             <div class="visit-card pick">
               <span class="visit-price">1,000円</span>
               <h4>入場券</h4>
               <p>予約不要のパーク（お悩み相談パーク・プラスワンパーク）に参加できます。</p>
               <p class="visit-note must">事前のお申し込みが必要です</p>
+              <a href="https://forms.gle/Vg8KZ2nWbBkP6uRS6" class="visit-btn pick" target="_blank" rel="noopener">入場券を申し込む</a>
             </div>
           </div>
           <p class="visit-how">来場できる時間：9:30〜14:30<br />※入場券・見学には、法政大学バドミントン部オリジナルTシャツは付きません。</p>
